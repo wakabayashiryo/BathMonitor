@@ -3101,7 +3101,6 @@ void main(void)
 Basic_Init();
 UART_Init(UART_InitPort,BAUD_9600);
 
-
 while(1)
 {
 printf("Hello World\n");
@@ -3116,9 +3115,14 @@ UART_Interrupt();
 
 void Basic_Init(void)
 {
-TRISA = 0x00;
+OSCCON = 0xF0;
 
+
+
+TRISA = 0x00;
 ANSELA = 0x00;
+WPUA = 0x00;
+
 
 APFCON = 0x00;
 
@@ -3128,7 +3132,7 @@ PORTA = 0x00;
 void UART_InitPort(void)
 {
 TRISA &= ~(1<<4);
-APFCON |= (1<<4);
 ANSELA &= ~(1<<4);
+APFCON |= (1<<2);
 }
 

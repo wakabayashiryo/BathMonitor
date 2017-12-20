@@ -11,7 +11,6 @@ void main(void)
     Basic_Init();
     UART_Init(UART_InitPort,BAUD_9600);
     
-    
     while(1)
     {
         printf("Hello World\n");
@@ -26,19 +25,24 @@ void interrupt Handle(void)
 
 void Basic_Init(void)
 {
-    TRISA = 0x00;
+    OSCCON = 0xF0;      //PLL ON: 
+                        //internal Oscilltor is 32MHz
+                        //clock source is internal one.
     
-    ANSELA = 0x00;
+    TRISA = 0x00;       //All PORTA is output 
+    ANSELA = 0x00;      //All PORTA  is digital
+    WPUA = 0x00;        
     
-    APFCON = 0x00;
+    /*alternate pin fuction control*/
+    APFCON = 0x00;     //no alteration
     
-    PORTA = 0x00;
+    PORTA = 0x00;       //clear
 }
 
 void UART_InitPort(void)
 {
     TRISA &= ~(1<<4);
-    APFCON |= (1<<4);
     ANSELA &= ~(1<<4);
+    APFCON |= (1<<2);       //TX of UART assing to RA4
 }
 

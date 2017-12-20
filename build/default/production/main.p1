@@ -14,10 +14,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _printf `(i ~T0 @X0 0 ev`*Cuc ]
 "37 PIC_UART.h
 [v _UART_Interrupt `(v ~T0 @X0 0 ef ]
-"1240 /opt/microchip/xc8/v1.43/include/pic12f1822.h
+"1643 /opt/microchip/xc8/v1.43/include/pic12f1822.h
+[v _OSCCON `Vuc ~T0 @X0 0 e@153 ]
+"1240
 [v _TRISA `Vuc ~T0 @X0 0 e@140 ]
 "2630
 [v _ANSELA `Vuc ~T0 @X0 0 e@396 ]
+"3186
+[v _WPUA `Vuc ~T0 @X0 0 e@524 ]
 "2488
 [v _APFCON `Vuc ~T0 @X0 0 e@285 ]
 "427
@@ -2269,86 +2273,92 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 12: UART_Init(UART_InitPort,BAUD_9600);
 "12
 [e ( _UART_Init (2 , &U _UART_InitPort . `E2276 3 ]
-[; ;main.c: 15: while(1)
-"15
+[; ;main.c: 14: while(1)
+"14
 [e :U 272 ]
-[; ;main.c: 16: {
-"16
+[; ;main.c: 15: {
+"15
 {
-[; ;main.c: 17: printf("Hello World\n");
-"17
+[; ;main.c: 16: printf("Hello World\n");
+"16
 [e ( _printf :s 1C ]
-"18
+"17
 }
 [e :U 271 ]
-"15
+"14
 [e $U 272  ]
 [e :U 273 ]
+[; ;main.c: 17: }
 [; ;main.c: 18: }
-[; ;main.c: 19: }
-"19
+"18
 [e :UE 270 ]
 }
 [v $root$_Handle `(v ~T0 @X0 0 e ]
 [v F2313 `(v ~T0 @X0 1 tf ]
-"21
+"20
 [v _Handle `IF2313 ~T0 @X0 1 e ]
-"22
+"21
 {
-[; ;main.c: 21: void interrupt Handle(void)
-[; ;main.c: 22: {
+[; ;main.c: 20: void interrupt Handle(void)
+[; ;main.c: 21: {
 [e :U _Handle ]
 [f ]
-[; ;main.c: 23: UART_Interrupt();
-"23
+[; ;main.c: 22: UART_Interrupt();
+"22
 [e ( _UART_Interrupt ..  ]
-[; ;main.c: 25: }
-"25
+[; ;main.c: 24: }
+"24
 [e :UE 274 ]
 }
-"27
+"26
 [v _Basic_Init `(v ~T0 @X0 1 ef ]
-"28
+"27
 {
-[; ;main.c: 27: void Basic_Init(void)
-[; ;main.c: 28: {
+[; ;main.c: 26: void Basic_Init(void)
+[; ;main.c: 27: {
 [e :U _Basic_Init ]
 [f ]
-[; ;main.c: 29: TRISA = 0x00;
-"29
+[; ;main.c: 28: OSCCON = 0xF0;
+"28
+[e = _OSCCON -> -> 240 `i `uc ]
+[; ;main.c: 32: TRISA = 0x00;
+"32
 [e = _TRISA -> -> 0 `i `uc ]
-[; ;main.c: 31: ANSELA = 0x00;
-"31
-[e = _ANSELA -> -> 0 `i `uc ]
-[; ;main.c: 33: APFCON = 0x00;
+[; ;main.c: 33: ANSELA = 0x00;
 "33
+[e = _ANSELA -> -> 0 `i `uc ]
+[; ;main.c: 34: WPUA = 0x00;
+"34
+[e = _WPUA -> -> 0 `i `uc ]
+[; ;main.c: 37: APFCON = 0x00;
+"37
 [e = _APFCON -> -> 0 `i `uc ]
-[; ;main.c: 35: PORTA = 0x00;
-"35
+[; ;main.c: 39: PORTA = 0x00;
+"39
 [e = _PORTA -> -> 0 `i `uc ]
-[; ;main.c: 36: }
-"36
+[; ;main.c: 40: }
+"40
 [e :UE 275 ]
 }
-"38
+"42
 [v _UART_InitPort `(v ~T0 @X0 1 ef ]
-"39
+"43
 {
-[; ;main.c: 38: void UART_InitPort(void)
-[; ;main.c: 39: {
+[; ;main.c: 42: void UART_InitPort(void)
+[; ;main.c: 43: {
 [e :U _UART_InitPort ]
 [f ]
-[; ;main.c: 40: TRISA &= ~(1<<4);
-"40
+[; ;main.c: 44: TRISA &= ~(1<<4);
+"44
 [e =& _TRISA -> ~ << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 41: APFCON |= (1<<4);
-"41
-[e =| _APFCON -> << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 42: ANSELA &= ~(1<<4);
-"42
+[; ;main.c: 45: ANSELA &= ~(1<<4);
+"45
 [e =& _ANSELA -> ~ << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 43: }
-"43
+[; ;main.c: 46: APFCON |= (1<<2);
+"46
+[e =| _APFCON -> << -> 1 `i -> 2 `i `uc ]
+[; ;main.c: 47: }
+"47
 [e :UE 276 ]
 }
 [p f _printf 8388608 ]
