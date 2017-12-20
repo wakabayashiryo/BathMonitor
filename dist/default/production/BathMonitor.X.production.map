@@ -5,7 +5,7 @@ Linker command line:
 -W-3 --edf=/opt/microchip/xc8/v1.43/dat/en_msgs.txt -cs \
   -h+dist/default/production/BathMonitor.X.production.sym \
   --cmf=dist/default/production/BathMonitor.X.production.cmf -z -Q12F1822 \
-  -o/tmp/xcX8WMPb2 -Mdist/default/production/BathMonitor.X.production.map \
+  -o/tmp/xcXEIDwxs -Mdist/default/production/BathMonitor.X.production.map \
   -E1 -ver=XC8 -ASTACK=0203Ch-0204fh -pstack=STACK -ACODE=00h-07FFh \
   -ASTRCODE=00h-07FFh -ASTRING=00h-0FFhx8 -ACONST=00h-0FFhx8 \
   -AENTRY=00h-0FFhx8 -ACOMMON=070h-07Fh -ABANK0=020h-06Fh -ABANK1=0A0h-0BFh \
@@ -25,7 +25,7 @@ Linker command line:
   -pfunctab=ENTRY -ACONFIG=08007h-08008h -pconfig=CONFIG -DCONFIG=2 \
   -AIDLOC=08000h-08003h -pidloc=IDLOC -DIDLOC=2 -AEEDATA=00h-0FFh/0F000h \
   -peeprom_data=EEDATA -DEEDATA=2 -DCODE=2 -DSTRCODE=2 -DSTRING=2 -DCONST=2 \
-  -DENTRY=2 -k /tmp/xcX3yLSuf.obj \
+  -DENTRY=2 -k /tmp/xcX7IQoFV.obj \
   dist/default/production/BathMonitor.X.production.obj 
 
 Object code version is 3.11
@@ -35,7 +35,7 @@ Machine type is 12F1822
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-/tmp/xcX3yLSuf.obj
+/tmp/xcX7IQoFV.obj
                 end_init                             10       10        1        8       0
                 reset_vec                             0        0        1        0       0
                 config                             8007     8007        2    1000E       0
@@ -43,9 +43,9 @@ dist/default/production/BathMonitor.X.production.obj
                 cinit                                11       11       1B        8       0
                 intentry                              4        4        C        8       0
                 text11                              10A      10A       54        8       0
-                text10                              257      257        2      436       0
+                text10                              25B      25B        2      436       0
                 text9                               1CA      1CA       27        8       0
-                text7                               242      242        9      436       0
+                text7                               242      242        D      436       0
                 text6                               235      235        D      436       0
                 text5                                B5       B5       55        8       0
                 text4                                2C       2C       89        8       0
@@ -55,8 +55,8 @@ dist/default/production/BathMonitor.X.production.obj
                 maintext                            196      196       34        8       0
                 cstackBANK0                          20       20       1C       20       1
                 cstackCOMMON                         70       70        8       70       1
-                clrtext                             251      251        6      436       0
-                inittext                            24B      24B        6      436       0
+                clrtext                             255      255        6      436       0
+                inittext                            24F      24F        6      436       0
                 bssBANK1                             A0       A0       20       A0       1
                 dataBANK0                            4F       4F        D       20       1
                 bssBANK0                             3C       3C       13       20       1
@@ -73,9 +73,9 @@ TOTAL           Name                               Link     Load   Length     Sp
                 intentry                              4        4        C         0
                 reset_vec                             0        0        1         0
                 text11                              10A      10A       54         0
-                text10                              257      257        2         0
+                text10                              25B      25B        2         0
                 text9                               1CA      1CA       27         0
-                text7                               242      242        9         0
+                text7                               242      242        D         0
                 text6                               235      235        D         0
                 text5                                B5       B5       55         0
                 text4                                2C       2C       89         0
@@ -83,8 +83,8 @@ TOTAL           Name                               Link     Load   Length     Sp
                 text2                               228      228        D         0
                 text1                               15E      15E       38         0
                 maintext                            196      196       34         0
-                clrtext                             251      251        6         0
-                inittext                            24B      24B        6         0
+                clrtext                             255      255        6         0
+                inittext                            24F      24F        6         0
                 idataBANK0                          21B      21B        D         0
 
         CLASS   STRCODE        
@@ -256,7 +256,7 @@ SEGMENTS        Name                           Load    Length   Top    Selector 
                 cstackCOMMON                   000070  00000A  00007A        70       1  COMMON      1
                 bssBANK1                       0000A0  000020  0000C0        A0       1  BANK1       1
                 stringtext1                    00020B  000010  00021B       416       0  STRCODE     2
-                idataBANK0                     00021B  00003E  000259       436       0  CODE        2
+                idataBANK0                     00021B  000042  00025D       436       0  CODE        2
                 config                         008007  000002  008009     1000E       0  CONFIG      2
 
 
@@ -266,13 +266,13 @@ UNUSED ADDRESS RANGES
         BANK0            0005C-0006F              14           1
         BIGRAM           02000-0206F              70           1
         CODE             00001-00003               3           2
-                         00259-007FF             5A7
+                         0025D-007FF             5A3
         COMMON           0007A-0007D               4           1
         CONST            00001-00003               3           2
-                         00259-007FF             100
+                         0025D-007FF             100
         EEDATA           0F000-0F0FF             100           2
         ENTRY            00001-00003               3           2
-                         00259-007FF             100
+                         0025D-007FF             100
         IDLOC            08000-08003               4           2
         RAM              0005C-0006F              14           1
         SFR0             00000-0001F              20           1
@@ -309,9 +309,9 @@ UNUSED ADDRESS RANGES
         SFR9             00480-004EF              70           1
         STACK            0203C-0204F              14           1
         STRCODE          00001-00003               3           2
-                         00259-007FF             5A7
+                         0025D-007FF             5A3
         STRING           00001-00003               3           2
-                         00259-007FF             100
+                         0025D-007FF             100
 
                                   Symbol Table
 
@@ -321,7 +321,7 @@ I2C1_Init@address        cstackBANK0  00022
 I2C1_Init@mode           cstackBANK0  00023
 I2C1_Transmit@address    cstackBANK0  00020
 I2C1_Transmit@i          cstackBANK0  00021
-I2C1_Transmit@i_327      cstackBANK0  00022
+I2C1_Transmit@i_329      cstackBANK0  00022
 I2C1_Transmit@pData      cstackCOMMON 00074
 I2C1_Transmit@result     cstackBANK0  00023
 I2C1_Transmit@size       cstackCOMMON 00075
@@ -348,9 +348,10 @@ _I2C1_Init               text5        000B5
 _I2C1_Interrupt          text11       0010A
 _I2C1_Transmit           text4        0002C
 _I2C_InitPort            text6        00235
-_I2C_Interrupt           text10       00257
+_I2C_Interrupt           text10       0025B
 _I2C_Transmit            text3        001F1
 _OERR                    (abs)        00CE9
+_OSCCON                  (abs)        00099
 _PEIE                    (abs)        0005E
 _PORTA                   (abs)        0000C
 _RCIE                    (abs)        0048D
@@ -381,6 +382,7 @@ _UART_Buffer_outptr      bssCOMMON    00078
 _UART_Init               text1        0015E
 _UART_InitPort           text2        00228
 _UART_Interrupt          text9        001CA
+_WPUA                    (abs)        0020C
 __CFG_BOREN$OFF          (abs)        00000
 __CFG_BORV$LO            (abs)        00000
 __CFG_CLKOUTEN$OFF       (abs)        00000
@@ -597,13 +599,13 @@ __S3                     (abs)        00000
 ___int_sp                stack        00000
 ___latbits               (abs)        00000
 ___sp                    stack        00000
-__end_of_Basic_Init      text7        0024B
+__end_of_Basic_Init      text7        0024F
 __end_of_Handle          intentry     00010
 __end_of_I2C1_Init       text5        0010A
 __end_of_I2C1_Interrupt  text11       0015E
 __end_of_I2C1_Transmit   text4        000B5
 __end_of_I2C_InitPort    text6        00242
-__end_of_I2C_Interrupt   text10       00259
+__end_of_I2C_Interrupt   text10       0025D
 __end_of_I2C_Transmit    text3        0020B
 __end_of_UART_Init       text1        00196
 __end_of_UART_InitPort   text2        00235
@@ -623,7 +625,7 @@ __pintentry              intentry     00004
 __pmaintext              maintext     00196
 __pstringtext1           stringtext1  0020B
 __ptext1                 text1        0015E
-__ptext10                text10       00257
+__ptext10                text10       0025B
 __ptext11                text11       0010A
 __ptext2                 text2        00228
 __ptext3                 text3        001F1
@@ -647,9 +649,9 @@ __size_of_main           (abs)        00000
 _baudtable               stringtext1  0020B
 _main                    maintext     00196
 btemp                    (abs)        0007E
-clear_ram0               clrtext      00251
+clear_ram0               clrtext      00255
 end_of_initialization    cinit        00029
-init_ram                 inittext     0024B
+init_ram                 inittext     0024F
 int$flags                (abs)        0007E
 intlevel0                functab      00000
 intlevel1                functab      00000
@@ -735,7 +737,7 @@ Total ram usage:        7 bytes
 
  *************** function _UART_InitPort *****************
  Defined at:
-		line 40 in file "main.c"
+		line 45 in file "main.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -871,7 +873,7 @@ Total ram usage:        6 bytes
 
  *************** function _I2C_InitPort *****************
  Defined at:
-		line 46 in file "main.c"
+		line 51 in file "main.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -910,7 +912,7 @@ Total ram usage:        1 bytes
  Return value:  Size  Location     Type
                   1    wreg      void 
  Registers used:
-		status,2
+		wreg, status,2
  Tracked objects:
 		On entry : 
 		On exit  : 
@@ -1061,7 +1063,7 @@ PIC_UART.c
 PIC_UART.c estimated size: 97
 
 PIC_I2C.c
-		_I2C_Interrupt 		CODE           	0257	0000	3
+		_I2C_Interrupt 		CODE           	025B	0000	3
 		_I2C_Transmit  		CODE           	01F1	0000	27
 
 PIC_I2C.c estimated size: 30
@@ -1084,7 +1086,7 @@ main.c
 		_UART_InitPort 		CODE           	0228	0000	14
 		_Handle        		CODE           	0004	0000	13
 		_I2C_InitPort  		CODE           	0235	0000	14
-		_Basic_Init    		CODE           	0242	0000	10
+		_Basic_Init    		CODE           	0242	0000	14
 
-main.c estimated size: 104
+main.c estimated size: 108
 

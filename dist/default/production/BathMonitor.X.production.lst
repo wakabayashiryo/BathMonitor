@@ -1,7 +1,7 @@
 
 
 Microchip Technology PIC LITE Macro Assembler V1.43 build -156212558 
-                                                                                               Wed Dec 20 07:08:02 2017
+                                                                                               Wed Dec 20 07:19:10 2017
 
 Microchip Technology Omniscient Code Generator v1.43 (Free mode) build 201707250354
      1                           	processor	12F1822
@@ -585,1701 +585,1711 @@ Microchip Technology Omniscient Code Generator v1.43 (Free mode) build 201707250
    571  005E                     _PEIE	set	94
    572  008D                     _RCIF	set	141
    573  008C                     _TRISA	set	140
-   574  0493                     _BCL1IE	set	1171
-   575  048B                     _SSP1IE	set	1163
-   576  048D                     _RCIE	set	1165
-   577  011D                     _APFCON	set	285
-   578  0199                     _RCREG	set	409
-   579  019A                     _TXREG	set	410
-   580  019C                     _SPBRGH	set	412
-   581  019B                     _SPBRGL	set	411
-   582  019D                     _RCSTA	set	413
-   583  019E                     _TXSTA	set	414
-   584  018C                     _ANSELA	set	396
-   585  0CEC                     _CREN	set	3308
-   586  0CE9                     _OERR	set	3305
-   587  0CEF                     _SPEN	set	3311
-   588  0CFB                     _BRG16	set	3323
-   589  0214                     _SSPSTATbits	set	532
-   590  0211                     _SSPBUF	set	529
-   591  0216                     _SSPCON2	set	534
-   592  0213                     _SSPMSK	set	531
-   593  0216                     _SSPCON2bits	set	534
-   594  0215                     _SSPCON1bits	set	533
-   595  0212                     _SSPADD	set	530
-   596  0214                     _SSPSTAT	set	532
-   597  0215                     _SSPCON1	set	533
-   598                           
-   599                           ; #config settings
-   600  0000                     
-   601                           	psect	cinit
-   602  0011                     start_initialization:	
-   603  0011                     __initialization:	
-   604                           
-   605                           ; Initialize objects allocated to BANK0
-   606  0011  301B               	movlw	low __pidataBANK0
-   607  0012  0084               	movwf	4
-   608  0013  3082               	movlw	(high __pidataBANK0)| (0+128)
-   609  0014  0085               	movwf	5
-   610  0015  304F               	movlw	low __pdataBANK0
-   611  0016  0086               	movwf	6
-   612  0017  3000               	movlw	high __pdataBANK0
-   613  0018  0087               	movwf	7
-   614  0019  300D               	movlw	13
-   615  001A  224B               	fcall	init_ram
-   616                           
-   617                           ; Clear objects allocated to COMMON
-   618  001B  01F8               	clrf	__pbssCOMMON& (0+127)
-   619  001C  01F9               	clrf	(__pbssCOMMON+1)& (0+127)
-   620                           
-   621                           ; Clear objects allocated to BANK0
-   622  001D  303C               	movlw	low __pbssBANK0
-   623  001E  0084               	movwf	4
-   624  001F  3000               	movlw	high __pbssBANK0
-   625  0020  0085               	movwf	5
-   626  0021  3013               	movlw	19
-   627  0022  2251               	fcall	clear_ram0
-   628                           
-   629                           ; Clear objects allocated to BANK1
-   630  0023  30A0               	movlw	low __pbssBANK1
-   631  0024  0084               	movwf	4
-   632  0025  3000               	movlw	high __pbssBANK1
-   633  0026  0085               	movwf	5
-   634  0027  3020               	movlw	32
-   635  0028  2251               	fcall	clear_ram0
-   636  0029                     end_of_initialization:	
-   637                           ;End of C runtime variable initialization code
-   638                           
-   639  0029                     __end_of__initialization:	
-   640  0029  107E               	bcf	int$flags,0	;clear compiler interrupt flag (level 1)
-   641  002A  0020               	movlb	0
-   642  002B  2996               	ljmp	_main	;jump to C main() function
-   643                           
-   644                           	psect	bssCOMMON
-   645  0078                     __pbssCOMMON:	
-   646  0078                     _UART_Buffer_outptr:	
-   647  0078                     	ds	1
-   648  0079                     _UART_Buffer_inptr:	
-   649  0079                     	ds	1
-   650                           
-   651                           	psect	bssBANK0
-   652  003C                     __pbssBANK0:	
-   653  003C                     _I2C1_Config:	
-   654  003C                     	ds	19
-   655                           
-   656                           	psect	dataBANK0
-   657  004F                     __pdataBANK0:	
-   658  004F                     main@F2367:	
-   659  004F                     	ds	13
-   660                           
-   661                           	psect	bssBANK1
-   662  00A0                     __pbssBANK1:	
-   663  00A0                     _UART_Buffer:	
-   664  00A0                     	ds	32
-   665                           
-   666                           	psect	inittext
-   667  024B                     init_ram:	
-   668  024B  00FE               	movwf	126
-   669  024C                     initloop:	
-   670  024C  0012               	moviw fsr0++
-   671  024D  001E               	movwi fsr1++
-   672  024E  0BFE               	decfsz	126,f
-   673  024F  2A4C               	goto	initloop
-   674  0250  3400               	retlw	0
-   675                           
-   676                           	psect	clrtext
-   677  0251                     clear_ram0:	
-   678                           ;	Called with FSR0 containing the base address, and
-   679                           ;	WREG with the size to clear
-   680                           
-   681  0251  0064               	clrwdt	;clear the watchdog before getting into this loop
-   682  0252                     clrloop0:	
-   683  0252  0180               	clrf	0	;clear RAM location pointed to by FSR
-   684  0253  3101               	addfsr 0,1
-   685  0254  0B89               	decfsz	9,f	;Have we reached the end of clearing yet?
-   686  0255  2A52               	goto	clrloop0	;have we reached the end yet?
-   687  0256  3400               	retlw	0	;all done for this memory range, return
-   688                           
-   689                           	psect	cstackCOMMON
-   690  0070                     __pcstackCOMMON:	
-   691  0070                     ?_Basic_Init:	
-   692  0070                     ?_UART_InitPort:	
-   693                           ; 1 bytes @ 0x0
-   694                           
-   695  0070                     ?_I2C_InitPort:	
-   696                           ; 1 bytes @ 0x0
-   697                           
-   698  0070                     ?_UART_Interrupt:	
-   699                           ; 1 bytes @ 0x0
-   700                           
-   701  0070                     ??_UART_Interrupt:	
-   702                           ; 1 bytes @ 0x0
-   703                           
-   704  0070                     ?_I2C_Interrupt:	
-   705                           ; 1 bytes @ 0x0
-   706                           
-   707  0070                     ?_I2C1_Interrupt:	
-   708                           ; 1 bytes @ 0x0
-   709                           
-   710  0070                     ??_I2C1_Interrupt:	
-   711                           ; 1 bytes @ 0x0
-   712                           
-   713  0070                     ?_main:	
-   714                           ; 1 bytes @ 0x0
-   715                           
-   716  0070                     ?_Handle:	
-   717                           ; 1 bytes @ 0x0
-   718                           
-   719                           
-   720                           ; 1 bytes @ 0x0
-   721  0070                     	ds	1
-   722  0071                     ??_I2C_Interrupt:	
-   723  0071                     UART_Interrupt@dt:	
-   724                           ; 1 bytes @ 0x1
-   725                           
-   726                           
-   727                           ; 1 bytes @ 0x1
-   728  0071                     	ds	1
-   729  0072                     UART_Interrupt@x:	
-   730                           
-   731                           ; 1 bytes @ 0x2
-   732  0072                     	ds	1
-   733  0073                     ??_Handle:	
-   734                           
-   735                           ; 1 bytes @ 0x3
-   736  0073                     	ds	1
-   737  0074                     ??_Basic_Init:	
-   738  0074                     ??_UART_InitPort:	
-   739                           ; 1 bytes @ 0x4
-   740                           
-   741  0074                     ??_I2C_InitPort:	
-   742                           ; 1 bytes @ 0x4
-   743                           
-   744  0074                     ?_I2C1_Transmit:	
-   745                           ; 1 bytes @ 0x4
-   746                           
-   747  0074                     I2C1_Transmit@pData:	
-   748                           ; 1 bytes @ 0x4
-   749                           
-   750                           
-   751                           ; 1 bytes @ 0x4
-   752  0074                     	ds	1
-   753  0075                     ?_UART_Init:	
-   754  0075                     ??_I2C1_Init:	
-   755                           ; 1 bytes @ 0x5
-   756                           
-   757  0075                     I2C1_Transmit@size:	
-   758                           ; 1 bytes @ 0x5
-   759                           
-   760  0075                     UART_Init@UART_Init_PORT:	
-   761                           ; 1 bytes @ 0x5
-   762                           
-   763                           
-   764                           ; 2 bytes @ 0x5
-   765  0075                     	ds	1
-   766  0076                     ??_I2C1_Transmit:	
-   767                           
-   768                           ; 1 bytes @ 0x6
-   769  0076                     	ds	1
-   770  0077                     UART_Init@brg:	
-   771                           
-   772                           ; 1 bytes @ 0x7
-   773  0077                     	ds	1
-   774                           
-   775                           	psect	cstackBANK0
-   776  0020                     __pcstackBANK0:	
-   777  0020                     ??_UART_Init:	
-   778  0020                     ?_I2C1_Init:	
-   779                           ; 1 bytes @ 0x0
-   780                           
-   781  0020                     I2C1_Transmit@address:	
-   782                           ; 1 bytes @ 0x0
-   783                           
-   784  0020                     I2C1_Init@I2C1_Init_PORT:	
-   785                           ; 1 bytes @ 0x0
-   786                           
-   787                           
-   788                           ; 2 bytes @ 0x0
-   789  0020                     	ds	1
-   790  0021                     I2C1_Transmit@i:	
-   791                           
-   792                           ; 1 bytes @ 0x1
-   793  0021                     	ds	1
-   794  0022                     I2C1_Init@address:	
-   795  0022                     I2C1_Transmit@i_327:	
-   796                           ; 1 bytes @ 0x2
-   797                           
-   798                           
-   799                           ; 1 bytes @ 0x2
-   800  0022                     	ds	1
-   801  0023                     I2C1_Init@mode:	
-   802  0023                     I2C1_Transmit@result:	
-   803                           ; 1 bytes @ 0x3
-   804                           
-   805                           
-   806                           ; 1 bytes @ 0x3
-   807  0023                     	ds	1
-   808  0024                     ?_I2C_Transmit:	
-   809  0024                     I2C_Transmit@address:	
-   810                           ; 1 bytes @ 0x4
-   811                           
-   812  0024                     I2C1_Init@Speed:	
-   813                           ; 1 bytes @ 0x4
-   814                           
-   815                           
-   816                           ; 1 bytes @ 0x4
-   817  0024                     	ds	1
-   818  0025                     I2C_Transmit@pData:	
-   819                           
-   820                           ; 1 bytes @ 0x5
-   821  0025                     	ds	1
-   822  0026                     I2C_Transmit@size:	
-   823                           
-   824                           ; 1 bytes @ 0x6
-   825  0026                     	ds	1
-   826  0027                     ??_I2C_Transmit:	
-   827                           
-   828                           ; 1 bytes @ 0x7
-   829  0027                     	ds	3
-   830  002A                     I2C_Transmit@result:	
-   831                           
-   832                           ; 1 bytes @ 0xA
-   833  002A                     	ds	1
-   834  002B                     I2C_Transmit@I2Cx:	
-   835                           
-   836                           ; 1 bytes @ 0xB
-   837  002B                     	ds	1
-   838  002C                     ??_main:	
-   839                           
-   840                           ; 1 bytes @ 0xC
-   841  002C                     	ds	3
-   842  002F                     main@testdata:	
-   843                           
-   844                           ; 13 bytes @ 0xF
-   845  002F                     	ds	13
-   846                           
-   847                           	psect	maintext
-   848  0196                     __pmaintext:	
-   849 ;;
-   850 ;;Main: autosize = 0, tempsize = 3, incstack = 0, save=0
+   574  0099                     _OSCCON	set	153
+   575  0493                     _BCL1IE	set	1171
+   576  048B                     _SSP1IE	set	1163
+   577  048D                     _RCIE	set	1165
+   578  011D                     _APFCON	set	285
+   579  0199                     _RCREG	set	409
+   580  019A                     _TXREG	set	410
+   581  019C                     _SPBRGH	set	412
+   582  019B                     _SPBRGL	set	411
+   583  019D                     _RCSTA	set	413
+   584  019E                     _TXSTA	set	414
+   585  018C                     _ANSELA	set	396
+   586  0CEC                     _CREN	set	3308
+   587  0CE9                     _OERR	set	3305
+   588  0CEF                     _SPEN	set	3311
+   589  0CFB                     _BRG16	set	3323
+   590  0214                     _SSPSTATbits	set	532
+   591  0211                     _SSPBUF	set	529
+   592  0216                     _SSPCON2	set	534
+   593  0213                     _SSPMSK	set	531
+   594  0216                     _SSPCON2bits	set	534
+   595  0215                     _SSPCON1bits	set	533
+   596  0212                     _SSPADD	set	530
+   597  0214                     _SSPSTAT	set	532
+   598  0215                     _SSPCON1	set	533
+   599  020C                     _WPUA	set	524
+   600                           
+   601                           ; #config settings
+   602  0000                     
+   603                           	psect	cinit
+   604  0011                     start_initialization:	
+   605  0011                     __initialization:	
+   606                           
+   607                           ; Initialize objects allocated to BANK0
+   608  0011  301B               	movlw	low __pidataBANK0
+   609  0012  0084               	movwf	4
+   610  0013  3082               	movlw	(high __pidataBANK0)| (0+128)
+   611  0014  0085               	movwf	5
+   612  0015  304F               	movlw	low __pdataBANK0
+   613  0016  0086               	movwf	6
+   614  0017  3000               	movlw	high __pdataBANK0
+   615  0018  0087               	movwf	7
+   616  0019  300D               	movlw	13
+   617  001A  224F               	fcall	init_ram
+   618                           
+   619                           ; Clear objects allocated to COMMON
+   620  001B  01F8               	clrf	__pbssCOMMON& (0+127)
+   621  001C  01F9               	clrf	(__pbssCOMMON+1)& (0+127)
+   622                           
+   623                           ; Clear objects allocated to BANK0
+   624  001D  303C               	movlw	low __pbssBANK0
+   625  001E  0084               	movwf	4
+   626  001F  3000               	movlw	high __pbssBANK0
+   627  0020  0085               	movwf	5
+   628  0021  3013               	movlw	19
+   629  0022  2255               	fcall	clear_ram0
+   630                           
+   631                           ; Clear objects allocated to BANK1
+   632  0023  30A0               	movlw	low __pbssBANK1
+   633  0024  0084               	movwf	4
+   634  0025  3000               	movlw	high __pbssBANK1
+   635  0026  0085               	movwf	5
+   636  0027  3020               	movlw	32
+   637  0028  2255               	fcall	clear_ram0
+   638  0029                     end_of_initialization:	
+   639                           ;End of C runtime variable initialization code
+   640                           
+   641  0029                     __end_of__initialization:	
+   642  0029  107E               	bcf	int$flags,0	;clear compiler interrupt flag (level 1)
+   643  002A  0020               	movlb	0
+   644  002B  2996               	ljmp	_main	;jump to C main() function
+   645                           
+   646                           	psect	bssCOMMON
+   647  0078                     __pbssCOMMON:	
+   648  0078                     _UART_Buffer_outptr:	
+   649  0078                     	ds	1
+   650  0079                     _UART_Buffer_inptr:	
+   651  0079                     	ds	1
+   652                           
+   653                           	psect	bssBANK0
+   654  003C                     __pbssBANK0:	
+   655  003C                     _I2C1_Config:	
+   656  003C                     	ds	19
+   657                           
+   658                           	psect	dataBANK0
+   659  004F                     __pdataBANK0:	
+   660  004F                     main@F2367:	
+   661  004F                     	ds	13
+   662                           
+   663                           	psect	bssBANK1
+   664  00A0                     __pbssBANK1:	
+   665  00A0                     _UART_Buffer:	
+   666  00A0                     	ds	32
+   667                           
+   668                           	psect	inittext
+   669  024F                     init_ram:	
+   670  024F  00FE               	movwf	126
+   671  0250                     initloop:	
+   672  0250  0012               	moviw fsr0++
+   673  0251  001E               	movwi fsr1++
+   674  0252  0BFE               	decfsz	126,f
+   675  0253  2A50               	goto	initloop
+   676  0254  3400               	retlw	0
+   677                           
+   678                           	psect	clrtext
+   679  0255                     clear_ram0:	
+   680                           ;	Called with FSR0 containing the base address, and
+   681                           ;	WREG with the size to clear
+   682                           
+   683  0255  0064               	clrwdt	;clear the watchdog before getting into this loop
+   684  0256                     clrloop0:	
+   685  0256  0180               	clrf	0	;clear RAM location pointed to by FSR
+   686  0257  3101               	addfsr 0,1
+   687  0258  0B89               	decfsz	9,f	;Have we reached the end of clearing yet?
+   688  0259  2A56               	goto	clrloop0	;have we reached the end yet?
+   689  025A  3400               	retlw	0	;all done for this memory range, return
+   690                           
+   691                           	psect	cstackCOMMON
+   692  0070                     __pcstackCOMMON:	
+   693  0070                     ?_Basic_Init:	
+   694  0070                     ?_UART_InitPort:	
+   695                           ; 1 bytes @ 0x0
+   696                           
+   697  0070                     ?_I2C_InitPort:	
+   698                           ; 1 bytes @ 0x0
+   699                           
+   700  0070                     ?_UART_Interrupt:	
+   701                           ; 1 bytes @ 0x0
+   702                           
+   703  0070                     ??_UART_Interrupt:	
+   704                           ; 1 bytes @ 0x0
+   705                           
+   706  0070                     ?_I2C_Interrupt:	
+   707                           ; 1 bytes @ 0x0
+   708                           
+   709  0070                     ?_I2C1_Interrupt:	
+   710                           ; 1 bytes @ 0x0
+   711                           
+   712  0070                     ??_I2C1_Interrupt:	
+   713                           ; 1 bytes @ 0x0
+   714                           
+   715  0070                     ?_main:	
+   716                           ; 1 bytes @ 0x0
+   717                           
+   718  0070                     ?_Handle:	
+   719                           ; 1 bytes @ 0x0
+   720                           
+   721                           
+   722                           ; 1 bytes @ 0x0
+   723  0070                     	ds	1
+   724  0071                     ??_I2C_Interrupt:	
+   725  0071                     UART_Interrupt@dt:	
+   726                           ; 1 bytes @ 0x1
+   727                           
+   728                           
+   729                           ; 1 bytes @ 0x1
+   730  0071                     	ds	1
+   731  0072                     UART_Interrupt@x:	
+   732                           
+   733                           ; 1 bytes @ 0x2
+   734  0072                     	ds	1
+   735  0073                     ??_Handle:	
+   736                           
+   737                           ; 1 bytes @ 0x3
+   738  0073                     	ds	1
+   739  0074                     ??_Basic_Init:	
+   740  0074                     ??_UART_InitPort:	
+   741                           ; 1 bytes @ 0x4
+   742                           
+   743  0074                     ??_I2C_InitPort:	
+   744                           ; 1 bytes @ 0x4
+   745                           
+   746  0074                     ?_I2C1_Transmit:	
+   747                           ; 1 bytes @ 0x4
+   748                           
+   749  0074                     I2C1_Transmit@pData:	
+   750                           ; 1 bytes @ 0x4
+   751                           
+   752                           
+   753                           ; 1 bytes @ 0x4
+   754  0074                     	ds	1
+   755  0075                     ?_UART_Init:	
+   756  0075                     ??_I2C1_Init:	
+   757                           ; 1 bytes @ 0x5
+   758                           
+   759  0075                     I2C1_Transmit@size:	
+   760                           ; 1 bytes @ 0x5
+   761                           
+   762  0075                     UART_Init@UART_Init_PORT:	
+   763                           ; 1 bytes @ 0x5
+   764                           
+   765                           
+   766                           ; 2 bytes @ 0x5
+   767  0075                     	ds	1
+   768  0076                     ??_I2C1_Transmit:	
+   769                           
+   770                           ; 1 bytes @ 0x6
+   771  0076                     	ds	1
+   772  0077                     UART_Init@brg:	
+   773                           
+   774                           ; 1 bytes @ 0x7
+   775  0077                     	ds	1
+   776                           
+   777                           	psect	cstackBANK0
+   778  0020                     __pcstackBANK0:	
+   779  0020                     ??_UART_Init:	
+   780  0020                     ?_I2C1_Init:	
+   781                           ; 1 bytes @ 0x0
+   782                           
+   783  0020                     I2C1_Transmit@address:	
+   784                           ; 1 bytes @ 0x0
+   785                           
+   786  0020                     I2C1_Init@I2C1_Init_PORT:	
+   787                           ; 1 bytes @ 0x0
+   788                           
+   789                           
+   790                           ; 2 bytes @ 0x0
+   791  0020                     	ds	1
+   792  0021                     I2C1_Transmit@i:	
+   793                           
+   794                           ; 1 bytes @ 0x1
+   795  0021                     	ds	1
+   796  0022                     I2C1_Init@address:	
+   797  0022                     I2C1_Transmit@i_329:	
+   798                           ; 1 bytes @ 0x2
+   799                           
+   800                           
+   801                           ; 1 bytes @ 0x2
+   802  0022                     	ds	1
+   803  0023                     I2C1_Init@mode:	
+   804  0023                     I2C1_Transmit@result:	
+   805                           ; 1 bytes @ 0x3
+   806                           
+   807                           
+   808                           ; 1 bytes @ 0x3
+   809  0023                     	ds	1
+   810  0024                     ?_I2C_Transmit:	
+   811  0024                     I2C_Transmit@address:	
+   812                           ; 1 bytes @ 0x4
+   813                           
+   814  0024                     I2C1_Init@Speed:	
+   815                           ; 1 bytes @ 0x4
+   816                           
+   817                           
+   818                           ; 1 bytes @ 0x4
+   819  0024                     	ds	1
+   820  0025                     I2C_Transmit@pData:	
+   821                           
+   822                           ; 1 bytes @ 0x5
+   823  0025                     	ds	1
+   824  0026                     I2C_Transmit@size:	
+   825                           
+   826                           ; 1 bytes @ 0x6
+   827  0026                     	ds	1
+   828  0027                     ??_I2C_Transmit:	
+   829                           
+   830                           ; 1 bytes @ 0x7
+   831  0027                     	ds	3
+   832  002A                     I2C_Transmit@result:	
+   833                           
+   834                           ; 1 bytes @ 0xA
+   835  002A                     	ds	1
+   836  002B                     I2C_Transmit@I2Cx:	
+   837                           
+   838                           ; 1 bytes @ 0xB
+   839  002B                     	ds	1
+   840  002C                     ??_main:	
+   841                           
+   842                           ; 1 bytes @ 0xC
+   843  002C                     	ds	3
+   844  002F                     main@testdata:	
+   845                           
+   846                           ; 13 bytes @ 0xF
+   847  002F                     	ds	13
+   848                           
+   849                           	psect	maintext
+   850  0196                     __pmaintext:	
    851 ;;
-   852 ;; *************** function _main *****************
-   853 ;; Defined at:
-   854 ;;		line 9 in file "main.c"
-   855 ;; Parameters:    Size  Location     Type
-   856 ;;		None
-   857 ;; Auto vars:     Size  Location     Type
-   858 ;;  testdata       13   15[BANK0 ] unsigned char [13]
-   859 ;; Return value:  Size  Location     Type
-   860 ;;                  1    wreg      void 
-   861 ;; Registers used:
-   862 ;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, pclath, cstack
-   863 ;; Tracked objects:
-   864 ;;		On entry : B1F/0
-   865 ;;		On exit  : 0/0
-   866 ;;		Unchanged: 0/0
-   867 ;; Data sizes:     COMMON   BANK0   BANK1
-   868 ;;      Params:         0       0       0
-   869 ;;      Locals:         0      13       0
-   870 ;;      Temps:          0       3       0
-   871 ;;      Totals:         0      16       0
-   872 ;;Total ram usage:       16 bytes
-   873 ;; Hardware stack levels required when called:    5
-   874 ;; This function calls:
-   875 ;;		_Basic_Init
-   876 ;;		_I2C1_Init
-   877 ;;		_I2C_Transmit
-   878 ;;		_UART_Init
-   879 ;; This function is called by:
-   880 ;;		Startup code after reset
-   881 ;; This function uses a non-reentrant model
-   882 ;;
-   883                           
-   884                           
-   885                           ;psect for function _main
-   886  0196                     _main:	
-   887                           
-   888                           ;main.c: 11: Basic_Init();
+   852 ;;Main: autosize = 0, tempsize = 3, incstack = 0, save=0
+   853 ;;
+   854 ;; *************** function _main *****************
+   855 ;; Defined at:
+   856 ;;		line 9 in file "main.c"
+   857 ;; Parameters:    Size  Location     Type
+   858 ;;		None
+   859 ;; Auto vars:     Size  Location     Type
+   860 ;;  testdata       13   15[BANK0 ] unsigned char [13]
+   861 ;; Return value:  Size  Location     Type
+   862 ;;                  1    wreg      void 
+   863 ;; Registers used:
+   864 ;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+   865 ;; Tracked objects:
+   866 ;;		On entry : B1F/0
+   867 ;;		On exit  : 0/0
+   868 ;;		Unchanged: 0/0
+   869 ;; Data sizes:     COMMON   BANK0   BANK1
+   870 ;;      Params:         0       0       0
+   871 ;;      Locals:         0      13       0
+   872 ;;      Temps:          0       3       0
+   873 ;;      Totals:         0      16       0
+   874 ;;Total ram usage:       16 bytes
+   875 ;; Hardware stack levels required when called:    5
+   876 ;; This function calls:
+   877 ;;		_Basic_Init
+   878 ;;		_I2C1_Init
+   879 ;;		_I2C_Transmit
+   880 ;;		_UART_Init
+   881 ;; This function is called by:
+   882 ;;		Startup code after reset
+   883 ;; This function uses a non-reentrant model
+   884 ;;
+   885                           
+   886                           
+   887                           ;psect for function _main
+   888  0196                     _main:	
    889                           
-   890                           ;incstack = 0
-   891                           ; Regs used in _main: [wreg-fsr1h+status,2+status,0+pclath+cstack]
-   892  0196  2242               	fcall	_Basic_Init
-   893                           
-   894                           ;main.c: 12: UART_Init(UART_InitPort,BAUD_9600);
-   895  0197  3028               	movlw	low _UART_InitPort
-   896  0198  00F5               	movwf	UART_Init@UART_Init_PORT
-   897  0199  3002               	movlw	high _UART_InitPort
-   898  019A  00F6               	movwf	UART_Init@UART_Init_PORT+1
-   899  019B  3003               	movlw	3
-   900  019C  0020               	movlb	0	; select bank0
-   901  019D  00AC               	movwf	??_main
-   902  019E  082C               	movf	??_main,w
-   903  019F  00F7               	movwf	UART_Init@brg
-   904  01A0  215E               	fcall	_UART_Init
-   905                           
-   906                           ;main.c: 14: I2C1_Init(I2C_InitPort,0x00,I2C_MODE_MASTER,I2C_SPEED_HIGH);
-   907  01A1  3035               	movlw	low _I2C_InitPort
-   908  01A2  0020               	movlb	0	; select bank0
-   909  01A3  00A0               	movwf	I2C1_Init@I2C1_Init_PORT
-   910  01A4  3002               	movlw	high _I2C_InitPort
-   911  01A5  00A1               	movwf	I2C1_Init@I2C1_Init_PORT+1
-   912  01A6  01A2               	clrf	I2C1_Init@address
-   913  01A7  01A3               	clrf	I2C1_Init@mode
-   914  01A8  01A4               	clrf	I2C1_Init@Speed
-   915  01A9  0AA4               	incf	I2C1_Init@Speed,f
-   916  01AA  20B5               	fcall	_I2C1_Init
-   917                           
-   918                           ;main.c: 16: uint8_t testdata[13] = "Wakabayashi\n";
-   919  01AB  304F               	movlw	low main@F2367
-   920  01AC  0086               	movwf	6
-   921  01AD  3000               	movlw	high main@F2367
-   922  01AE  0087               	movwf	7
-   923  01AF  302F               	movlw	low main@testdata
-   924  01B0  0084               	movwf	4
-   925  01B1  3000               	movlw	high main@testdata
-   926  01B2  0085               	movwf	5
-   927  01B3  300D               	movlw	13
-   928  01B4  0020               	movlb	0	; select bank0
-   929  01B5  00AC               	movwf	??_main
-   930  01B6                     u880:	
-   931  01B6  0016               	moviw fsr1++
-   932  01B7  001A               	movwi fsr0++
-   933  01B8  0BAC               	decfsz	??_main,f
-   934  01B9  29B6               	goto	u880
-   935  01BA                     l1323:	
-   936                           ;main.c: 17: while(1)
-   937                           
-   938                           
-   939                           ;main.c: 18: {
-   940                           ;main.c: 19: I2C_Transmit(I2C1_MODULE,0x56,testdata,13);
-   941  01BA  3056               	movlw	86
-   942  01BB  0020               	movlb	0	; select bank0
-   943  01BC  00AC               	movwf	??_main
-   944  01BD  082C               	movf	??_main,w
-   945  01BE  00A4               	movwf	I2C_Transmit@address
-   946  01BF  302F               	movlw	(low (main@testdata| 0))& (0+255)
-   947  01C0  00AD               	movwf	??_main+1
-   948  01C1  082D               	movf	??_main+1,w
-   949  01C2  00A5               	movwf	I2C_Transmit@pData
-   950  01C3  300D               	movlw	13
-   951  01C4  00AE               	movwf	??_main+2
-   952  01C5  082E               	movf	??_main+2,w
-   953  01C6  00A6               	movwf	I2C_Transmit@size
-   954  01C7  3000               	movlw	0
-   955  01C8  21F1               	fcall	_I2C_Transmit
-   956  01C9  29BA               	goto	l1323
-   957  01CA                     __end_of_main:	
-   958                           
-   959                           	psect	text1
-   960  015E                     __ptext1:	
-   961 ;; *************** function _UART_Init *****************
-   962 ;; Defined at:
-   963 ;;		line 37 in file "PIC_UART.c"
-   964 ;; Parameters:    Size  Location     Type
-   965 ;;  UART_Init_PO    2    5[COMMON] PTR FTN()void 
-   966 ;;		 -> UART_InitPort(1), 
-   967 ;;  brg             1    7[COMMON] enum E2334
-   968 ;; Auto vars:     Size  Location     Type
-   969 ;;		None
-   970 ;; Return value:  Size  Location     Type
-   971 ;;                  1    wreg      void 
-   972 ;; Registers used:
-   973 ;;		wreg, fsr0l, fsr0h, status,2, status,0, pclath, cstack
-   974 ;; Tracked objects:
-   975 ;;		On entry : 0/0
-   976 ;;		On exit  : 0/0
-   977 ;;		Unchanged: 0/0
-   978 ;; Data sizes:     COMMON   BANK0   BANK1
-   979 ;;      Params:         3       0       0
-   980 ;;      Locals:         0       0       0
-   981 ;;      Temps:          0       4       0
-   982 ;;      Totals:         3       4       0
-   983 ;;Total ram usage:        7 bytes
-   984 ;; Hardware stack levels used:    1
-   985 ;; Hardware stack levels required when called:    4
-   986 ;; This function calls:
-   987 ;;		_UART_InitPort
-   988 ;; This function is called by:
-   989 ;;		_main
-   990 ;; This function uses a non-reentrant model
-   991 ;;
-   992                           
-   993                           
-   994                           ;psect for function _UART_Init
-   995  015E                     _UART_Init:	
-   996                           
-   997                           ;PIC_UART.c: 39: UART_Init_PORT();
+   890                           ;main.c: 11: Basic_Init();
+   891                           
+   892                           ;incstack = 0
+   893                           ; Regs used in _main: [wreg-fsr1h+status,2+status,0+pclath+cstack]
+   894  0196  2242               	fcall	_Basic_Init
+   895                           
+   896                           ;main.c: 12: UART_Init(UART_InitPort,BAUD_9600);
+   897  0197  3028               	movlw	low _UART_InitPort
+   898  0198  00F5               	movwf	UART_Init@UART_Init_PORT
+   899  0199  3002               	movlw	high _UART_InitPort
+   900  019A  00F6               	movwf	UART_Init@UART_Init_PORT+1
+   901  019B  3003               	movlw	3
+   902  019C  0020               	movlb	0	; select bank0
+   903  019D  00AC               	movwf	??_main
+   904  019E  082C               	movf	??_main,w
+   905  019F  00F7               	movwf	UART_Init@brg
+   906  01A0  215E               	fcall	_UART_Init
+   907                           
+   908                           ;main.c: 14: I2C1_Init(I2C_InitPort,0x00,I2C_MODE_MASTER,I2C_SPEED_HIGH);
+   909  01A1  3035               	movlw	low _I2C_InitPort
+   910  01A2  0020               	movlb	0	; select bank0
+   911  01A3  00A0               	movwf	I2C1_Init@I2C1_Init_PORT
+   912  01A4  3002               	movlw	high _I2C_InitPort
+   913  01A5  00A1               	movwf	I2C1_Init@I2C1_Init_PORT+1
+   914  01A6  01A2               	clrf	I2C1_Init@address
+   915  01A7  01A3               	clrf	I2C1_Init@mode
+   916  01A8  01A4               	clrf	I2C1_Init@Speed
+   917  01A9  0AA4               	incf	I2C1_Init@Speed,f
+   918  01AA  20B5               	fcall	_I2C1_Init
+   919                           
+   920                           ;main.c: 16: uint8_t testdata[13] = "Wakabayashi\n";
+   921  01AB  304F               	movlw	low main@F2367
+   922  01AC  0086               	movwf	6
+   923  01AD  3000               	movlw	high main@F2367
+   924  01AE  0087               	movwf	7
+   925  01AF  302F               	movlw	low main@testdata
+   926  01B0  0084               	movwf	4
+   927  01B1  3000               	movlw	high main@testdata
+   928  01B2  0085               	movwf	5
+   929  01B3  300D               	movlw	13
+   930  01B4  0020               	movlb	0	; select bank0
+   931  01B5  00AC               	movwf	??_main
+   932  01B6                     u880:	
+   933  01B6  0016               	moviw fsr1++
+   934  01B7  001A               	movwi fsr0++
+   935  01B8  0BAC               	decfsz	??_main,f
+   936  01B9  29B6               	goto	u880
+   937  01BA                     l1347:	
+   938                           ;main.c: 17: while(1)
+   939                           
+   940                           
+   941                           ;main.c: 18: {
+   942                           ;main.c: 19: I2C_Transmit(I2C1_MODULE,0x56,testdata,13);
+   943  01BA  3056               	movlw	86
+   944  01BB  0020               	movlb	0	; select bank0
+   945  01BC  00AC               	movwf	??_main
+   946  01BD  082C               	movf	??_main,w
+   947  01BE  00A4               	movwf	I2C_Transmit@address
+   948  01BF  302F               	movlw	(low (main@testdata| 0))& (0+255)
+   949  01C0  00AD               	movwf	??_main+1
+   950  01C1  082D               	movf	??_main+1,w
+   951  01C2  00A5               	movwf	I2C_Transmit@pData
+   952  01C3  300D               	movlw	13
+   953  01C4  00AE               	movwf	??_main+2
+   954  01C5  082E               	movf	??_main+2,w
+   955  01C6  00A6               	movwf	I2C_Transmit@size
+   956  01C7  3000               	movlw	0
+   957  01C8  21F1               	fcall	_I2C_Transmit
+   958  01C9  29BA               	goto	l1347
+   959  01CA                     __end_of_main:	
+   960                           
+   961                           	psect	text1
+   962  015E                     __ptext1:	
+   963 ;; *************** function _UART_Init *****************
+   964 ;; Defined at:
+   965 ;;		line 37 in file "PIC_UART.c"
+   966 ;; Parameters:    Size  Location     Type
+   967 ;;  UART_Init_PO    2    5[COMMON] PTR FTN()void 
+   968 ;;		 -> UART_InitPort(1), 
+   969 ;;  brg             1    7[COMMON] enum E2334
+   970 ;; Auto vars:     Size  Location     Type
+   971 ;;		None
+   972 ;; Return value:  Size  Location     Type
+   973 ;;                  1    wreg      void 
+   974 ;; Registers used:
+   975 ;;		wreg, fsr0l, fsr0h, status,2, status,0, pclath, cstack
+   976 ;; Tracked objects:
+   977 ;;		On entry : 0/0
+   978 ;;		On exit  : 0/0
+   979 ;;		Unchanged: 0/0
+   980 ;; Data sizes:     COMMON   BANK0   BANK1
+   981 ;;      Params:         3       0       0
+   982 ;;      Locals:         0       0       0
+   983 ;;      Temps:          0       4       0
+   984 ;;      Totals:         3       4       0
+   985 ;;Total ram usage:        7 bytes
+   986 ;; Hardware stack levels used:    1
+   987 ;; Hardware stack levels required when called:    4
+   988 ;; This function calls:
+   989 ;;		_UART_InitPort
+   990 ;; This function is called by:
+   991 ;;		_main
+   992 ;; This function uses a non-reentrant model
+   993 ;;
+   994                           
+   995                           
+   996                           ;psect for function _UART_Init
+   997  015E                     _UART_Init:	
    998                           
-   999                           ;incstack = 0
-  1000                           ; Regs used in _UART_Init: [wreg-fsr0h+status,2+status,0+pclath+cstack]
-  1001  015E  0876               	movf	UART_Init@UART_Init_PORT+1,w
-  1002  015F  008A               	movwf	10
-  1003  0160  0875               	movf	UART_Init@UART_Init_PORT,w
-  1004  0161  000A               	callw
-  1005  0162  3181               	pagesel	$
-  1006                           
-  1007                           ;PIC_UART.c: 41: TXSTA = 0x20;
-  1008  0163  3020               	movlw	32
-  1009  0164  0023               	movlb	3	; select bank3
-  1010  0165  009E               	movwf	30	;volatile
-  1011                           
-  1012                           ;PIC_UART.c: 42: RCSTA = 0x10;
-  1013  0166  3010               	movlw	16
-  1014  0167  009D               	movwf	29	;volatile
-  1015                           
-  1016                           ;PIC_UART.c: 44: BRG16 = 1;
-  1017  0168  159F               	bsf	31,3	;volatile
-  1018                           
-  1019                           ;PIC_UART.c: 45: SPBRGL = baudtable[(uint8_t)brg]&0x00FF;
-  1020  0169  0877               	movf	UART_Init@brg,w
-  1021  016A  0020               	movlb	0	; select bank0
-  1022  016B  00A0               	movwf	??_UART_Init
-  1023  016C  01A1               	clrf	??_UART_Init+1
-  1024  016D  35A0               	lslf	??_UART_Init,f
-  1025  016E  0DA1               	rlf	??_UART_Init+1,f
-  1026  016F  300B               	movlw	low (_baudtable| (0+32768))
-  1027  0170  0720               	addwf	??_UART_Init,w
-  1028  0171  0084               	movwf	4
-  1029  0172  3082               	movlw	high (_baudtable| (0+32768))
-  1030  0173  3D21               	addwfc	??_UART_Init+1,w
-  1031  0174  0085               	movwf	5
-  1032  0175  0800               	movf	0,w	;code access
-  1033  0176  0023               	movlb	3	; select bank3
-  1034  0177  009B               	movwf	27	;volatile
-  1035                           
-  1036                           ;PIC_UART.c: 46: SPBRGH = (baudtable[(uint8_t)brg]>>8)&0x00FF;
-  1037  0178  0877               	movf	UART_Init@brg,w
-  1038  0179  0020               	movlb	0	; select bank0
-  1039  017A  00A0               	movwf	??_UART_Init
-  1040  017B  01A1               	clrf	??_UART_Init+1
-  1041  017C  35A0               	lslf	??_UART_Init,f
-  1042  017D  0DA1               	rlf	??_UART_Init+1,f
-  1043  017E  300B               	movlw	low (_baudtable| (0+32768))
-  1044  017F  0720               	addwf	??_UART_Init,w
-  1045  0180  0084               	movwf	4
-  1046  0181  3082               	movlw	high (_baudtable| (0+32768))
-  1047  0182  3D21               	addwfc	??_UART_Init+1,w
-  1048  0183  0085               	movwf	5
-  1049  0184  3F00               	moviw [0]fsr0
-  1050  0185  00A2               	movwf	??_UART_Init+2
-  1051  0186  3F01               	moviw [1]fsr0
-  1052  0187  00A3               	movwf	??_UART_Init+3
-  1053  0188  0823               	movf	??_UART_Init+3,w
-  1054  0189  0023               	movlb	3	; select bank3
-  1055  018A  009C               	movwf	28	;volatile
-  1056                           
-  1057                           ;PIC_UART.c: 48: RCIF = 0;
-  1058  018B  0020               	movlb	0	; select bank0
-  1059  018C  1291               	bcf	17,5	;volatile
-  1060                           
-  1061                           ;PIC_UART.c: 49: RCIE = 1;
-  1062  018D  0021               	movlb	1	; select bank1
-  1063  018E  1691               	bsf	17,5	;volatile
-  1064                           
-  1065                           ;PIC_UART.c: 50: PEIE = 1;
-  1066  018F  170B               	bsf	11,6	;volatile
-  1067                           
-  1068                           ;PIC_UART.c: 51: GIE = 1;
-  1069  0190  178B               	bsf	11,7	;volatile
-  1070                           
-  1071                           ;PIC_UART.c: 53: SPEN = 1;
-  1072  0191  0023               	movlb	3	; select bank3
-  1073  0192  179D               	bsf	29,7	;volatile
-  1074                           
-  1075                           ;PIC_UART.c: 55: UART_Buffer_inptr = 0;
-  1076  0193  01F9               	clrf	_UART_Buffer_inptr
-  1077                           
-  1078                           ;PIC_UART.c: 56: UART_Buffer_outptr = 0;
-  1079  0194  01F8               	clrf	_UART_Buffer_outptr
-  1080  0195  0008               	return
-  1081  0196                     __end_of_UART_Init:	
-  1082                           
-  1083                           	psect	text2
-  1084  0228                     __ptext2:	
-  1085 ;; *************** function _UART_InitPort *****************
-  1086 ;; Defined at:
-  1087 ;;		line 40 in file "main.c"
-  1088 ;; Parameters:    Size  Location     Type
-  1089 ;;		None
-  1090 ;; Auto vars:     Size  Location     Type
+   999                           ;PIC_UART.c: 39: UART_Init_PORT();
+  1000                           
+  1001                           ;incstack = 0
+  1002                           ; Regs used in _UART_Init: [wreg-fsr0h+status,2+status,0+pclath+cstack]
+  1003  015E  0876               	movf	UART_Init@UART_Init_PORT+1,w
+  1004  015F  008A               	movwf	10
+  1005  0160  0875               	movf	UART_Init@UART_Init_PORT,w
+  1006  0161  000A               	callw
+  1007  0162  3181               	pagesel	$
+  1008                           
+  1009                           ;PIC_UART.c: 41: TXSTA = 0x20;
+  1010  0163  3020               	movlw	32
+  1011  0164  0023               	movlb	3	; select bank3
+  1012  0165  009E               	movwf	30	;volatile
+  1013                           
+  1014                           ;PIC_UART.c: 42: RCSTA = 0x10;
+  1015  0166  3010               	movlw	16
+  1016  0167  009D               	movwf	29	;volatile
+  1017                           
+  1018                           ;PIC_UART.c: 44: BRG16 = 1;
+  1019  0168  159F               	bsf	31,3	;volatile
+  1020                           
+  1021                           ;PIC_UART.c: 45: SPBRGL = baudtable[(uint8_t)brg]&0x00FF;
+  1022  0169  0877               	movf	UART_Init@brg,w
+  1023  016A  0020               	movlb	0	; select bank0
+  1024  016B  00A0               	movwf	??_UART_Init
+  1025  016C  01A1               	clrf	??_UART_Init+1
+  1026  016D  35A0               	lslf	??_UART_Init,f
+  1027  016E  0DA1               	rlf	??_UART_Init+1,f
+  1028  016F  300B               	movlw	low (_baudtable| (0+32768))
+  1029  0170  0720               	addwf	??_UART_Init,w
+  1030  0171  0084               	movwf	4
+  1031  0172  3082               	movlw	high (_baudtable| (0+32768))
+  1032  0173  3D21               	addwfc	??_UART_Init+1,w
+  1033  0174  0085               	movwf	5
+  1034  0175  0800               	movf	0,w	;code access
+  1035  0176  0023               	movlb	3	; select bank3
+  1036  0177  009B               	movwf	27	;volatile
+  1037                           
+  1038                           ;PIC_UART.c: 46: SPBRGH = (baudtable[(uint8_t)brg]>>8)&0x00FF;
+  1039  0178  0877               	movf	UART_Init@brg,w
+  1040  0179  0020               	movlb	0	; select bank0
+  1041  017A  00A0               	movwf	??_UART_Init
+  1042  017B  01A1               	clrf	??_UART_Init+1
+  1043  017C  35A0               	lslf	??_UART_Init,f
+  1044  017D  0DA1               	rlf	??_UART_Init+1,f
+  1045  017E  300B               	movlw	low (_baudtable| (0+32768))
+  1046  017F  0720               	addwf	??_UART_Init,w
+  1047  0180  0084               	movwf	4
+  1048  0181  3082               	movlw	high (_baudtable| (0+32768))
+  1049  0182  3D21               	addwfc	??_UART_Init+1,w
+  1050  0183  0085               	movwf	5
+  1051  0184  3F00               	moviw [0]fsr0
+  1052  0185  00A2               	movwf	??_UART_Init+2
+  1053  0186  3F01               	moviw [1]fsr0
+  1054  0187  00A3               	movwf	??_UART_Init+3
+  1055  0188  0823               	movf	??_UART_Init+3,w
+  1056  0189  0023               	movlb	3	; select bank3
+  1057  018A  009C               	movwf	28	;volatile
+  1058                           
+  1059                           ;PIC_UART.c: 48: RCIF = 0;
+  1060  018B  0020               	movlb	0	; select bank0
+  1061  018C  1291               	bcf	17,5	;volatile
+  1062                           
+  1063                           ;PIC_UART.c: 49: RCIE = 1;
+  1064  018D  0021               	movlb	1	; select bank1
+  1065  018E  1691               	bsf	17,5	;volatile
+  1066                           
+  1067                           ;PIC_UART.c: 50: PEIE = 1;
+  1068  018F  170B               	bsf	11,6	;volatile
+  1069                           
+  1070                           ;PIC_UART.c: 51: GIE = 1;
+  1071  0190  178B               	bsf	11,7	;volatile
+  1072                           
+  1073                           ;PIC_UART.c: 53: SPEN = 1;
+  1074  0191  0023               	movlb	3	; select bank3
+  1075  0192  179D               	bsf	29,7	;volatile
+  1076                           
+  1077                           ;PIC_UART.c: 55: UART_Buffer_inptr = 0;
+  1078  0193  01F9               	clrf	_UART_Buffer_inptr
+  1079                           
+  1080                           ;PIC_UART.c: 56: UART_Buffer_outptr = 0;
+  1081  0194  01F8               	clrf	_UART_Buffer_outptr
+  1082  0195  0008               	return
+  1083  0196                     __end_of_UART_Init:	
+  1084                           
+  1085                           	psect	text2
+  1086  0228                     __ptext2:	
+  1087 ;; *************** function _UART_InitPort *****************
+  1088 ;; Defined at:
+  1089 ;;		line 45 in file "main.c"
+  1090 ;; Parameters:    Size  Location     Type
   1091 ;;		None
-  1092 ;; Return value:  Size  Location     Type
-  1093 ;;                  1    wreg      void 
-  1094 ;; Registers used:
-  1095 ;;		wreg, status,2, status,0
-  1096 ;; Tracked objects:
-  1097 ;;		On entry : 0/0
-  1098 ;;		On exit  : 0/0
-  1099 ;;		Unchanged: 0/0
-  1100 ;; Data sizes:     COMMON   BANK0   BANK1
-  1101 ;;      Params:         0       0       0
-  1102 ;;      Locals:         0       0       0
-  1103 ;;      Temps:          1       0       0
-  1104 ;;      Totals:         1       0       0
-  1105 ;;Total ram usage:        1 bytes
-  1106 ;; Hardware stack levels used:    1
-  1107 ;; Hardware stack levels required when called:    3
-  1108 ;; This function calls:
-  1109 ;;		Nothing
-  1110 ;; This function is called by:
-  1111 ;;		_main
-  1112 ;;		_UART_Init
-  1113 ;; This function uses a non-reentrant model
-  1114 ;;
-  1115                           
-  1116                           
-  1117                           ;psect for function _UART_InitPort
-  1118  0228                     _UART_InitPort:	
-  1119                           
-  1120                           ;main.c: 42: TRISA &= ~(1<<4);
+  1092 ;; Auto vars:     Size  Location     Type
+  1093 ;;		None
+  1094 ;; Return value:  Size  Location     Type
+  1095 ;;                  1    wreg      void 
+  1096 ;; Registers used:
+  1097 ;;		wreg, status,2, status,0
+  1098 ;; Tracked objects:
+  1099 ;;		On entry : 0/0
+  1100 ;;		On exit  : 0/0
+  1101 ;;		Unchanged: 0/0
+  1102 ;; Data sizes:     COMMON   BANK0   BANK1
+  1103 ;;      Params:         0       0       0
+  1104 ;;      Locals:         0       0       0
+  1105 ;;      Temps:          1       0       0
+  1106 ;;      Totals:         1       0       0
+  1107 ;;Total ram usage:        1 bytes
+  1108 ;; Hardware stack levels used:    1
+  1109 ;; Hardware stack levels required when called:    3
+  1110 ;; This function calls:
+  1111 ;;		Nothing
+  1112 ;; This function is called by:
+  1113 ;;		_main
+  1114 ;;		_UART_Init
+  1115 ;; This function uses a non-reentrant model
+  1116 ;;
+  1117                           
+  1118                           
+  1119                           ;psect for function _UART_InitPort
+  1120  0228                     _UART_InitPort:	
   1121                           
-  1122                           ;incstack = 0
-  1123                           ; Regs used in _UART_InitPort: [wreg+status,2+status,0]
-  1124  0228  30EF               	movlw	239
-  1125  0229  00F4               	movwf	??_UART_InitPort
-  1126  022A  0874               	movf	??_UART_InitPort,w
-  1127  022B  0021               	movlb	1	; select bank1
-  1128  022C  058C               	andwf	12,f	;volatile
-  1129                           
-  1130                           ;main.c: 43: APFCON |= (1<<4);
-  1131  022D  0022               	movlb	2	; select bank2
-  1132  022E  161D               	bsf	29,4	;volatile
-  1133                           
-  1134                           ;main.c: 44: ANSELA &= ~(1<<4);
-  1135  022F  30EF               	movlw	239
-  1136  0230  00F4               	movwf	??_UART_InitPort
-  1137  0231  0874               	movf	??_UART_InitPort,w
-  1138  0232  0023               	movlb	3	; select bank3
-  1139  0233  058C               	andwf	12,f	;volatile
-  1140  0234  0008               	return
-  1141  0235                     __end_of_UART_InitPort:	
-  1142                           
-  1143                           	psect	text3
-  1144  01F1                     __ptext3:	
-  1145 ;; *************** function _I2C_Transmit *****************
-  1146 ;; Defined at:
-  1147 ;;		line 5 in file "PIC_I2C.c"
-  1148 ;; Parameters:    Size  Location     Type
-  1149 ;;  I2Cx            1    wreg     enum E2318
-  1150 ;;  address         1    4[BANK0 ] unsigned char 
-  1151 ;;  pData           1    5[BANK0 ] PTR unsigned char 
-  1152 ;;		 -> main@testdata(13), 
-  1153 ;;  size            1    6[BANK0 ] unsigned char 
-  1154 ;; Auto vars:     Size  Location     Type
-  1155 ;;  I2Cx            1   11[BANK0 ] enum E2318
-  1156 ;;  result          1   10[BANK0 ] char 
-  1157 ;; Return value:  Size  Location     Type
-  1158 ;;                  1    wreg      char 
-  1159 ;; Registers used:
-  1160 ;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, pclath, cstack
-  1161 ;; Tracked objects:
-  1162 ;;		On entry : 0/0
-  1163 ;;		On exit  : 0/0
-  1164 ;;		Unchanged: 0/0
-  1165 ;; Data sizes:     COMMON   BANK0   BANK1
-  1166 ;;      Params:         0       3       0
-  1167 ;;      Locals:         0       2       0
-  1168 ;;      Temps:          0       3       0
-  1169 ;;      Totals:         0       8       0
-  1170 ;;Total ram usage:        8 bytes
-  1171 ;; Hardware stack levels used:    1
-  1172 ;; Hardware stack levels required when called:    4
-  1173 ;; This function calls:
-  1174 ;;		_I2C1_Transmit
-  1175 ;; This function is called by:
-  1176 ;;		_main
-  1177 ;; This function uses a non-reentrant model
-  1178 ;;
-  1179                           
-  1180                           
-  1181                           ;psect for function _I2C_Transmit
-  1182  01F1                     _I2C_Transmit:	
-  1183                           
-  1184                           ;incstack = 0
-  1185                           ; Regs used in _I2C_Transmit: [wreg-fsr1h+status,2+status,0+pclath+cstack]
-  1186                           ;I2C_Transmit@I2Cx stored from wreg
-  1187  01F1  0020               	movlb	0	; select bank0
-  1188  01F2  00AB               	movwf	I2C_Transmit@I2Cx
-  1189                           
-  1190                           ;PIC_I2C.c: 7: int8_t result = -1;
-  1191  01F3  01AA               	clrf	I2C_Transmit@result
-  1192  01F4  03AA               	decf	I2C_Transmit@result,f
-  1193                           
-  1194                           ;PIC_I2C.c: 9: switch(I2Cx)
-  1195  01F5  2A05               	goto	l1313
-  1196  01F6                     l1309:	
-  1197                           ;PIC_I2C.c: 10: {
-  1198                           ;PIC_I2C.c: 11: case I2C1_MODULE:
-  1199                           
-  1200                           
-  1201                           ;PIC_I2C.c: 12: result = I2C1_Transmit(address,pData,size);
-  1202  01F6  0825               	movf	I2C_Transmit@pData,w
-  1203  01F7  00A7               	movwf	??_I2C_Transmit
-  1204  01F8  0827               	movf	??_I2C_Transmit,w
-  1205  01F9  00F4               	movwf	I2C1_Transmit@pData
-  1206  01FA  0826               	movf	I2C_Transmit@size,w
-  1207  01FB  00A8               	movwf	??_I2C_Transmit+1
-  1208  01FC  0828               	movf	??_I2C_Transmit+1,w
-  1209  01FD  00F5               	movwf	I2C1_Transmit@size
-  1210  01FE  0824               	movf	I2C_Transmit@address,w
-  1211  01FF  202C               	fcall	_I2C1_Transmit
-  1212  0200  0020               	movlb	0	; select bank0
-  1213  0201  00A9               	movwf	??_I2C_Transmit+2
-  1214  0202  0829               	movf	??_I2C_Transmit+2,w
-  1215  0203  00AA               	movwf	I2C_Transmit@result
-  1216                           
-  1217                           ;PIC_I2C.c: 14: }
+  1122                           ;main.c: 47: TRISA &= ~(1<<4);
+  1123                           
+  1124                           ;incstack = 0
+  1125                           ; Regs used in _UART_InitPort: [wreg+status,2+status,0]
+  1126  0228  30EF               	movlw	239
+  1127  0229  00F4               	movwf	??_UART_InitPort
+  1128  022A  0874               	movf	??_UART_InitPort,w
+  1129  022B  0021               	movlb	1	; select bank1
+  1130  022C  058C               	andwf	12,f	;volatile
+  1131                           
+  1132                           ;main.c: 48: ANSELA &= ~(1<<4);
+  1133  022D  30EF               	movlw	239
+  1134  022E  00F4               	movwf	??_UART_InitPort
+  1135  022F  0874               	movf	??_UART_InitPort,w
+  1136  0230  0023               	movlb	3	; select bank3
+  1137  0231  058C               	andwf	12,f	;volatile
+  1138                           
+  1139                           ;main.c: 49: APFCON |= (1<<2);
+  1140  0232  0022               	movlb	2	; select bank2
+  1141  0233  151D               	bsf	29,2	;volatile
+  1142  0234  0008               	return
+  1143  0235                     __end_of_UART_InitPort:	
+  1144                           
+  1145                           	psect	text3
+  1146  01F1                     __ptext3:	
+  1147 ;; *************** function _I2C_Transmit *****************
+  1148 ;; Defined at:
+  1149 ;;		line 5 in file "PIC_I2C.c"
+  1150 ;; Parameters:    Size  Location     Type
+  1151 ;;  I2Cx            1    wreg     enum E2318
+  1152 ;;  address         1    4[BANK0 ] unsigned char 
+  1153 ;;  pData           1    5[BANK0 ] PTR unsigned char 
+  1154 ;;		 -> main@testdata(13), 
+  1155 ;;  size            1    6[BANK0 ] unsigned char 
+  1156 ;; Auto vars:     Size  Location     Type
+  1157 ;;  I2Cx            1   11[BANK0 ] enum E2318
+  1158 ;;  result          1   10[BANK0 ] char 
+  1159 ;; Return value:  Size  Location     Type
+  1160 ;;                  1    wreg      char 
+  1161 ;; Registers used:
+  1162 ;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+  1163 ;; Tracked objects:
+  1164 ;;		On entry : 0/0
+  1165 ;;		On exit  : 0/0
+  1166 ;;		Unchanged: 0/0
+  1167 ;; Data sizes:     COMMON   BANK0   BANK1
+  1168 ;;      Params:         0       3       0
+  1169 ;;      Locals:         0       2       0
+  1170 ;;      Temps:          0       3       0
+  1171 ;;      Totals:         0       8       0
+  1172 ;;Total ram usage:        8 bytes
+  1173 ;; Hardware stack levels used:    1
+  1174 ;; Hardware stack levels required when called:    4
+  1175 ;; This function calls:
+  1176 ;;		_I2C1_Transmit
+  1177 ;; This function is called by:
+  1178 ;;		_main
+  1179 ;; This function uses a non-reentrant model
+  1180 ;;
+  1181                           
+  1182                           
+  1183                           ;psect for function _I2C_Transmit
+  1184  01F1                     _I2C_Transmit:	
+  1185                           
+  1186                           ;incstack = 0
+  1187                           ; Regs used in _I2C_Transmit: [wreg-fsr1h+status,2+status,0+pclath+cstack]
+  1188                           ;I2C_Transmit@I2Cx stored from wreg
+  1189  01F1  0020               	movlb	0	; select bank0
+  1190  01F2  00AB               	movwf	I2C_Transmit@I2Cx
+  1191                           
+  1192                           ;PIC_I2C.c: 7: int8_t result = -1;
+  1193  01F3  01AA               	clrf	I2C_Transmit@result
+  1194  01F4  03AA               	decf	I2C_Transmit@result,f
+  1195                           
+  1196                           ;PIC_I2C.c: 9: switch(I2Cx)
+  1197  01F5  2A05               	goto	l1337
+  1198  01F6                     l1333:	
+  1199                           ;PIC_I2C.c: 10: {
+  1200                           ;PIC_I2C.c: 11: case I2C1_MODULE:
+  1201                           
+  1202                           
+  1203                           ;PIC_I2C.c: 12: result = I2C1_Transmit(address,pData,size);
+  1204  01F6  0825               	movf	I2C_Transmit@pData,w
+  1205  01F7  00A7               	movwf	??_I2C_Transmit
+  1206  01F8  0827               	movf	??_I2C_Transmit,w
+  1207  01F9  00F4               	movwf	I2C1_Transmit@pData
+  1208  01FA  0826               	movf	I2C_Transmit@size,w
+  1209  01FB  00A8               	movwf	??_I2C_Transmit+1
+  1210  01FC  0828               	movf	??_I2C_Transmit+1,w
+  1211  01FD  00F5               	movwf	I2C1_Transmit@size
+  1212  01FE  0824               	movf	I2C_Transmit@address,w
+  1213  01FF  202C               	fcall	_I2C1_Transmit
+  1214  0200  0020               	movlb	0	; select bank0
+  1215  0201  00A9               	movwf	??_I2C_Transmit+2
+  1216  0202  0829               	movf	??_I2C_Transmit+2,w
+  1217  0203  00AA               	movwf	I2C_Transmit@result
   1218                           
-  1219                           ;PIC_I2C.c: 13: break;
-  1220  0204  0008               	return
-  1221  0205                     l1313:	
-  1222  0205  082B               	movf	I2C_Transmit@I2Cx,w
-  1223                           
-  1224                           ; Switch size 1, requested type "space"
-  1225                           ; Number of cases is 1, Range of values is 0 to 0
-  1226                           ; switch strategies available:
-  1227                           ; Name         Instructions Cycles
-  1228                           ; simple_byte            4     3 (average)
-  1229                           ; direct_byte            8     6 (fixed)
-  1230                           ; jumptable            260     6 (fixed)
-  1231                           ;	Chosen strategy is simple_byte
-  1232  0206  3A00               	xorlw	0	; case 0
-  1233  0207  1903               	skipnz
-  1234  0208  29F6               	goto	l1309
-  1235  0209  2A0A               	goto	l141
-  1236  020A                     l141:	
-  1237                           ;PIC_I2C.c: 15: return result;
-  1238                           ;	Return value of _I2C_Transmit is never used
-  1239                           
-  1240  020A  0008               	return
-  1241  020B                     __end_of_I2C_Transmit:	
-  1242                           
-  1243                           	psect	text4
-  1244  002C                     __ptext4:	
-  1245 ;; *************** function _I2C1_Transmit *****************
-  1246 ;; Defined at:
-  1247 ;;		line 53 in file "PIC_I2C1.c"
-  1248 ;; Parameters:    Size  Location     Type
-  1249 ;;  address         1    wreg     unsigned char 
-  1250 ;;  pData           1    4[COMMON] PTR unsigned char 
-  1251 ;;		 -> main@testdata(13), 
-  1252 ;;  size            1    5[COMMON] unsigned char 
-  1253 ;; Auto vars:     Size  Location     Type
-  1254 ;;  address         1    0[BANK0 ] unsigned char 
-  1255 ;;  i               1    2[BANK0 ] unsigned char 
-  1256 ;;  i               1    1[BANK0 ] unsigned char 
-  1257 ;;  result          1    3[BANK0 ] char 
-  1258 ;; Return value:  Size  Location     Type
-  1259 ;;                  1    wreg      char 
-  1260 ;; Registers used:
-  1261 ;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0
-  1262 ;; Tracked objects:
-  1263 ;;		On entry : 0/0
-  1264 ;;		On exit  : 0/0
-  1265 ;;		Unchanged: 0/0
-  1266 ;; Data sizes:     COMMON   BANK0   BANK1
-  1267 ;;      Params:         2       0       0
-  1268 ;;      Locals:         0       4       0
-  1269 ;;      Temps:          2       0       0
-  1270 ;;      Totals:         4       4       0
-  1271 ;;Total ram usage:        8 bytes
-  1272 ;; Hardware stack levels used:    1
-  1273 ;; Hardware stack levels required when called:    3
-  1274 ;; This function calls:
-  1275 ;;		Nothing
-  1276 ;; This function is called by:
-  1277 ;;		_I2C_Transmit
-  1278 ;; This function uses a non-reentrant model
-  1279 ;;
-  1280                           
-  1281                           
-  1282                           ;psect for function _I2C1_Transmit
-  1283  002C                     _I2C1_Transmit:	
-  1284                           
-  1285                           ;incstack = 0
-  1286                           ; Regs used in _I2C1_Transmit: [wreg-fsr1h+status,2+status,0]
-  1287                           ;I2C1_Transmit@address stored from wreg
-  1288  002C  0020               	movlb	0	; select bank0
-  1289  002D  00A0               	movwf	I2C1_Transmit@address
-  1290                           
-  1291                           ;PIC_I2C1.c: 55: int8_t result;
-  1292                           ;PIC_I2C1.c: 57: switch(I2C1_Config.Mode)
-  1293  002E  28AA               	goto	l1263
-  1294  002F                     l1219:	
-  1295                           ;PIC_I2C1.c: 60: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
-  1296                           
-  1297                           ;PIC_I2C1.c: 58: {
-  1298                           ;PIC_I2C1.c: 59: case I2C_MODE_MASTER:
-  1299                           
-  1300  002F  3005               	movlw	5
-  1301  0030  0024               	movlb	4	; select bank4
-  1302  0031  0514               	andwf	20,w	;volatile
-  1303  0032  00F6               	movwf	??_I2C1_Transmit
-  1304  0033  0816               	movf	22,w	;volatile
-  1305  0034  391F               	andlw	31
-  1306  0035  0476               	iorwf	??_I2C1_Transmit,w
-  1307  0036  1D03               	btfss	3,2
-  1308  0037  282F               	goto	l1219
-  1309                           
-  1310                           ;PIC_I2C1.c: 61: SSPCON2bits.SEN = 1;
-  1311  0038  1416               	bsf	22,0	;volatile
-  1312  0039                     l1221:	
-  1313                           ;PIC_I2C1.c: 63: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
-  1314                           
-  1315  0039  3005               	movlw	5
-  1316  003A  0514               	andwf	20,w	;volatile
-  1317  003B  00F6               	movwf	??_I2C1_Transmit
-  1318  003C  0816               	movf	22,w	;volatile
-  1319  003D  391F               	andlw	31
-  1320  003E  0476               	iorwf	??_I2C1_Transmit,w
-  1321  003F  1D03               	btfss	3,2
-  1322  0040  2839               	goto	l1221
-  1323                           
-  1324                           ;PIC_I2C1.c: 64: SSPBUF = address << 1;
-  1325  0041  0020               	movlb	0	; select bank0
-  1326  0042  3520               	lslf	I2C1_Transmit@address,w
-  1327  0043  0024               	movlb	4	; select bank4
-  1328  0044  0091               	movwf	17	;volatile
-  1329  0045                     l206:	
-  1330                           ;PIC_I2C1.c: 65: while(SSPSTATbits.R_nW);
-  1331                           
-  1332  0045  1914               	btfsc	20,2	;volatile
-  1333  0046  2845               	goto	l206
-  1334                           
-  1335                           ;PIC_I2C1.c: 67: result = SSPCON2bits.ACKSTAT;
-  1336  0047  3000               	movlw	0
-  1337  0048  1B16               	btfsc	22,6	;volatile
-  1338  0049  3001               	movlw	1
-  1339  004A  0020               	movlb	0	; select bank0
-  1340  004B  00A3               	movwf	I2C1_Transmit@result
-  1341                           
-  1342                           ;PIC_I2C1.c: 68: if (!result)
-  1343  004C  0823               	movf	I2C1_Transmit@result,w
-  1344  004D  1D03               	btfss	3,2
-  1345  004E  287A               	goto	l1245
-  1346                           
-  1347                           ;PIC_I2C1.c: 69: {
-  1348                           ;PIC_I2C1.c: 70: for(uint8_t i=0;i<size;i++)
-  1349  004F  01A1               	clrf	I2C1_Transmit@i
-  1350  0050  2855               	goto	l1243
-  1351  0051                     l1241:	
-  1352                           ;PIC_I2C1.c: 80: break;
-  1353                           
-  1354  0051  3001               	movlw	1
-  1355  0052  00F6               	movwf	??_I2C1_Transmit
-  1356  0053  0876               	movf	??_I2C1_Transmit,w
-  1357  0054  07A1               	addwf	I2C1_Transmit@i,f
-  1358  0055                     l1243:	
-  1359  0055  0875               	movf	I2C1_Transmit@size,w
-  1360  0056  0221               	subwf	I2C1_Transmit@i,w
-  1361  0057  1803               	btfsc	3,0
-  1362  0058  287A               	goto	l1245
-  1363  0059                     l1231:	
-  1364                           ;PIC_I2C1.c: 71: {
-  1365                           ;PIC_I2C1.c: 72: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
-  1366                           
-  1367  0059  3005               	movlw	5
-  1368  005A  0024               	movlb	4	; select bank4
-  1369  005B  0514               	andwf	20,w	;volatile
-  1370  005C  00F6               	movwf	??_I2C1_Transmit
-  1371  005D  0816               	movf	22,w	;volatile
-  1372  005E  391F               	andlw	31
-  1373  005F  0476               	iorwf	??_I2C1_Transmit,w
-  1374  0060  1D03               	btfss	3,2
-  1375  0061  2859               	goto	l1231
-  1376                           
-  1377                           ;PIC_I2C1.c: 73: SSPBUF = *(pData+i);
-  1378  0062  0020               	movlb	0	; select bank0
-  1379  0063  0821               	movf	I2C1_Transmit@i,w
-  1380  0064  0774               	addwf	I2C1_Transmit@pData,w
-  1381  0065  00F6               	movwf	??_I2C1_Transmit
-  1382  0066  0876               	movf	??_I2C1_Transmit,w
-  1383  0067  0086               	movwf	6
-  1384  0068  0187               	clrf	7
-  1385  0069  0801               	movf	1,w
-  1386  006A  0024               	movlb	4	; select bank4
-  1387  006B  0091               	movwf	17	;volatile
-  1388  006C                     l215:	
-  1389                           ;PIC_I2C1.c: 74: while(SSPSTATbits.R_nW);
-  1390                           
-  1391  006C  1914               	btfsc	20,2	;volatile
-  1392  006D  286C               	goto	l215
-  1393                           
-  1394                           ;PIC_I2C1.c: 76: result = SSPCON2bits.ACKSTAT;
-  1395  006E  3000               	movlw	0
-  1396  006F  1B16               	btfsc	22,6	;volatile
-  1397  0070  3001               	movlw	1
-  1398  0071  0020               	movlb	0	; select bank0
-  1399  0072  00A3               	movwf	I2C1_Transmit@result
-  1400                           
-  1401                           ;PIC_I2C1.c: 77: if (result)
-  1402  0073  0823               	movf	I2C1_Transmit@result,w
-  1403  0074  1903               	btfsc	3,2
-  1404  0075  2851               	goto	l1241
-  1405                           
-  1406                           ;PIC_I2C1.c: 78: {
-  1407                           ;PIC_I2C1.c: 79: result = 2;
-  1408  0076  3002               	movlw	2
-  1409  0077  00F6               	movwf	??_I2C1_Transmit
-  1410  0078  0876               	movf	??_I2C1_Transmit,w
-  1411  0079  00A3               	movwf	I2C1_Transmit@result
-  1412  007A                     l1245:	
-  1413                           ;PIC_I2C1.c: 81: }
-  1414                           ;PIC_I2C1.c: 82: }
-  1415                           ;PIC_I2C1.c: 83: }
-  1416                           ;PIC_I2C1.c: 85: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
-  1417                           
-  1418  007A  3005               	movlw	5
-  1419  007B  0024               	movlb	4	; select bank4
-  1420  007C  0514               	andwf	20,w	;volatile
-  1421  007D  00F6               	movwf	??_I2C1_Transmit
-  1422  007E  0816               	movf	22,w	;volatile
-  1423  007F  391F               	andlw	31
-  1424  0080  0476               	iorwf	??_I2C1_Transmit,w
-  1425  0081  1D03               	btfss	3,2
-  1426  0082  287A               	goto	l1245
-  1427                           
-  1428                           ;PIC_I2C1.c: 86: SSPCON2bits.PEN = 1;
-  1429  0083  1516               	bsf	22,2	;volatile
-  1430                           
-  1431                           ;PIC_I2C1.c: 87: break;
-  1432  0084  28B2               	goto	l1265
-  1433  0085                     l224:	
-  1434                           ;PIC_I2C1.c: 89: case I2C_MODE_SLAVE:
-  1435                           
-  1436                           
-  1437                           ;PIC_I2C1.c: 90: if((SSPSTATbits.S==0)&&(SSPSTATbits.P==1))
-  1438  0085  0024               	movlb	4	; select bank4
-  1439  0086  1D94               	btfss	20,3	;volatile
-  1440  0087  1E14               	btfss	20,4	;volatile
-  1441  0088  28A7               	goto	l1259
-  1442                           
-  1443                           ;PIC_I2C1.c: 91: {
-  1444                           ;PIC_I2C1.c: 92: for(uint8_t i = 0;i<size;i++)
-  1445  0089  0020               	movlb	0	; select bank0
-  1446  008A  01A2               	clrf	I2C1_Transmit@i_327
-  1447  008B                     l1255:	
-  1448  008B  0875               	movf	I2C1_Transmit@size,w
-  1449  008C  0222               	subwf	I2C1_Transmit@i_327,w
-  1450  008D  1803               	btfsc	3,0
-  1451  008E  28A2               	goto	l1257
-  1452                           
-  1453                           ;PIC_I2C1.c: 93: I2C1_Config.SlaveTransmitBuff[i] = pData[i];
-  1454  008F  0822               	movf	I2C1_Transmit@i_327,w
-  1455  0090  0774               	addwf	I2C1_Transmit@pData,w
-  1456  0091  00F6               	movwf	??_I2C1_Transmit
-  1457  0092  0876               	movf	??_I2C1_Transmit,w
-  1458  0093  0086               	movwf	6
-  1459  0094  0187               	clrf	7
-  1460  0095  0801               	movf	1,w
-  1461  0096  00F7               	movwf	??_I2C1_Transmit+1
-  1462  0097  0822               	movf	I2C1_Transmit@i_327,w
-  1463  0098  3E3C               	addlw	(low (_I2C1_Config| 0))& (0+255)
-  1464  0099  0086               	movwf	6
-  1465  009A  0187               	clrf	7
-  1466  009B  0877               	movf	??_I2C1_Transmit+1,w
-  1467  009C  0081               	movwf	1
-  1468  009D  3001               	movlw	1
-  1469  009E  00F6               	movwf	??_I2C1_Transmit
-  1470  009F  0876               	movf	??_I2C1_Transmit,w
-  1471  00A0  07A2               	addwf	I2C1_Transmit@i_327,f
-  1472  00A1  288B               	goto	l1255
-  1473  00A2                     l1257:	
-  1474                           
-  1475                           ;PIC_I2C1.c: 94: result = size;
-  1476  00A2  0875               	movf	I2C1_Transmit@size,w
-  1477  00A3  00F6               	movwf	??_I2C1_Transmit
-  1478  00A4  0876               	movf	??_I2C1_Transmit,w
-  1479  00A5  00A3               	movwf	I2C1_Transmit@result
-  1480                           
-  1481                           ;PIC_I2C1.c: 95: }
-  1482  00A6  28B2               	goto	l1265
-  1483  00A7                     l1259:	
-  1484                           
-  1485                           ;PIC_I2C1.c: 96: else
-  1486                           ;PIC_I2C1.c: 97: result = 0;
-  1487  00A7  0020               	movlb	0	; select bank0
-  1488  00A8  01A3               	clrf	I2C1_Transmit@result
-  1489                           
-  1490                           ;PIC_I2C1.c: 99: }
+  1219                           ;PIC_I2C.c: 14: }
+  1220                           
+  1221                           ;PIC_I2C.c: 13: break;
+  1222  0204  0008               	return
+  1223  0205                     l1337:	
+  1224  0205  082B               	movf	I2C_Transmit@I2Cx,w
+  1225                           
+  1226                           ; Switch size 1, requested type "space"
+  1227                           ; Number of cases is 1, Range of values is 0 to 0
+  1228                           ; switch strategies available:
+  1229                           ; Name         Instructions Cycles
+  1230                           ; simple_byte            4     3 (average)
+  1231                           ; direct_byte            8     6 (fixed)
+  1232                           ; jumptable            260     6 (fixed)
+  1233                           ;	Chosen strategy is simple_byte
+  1234  0206  3A00               	xorlw	0	; case 0
+  1235  0207  1903               	skipnz
+  1236  0208  29F6               	goto	l1333
+  1237  0209  2A0A               	goto	l145
+  1238  020A                     l145:	
+  1239                           ;PIC_I2C.c: 15: return result;
+  1240                           ;	Return value of _I2C_Transmit is never used
+  1241                           
+  1242  020A  0008               	return
+  1243  020B                     __end_of_I2C_Transmit:	
+  1244                           
+  1245                           	psect	text4
+  1246  002C                     __ptext4:	
+  1247 ;; *************** function _I2C1_Transmit *****************
+  1248 ;; Defined at:
+  1249 ;;		line 53 in file "PIC_I2C1.c"
+  1250 ;; Parameters:    Size  Location     Type
+  1251 ;;  address         1    wreg     unsigned char 
+  1252 ;;  pData           1    4[COMMON] PTR unsigned char 
+  1253 ;;		 -> main@testdata(13), 
+  1254 ;;  size            1    5[COMMON] unsigned char 
+  1255 ;; Auto vars:     Size  Location     Type
+  1256 ;;  address         1    0[BANK0 ] unsigned char 
+  1257 ;;  i               1    2[BANK0 ] unsigned char 
+  1258 ;;  i               1    1[BANK0 ] unsigned char 
+  1259 ;;  result          1    3[BANK0 ] char 
+  1260 ;; Return value:  Size  Location     Type
+  1261 ;;                  1    wreg      char 
+  1262 ;; Registers used:
+  1263 ;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0
+  1264 ;; Tracked objects:
+  1265 ;;		On entry : 0/0
+  1266 ;;		On exit  : 0/0
+  1267 ;;		Unchanged: 0/0
+  1268 ;; Data sizes:     COMMON   BANK0   BANK1
+  1269 ;;      Params:         2       0       0
+  1270 ;;      Locals:         0       4       0
+  1271 ;;      Temps:          2       0       0
+  1272 ;;      Totals:         4       4       0
+  1273 ;;Total ram usage:        8 bytes
+  1274 ;; Hardware stack levels used:    1
+  1275 ;; Hardware stack levels required when called:    3
+  1276 ;; This function calls:
+  1277 ;;		Nothing
+  1278 ;; This function is called by:
+  1279 ;;		_I2C_Transmit
+  1280 ;; This function uses a non-reentrant model
+  1281 ;;
+  1282                           
+  1283                           
+  1284                           ;psect for function _I2C1_Transmit
+  1285  002C                     _I2C1_Transmit:	
+  1286                           
+  1287                           ;incstack = 0
+  1288                           ; Regs used in _I2C1_Transmit: [wreg-fsr1h+status,2+status,0]
+  1289                           ;I2C1_Transmit@address stored from wreg
+  1290  002C  0020               	movlb	0	; select bank0
+  1291  002D  00A0               	movwf	I2C1_Transmit@address
+  1292                           
+  1293                           ;PIC_I2C1.c: 55: int8_t result;
+  1294                           ;PIC_I2C1.c: 57: switch(I2C1_Config.Mode)
+  1295  002E  28AA               	goto	l1287
+  1296  002F                     l1243:	
+  1297                           ;PIC_I2C1.c: 60: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+  1298                           
+  1299                           ;PIC_I2C1.c: 58: {
+  1300                           ;PIC_I2C1.c: 59: case I2C_MODE_MASTER:
+  1301                           
+  1302  002F  3005               	movlw	5
+  1303  0030  0024               	movlb	4	; select bank4
+  1304  0031  0514               	andwf	20,w	;volatile
+  1305  0032  00F6               	movwf	??_I2C1_Transmit
+  1306  0033  0816               	movf	22,w	;volatile
+  1307  0034  391F               	andlw	31
+  1308  0035  0476               	iorwf	??_I2C1_Transmit,w
+  1309  0036  1D03               	btfss	3,2
+  1310  0037  282F               	goto	l1243
+  1311                           
+  1312                           ;PIC_I2C1.c: 61: SSPCON2bits.SEN = 1;
+  1313  0038  1416               	bsf	22,0	;volatile
+  1314  0039                     l1245:	
+  1315                           ;PIC_I2C1.c: 63: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+  1316                           
+  1317  0039  3005               	movlw	5
+  1318  003A  0514               	andwf	20,w	;volatile
+  1319  003B  00F6               	movwf	??_I2C1_Transmit
+  1320  003C  0816               	movf	22,w	;volatile
+  1321  003D  391F               	andlw	31
+  1322  003E  0476               	iorwf	??_I2C1_Transmit,w
+  1323  003F  1D03               	btfss	3,2
+  1324  0040  2839               	goto	l1245
+  1325                           
+  1326                           ;PIC_I2C1.c: 64: SSPBUF = address << 1;
+  1327  0041  0020               	movlb	0	; select bank0
+  1328  0042  3520               	lslf	I2C1_Transmit@address,w
+  1329  0043  0024               	movlb	4	; select bank4
+  1330  0044  0091               	movwf	17	;volatile
+  1331  0045                     l210:	
+  1332                           ;PIC_I2C1.c: 65: while(SSPSTATbits.R_nW);
+  1333                           
+  1334  0045  1914               	btfsc	20,2	;volatile
+  1335  0046  2845               	goto	l210
+  1336                           
+  1337                           ;PIC_I2C1.c: 67: result = SSPCON2bits.ACKSTAT;
+  1338  0047  3000               	movlw	0
+  1339  0048  1B16               	btfsc	22,6	;volatile
+  1340  0049  3001               	movlw	1
+  1341  004A  0020               	movlb	0	; select bank0
+  1342  004B  00A3               	movwf	I2C1_Transmit@result
+  1343                           
+  1344                           ;PIC_I2C1.c: 68: if (!result)
+  1345  004C  0823               	movf	I2C1_Transmit@result,w
+  1346  004D  1D03               	btfss	3,2
+  1347  004E  287A               	goto	l1269
+  1348                           
+  1349                           ;PIC_I2C1.c: 69: {
+  1350                           ;PIC_I2C1.c: 70: for(uint8_t i=0;i<size;i++)
+  1351  004F  01A1               	clrf	I2C1_Transmit@i
+  1352  0050  2855               	goto	l1267
+  1353  0051                     l1265:	
+  1354                           ;PIC_I2C1.c: 80: break;
+  1355                           
+  1356  0051  3001               	movlw	1
+  1357  0052  00F6               	movwf	??_I2C1_Transmit
+  1358  0053  0876               	movf	??_I2C1_Transmit,w
+  1359  0054  07A1               	addwf	I2C1_Transmit@i,f
+  1360  0055                     l1267:	
+  1361  0055  0875               	movf	I2C1_Transmit@size,w
+  1362  0056  0221               	subwf	I2C1_Transmit@i,w
+  1363  0057  1803               	btfsc	3,0
+  1364  0058  287A               	goto	l1269
+  1365  0059                     l1255:	
+  1366                           ;PIC_I2C1.c: 71: {
+  1367                           ;PIC_I2C1.c: 72: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+  1368                           
+  1369  0059  3005               	movlw	5
+  1370  005A  0024               	movlb	4	; select bank4
+  1371  005B  0514               	andwf	20,w	;volatile
+  1372  005C  00F6               	movwf	??_I2C1_Transmit
+  1373  005D  0816               	movf	22,w	;volatile
+  1374  005E  391F               	andlw	31
+  1375  005F  0476               	iorwf	??_I2C1_Transmit,w
+  1376  0060  1D03               	btfss	3,2
+  1377  0061  2859               	goto	l1255
+  1378                           
+  1379                           ;PIC_I2C1.c: 73: SSPBUF = *(pData+i);
+  1380  0062  0020               	movlb	0	; select bank0
+  1381  0063  0821               	movf	I2C1_Transmit@i,w
+  1382  0064  0774               	addwf	I2C1_Transmit@pData,w
+  1383  0065  00F6               	movwf	??_I2C1_Transmit
+  1384  0066  0876               	movf	??_I2C1_Transmit,w
+  1385  0067  0086               	movwf	6
+  1386  0068  0187               	clrf	7
+  1387  0069  0801               	movf	1,w
+  1388  006A  0024               	movlb	4	; select bank4
+  1389  006B  0091               	movwf	17	;volatile
+  1390  006C                     l219:	
+  1391                           ;PIC_I2C1.c: 74: while(SSPSTATbits.R_nW);
+  1392                           
+  1393  006C  1914               	btfsc	20,2	;volatile
+  1394  006D  286C               	goto	l219
+  1395                           
+  1396                           ;PIC_I2C1.c: 76: result = SSPCON2bits.ACKSTAT;
+  1397  006E  3000               	movlw	0
+  1398  006F  1B16               	btfsc	22,6	;volatile
+  1399  0070  3001               	movlw	1
+  1400  0071  0020               	movlb	0	; select bank0
+  1401  0072  00A3               	movwf	I2C1_Transmit@result
+  1402                           
+  1403                           ;PIC_I2C1.c: 77: if (result)
+  1404  0073  0823               	movf	I2C1_Transmit@result,w
+  1405  0074  1903               	btfsc	3,2
+  1406  0075  2851               	goto	l1265
+  1407                           
+  1408                           ;PIC_I2C1.c: 78: {
+  1409                           ;PIC_I2C1.c: 79: result = 2;
+  1410  0076  3002               	movlw	2
+  1411  0077  00F6               	movwf	??_I2C1_Transmit
+  1412  0078  0876               	movf	??_I2C1_Transmit,w
+  1413  0079  00A3               	movwf	I2C1_Transmit@result
+  1414  007A                     l1269:	
+  1415                           ;PIC_I2C1.c: 81: }
+  1416                           ;PIC_I2C1.c: 82: }
+  1417                           ;PIC_I2C1.c: 83: }
+  1418                           ;PIC_I2C1.c: 85: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+  1419                           
+  1420  007A  3005               	movlw	5
+  1421  007B  0024               	movlb	4	; select bank4
+  1422  007C  0514               	andwf	20,w	;volatile
+  1423  007D  00F6               	movwf	??_I2C1_Transmit
+  1424  007E  0816               	movf	22,w	;volatile
+  1425  007F  391F               	andlw	31
+  1426  0080  0476               	iorwf	??_I2C1_Transmit,w
+  1427  0081  1D03               	btfss	3,2
+  1428  0082  287A               	goto	l1269
+  1429                           
+  1430                           ;PIC_I2C1.c: 86: SSPCON2bits.PEN = 1;
+  1431  0083  1516               	bsf	22,2	;volatile
+  1432                           
+  1433                           ;PIC_I2C1.c: 87: break;
+  1434  0084  28B2               	goto	l1289
+  1435  0085                     l228:	
+  1436                           ;PIC_I2C1.c: 89: case I2C_MODE_SLAVE:
+  1437                           
+  1438                           
+  1439                           ;PIC_I2C1.c: 90: if((SSPSTATbits.S==0)&&(SSPSTATbits.P==1))
+  1440  0085  0024               	movlb	4	; select bank4
+  1441  0086  1D94               	btfss	20,3	;volatile
+  1442  0087  1E14               	btfss	20,4	;volatile
+  1443  0088  28A7               	goto	l1283
+  1444                           
+  1445                           ;PIC_I2C1.c: 91: {
+  1446                           ;PIC_I2C1.c: 92: for(uint8_t i = 0;i<size;i++)
+  1447  0089  0020               	movlb	0	; select bank0
+  1448  008A  01A2               	clrf	I2C1_Transmit@i_329
+  1449  008B                     l1279:	
+  1450  008B  0875               	movf	I2C1_Transmit@size,w
+  1451  008C  0222               	subwf	I2C1_Transmit@i_329,w
+  1452  008D  1803               	btfsc	3,0
+  1453  008E  28A2               	goto	l1281
+  1454                           
+  1455                           ;PIC_I2C1.c: 93: I2C1_Config.SlaveTransmitBuff[i] = pData[i];
+  1456  008F  0822               	movf	I2C1_Transmit@i_329,w
+  1457  0090  0774               	addwf	I2C1_Transmit@pData,w
+  1458  0091  00F6               	movwf	??_I2C1_Transmit
+  1459  0092  0876               	movf	??_I2C1_Transmit,w
+  1460  0093  0086               	movwf	6
+  1461  0094  0187               	clrf	7
+  1462  0095  0801               	movf	1,w
+  1463  0096  00F7               	movwf	??_I2C1_Transmit+1
+  1464  0097  0822               	movf	I2C1_Transmit@i_329,w
+  1465  0098  3E3C               	addlw	(low (_I2C1_Config| 0))& (0+255)
+  1466  0099  0086               	movwf	6
+  1467  009A  0187               	clrf	7
+  1468  009B  0877               	movf	??_I2C1_Transmit+1,w
+  1469  009C  0081               	movwf	1
+  1470  009D  3001               	movlw	1
+  1471  009E  00F6               	movwf	??_I2C1_Transmit
+  1472  009F  0876               	movf	??_I2C1_Transmit,w
+  1473  00A0  07A2               	addwf	I2C1_Transmit@i_329,f
+  1474  00A1  288B               	goto	l1279
+  1475  00A2                     l1281:	
+  1476                           
+  1477                           ;PIC_I2C1.c: 94: result = size;
+  1478  00A2  0875               	movf	I2C1_Transmit@size,w
+  1479  00A3  00F6               	movwf	??_I2C1_Transmit
+  1480  00A4  0876               	movf	??_I2C1_Transmit,w
+  1481  00A5  00A3               	movwf	I2C1_Transmit@result
+  1482                           
+  1483                           ;PIC_I2C1.c: 95: }
+  1484  00A6  28B2               	goto	l1289
+  1485  00A7                     l1283:	
+  1486                           
+  1487                           ;PIC_I2C1.c: 96: else
+  1488                           ;PIC_I2C1.c: 97: result = 0;
+  1489  00A7  0020               	movlb	0	; select bank0
+  1490  00A8  01A3               	clrf	I2C1_Transmit@result
   1491                           
-  1492                           ;PIC_I2C1.c: 98: break;
-  1493  00A9  28B2               	goto	l1265
-  1494  00AA                     l1263:	
-  1495  00AA  084E               	movf	_I2C1_Config+18,w
-  1496                           
-  1497                           ; Switch size 1, requested type "space"
-  1498                           ; Number of cases is 2, Range of values is 0 to 1
-  1499                           ; switch strategies available:
-  1500                           ; Name         Instructions Cycles
-  1501                           ; simple_byte            7     4 (average)
-  1502                           ; direct_byte           10     6 (fixed)
-  1503                           ; jumptable            260     6 (fixed)
-  1504                           ;	Chosen strategy is simple_byte
-  1505  00AB  3A00               	xorlw	0	; case 0
-  1506  00AC  1903               	skipnz
-  1507  00AD  282F               	goto	l1219
-  1508  00AE  3A01               	xorlw	1	; case 1
-  1509  00AF  1903               	skipnz
-  1510  00B0  2885               	goto	l224
-  1511  00B1  28B2               	goto	l1265
-  1512  00B2                     l1265:	
-  1513                           
-  1514                           ;PIC_I2C1.c: 101: return result;
-  1515  00B2  0020               	movlb	0	; select bank0
-  1516  00B3  0823               	movf	I2C1_Transmit@result,w
-  1517  00B4  0008               	return
-  1518  00B5                     __end_of_I2C1_Transmit:	
-  1519                           
-  1520                           	psect	text5
-  1521  00B5                     __ptext5:	
-  1522 ;; *************** function _I2C1_Init *****************
-  1523 ;; Defined at:
-  1524 ;;		line 8 in file "PIC_I2C1.c"
-  1525 ;; Parameters:    Size  Location     Type
-  1526 ;;  I2C1_Init_PO    2    0[BANK0 ] PTR FTN()void 
-  1527 ;;		 -> I2C_InitPort(1), 
-  1528 ;;  address         1    2[BANK0 ] unsigned char 
-  1529 ;;  mode            1    3[BANK0 ] enum E2310
-  1530 ;;  Speed           1    4[BANK0 ] enum E2314
-  1531 ;; Auto vars:     Size  Location     Type
-  1532 ;;		None
-  1533 ;; Return value:  Size  Location     Type
-  1534 ;;                  1    wreg      void 
-  1535 ;; Registers used:
-  1536 ;;		wreg, fsr0l, fsr0h, status,2, status,0, pclath, cstack
-  1537 ;; Tracked objects:
-  1538 ;;		On entry : 0/0
-  1539 ;;		On exit  : 0/0
-  1540 ;;		Unchanged: 0/0
-  1541 ;; Data sizes:     COMMON   BANK0   BANK1
-  1542 ;;      Params:         0       5       0
-  1543 ;;      Locals:         0       0       0
-  1544 ;;      Temps:          1       0       0
-  1545 ;;      Totals:         1       5       0
-  1546 ;;Total ram usage:        6 bytes
-  1547 ;; Hardware stack levels used:    1
-  1548 ;; Hardware stack levels required when called:    4
-  1549 ;; This function calls:
-  1550 ;;		_I2C_InitPort
-  1551 ;; This function is called by:
-  1552 ;;		_main
-  1553 ;; This function uses a non-reentrant model
-  1554 ;;
-  1555                           
-  1556                           
-  1557                           ;psect for function _I2C1_Init
-  1558  00B5                     _I2C1_Init:	
-  1559                           
-  1560                           ;PIC_I2C1.c: 10: I2C1_Init_PORT();
+  1492                           ;PIC_I2C1.c: 99: }
+  1493                           
+  1494                           ;PIC_I2C1.c: 98: break;
+  1495  00A9  28B2               	goto	l1289
+  1496  00AA                     l1287:	
+  1497  00AA  084E               	movf	_I2C1_Config+18,w
+  1498                           
+  1499                           ; Switch size 1, requested type "space"
+  1500                           ; Number of cases is 2, Range of values is 0 to 1
+  1501                           ; switch strategies available:
+  1502                           ; Name         Instructions Cycles
+  1503                           ; simple_byte            7     4 (average)
+  1504                           ; direct_byte           10     6 (fixed)
+  1505                           ; jumptable            260     6 (fixed)
+  1506                           ;	Chosen strategy is simple_byte
+  1507  00AB  3A00               	xorlw	0	; case 0
+  1508  00AC  1903               	skipnz
+  1509  00AD  282F               	goto	l1243
+  1510  00AE  3A01               	xorlw	1	; case 1
+  1511  00AF  1903               	skipnz
+  1512  00B0  2885               	goto	l228
+  1513  00B1  28B2               	goto	l1289
+  1514  00B2                     l1289:	
+  1515                           
+  1516                           ;PIC_I2C1.c: 101: return result;
+  1517  00B2  0020               	movlb	0	; select bank0
+  1518  00B3  0823               	movf	I2C1_Transmit@result,w
+  1519  00B4  0008               	return
+  1520  00B5                     __end_of_I2C1_Transmit:	
+  1521                           
+  1522                           	psect	text5
+  1523  00B5                     __ptext5:	
+  1524 ;; *************** function _I2C1_Init *****************
+  1525 ;; Defined at:
+  1526 ;;		line 8 in file "PIC_I2C1.c"
+  1527 ;; Parameters:    Size  Location     Type
+  1528 ;;  I2C1_Init_PO    2    0[BANK0 ] PTR FTN()void 
+  1529 ;;		 -> I2C_InitPort(1), 
+  1530 ;;  address         1    2[BANK0 ] unsigned char 
+  1531 ;;  mode            1    3[BANK0 ] enum E2310
+  1532 ;;  Speed           1    4[BANK0 ] enum E2314
+  1533 ;; Auto vars:     Size  Location     Type
+  1534 ;;		None
+  1535 ;; Return value:  Size  Location     Type
+  1536 ;;                  1    wreg      void 
+  1537 ;; Registers used:
+  1538 ;;		wreg, fsr0l, fsr0h, status,2, status,0, pclath, cstack
+  1539 ;; Tracked objects:
+  1540 ;;		On entry : 0/0
+  1541 ;;		On exit  : 0/0
+  1542 ;;		Unchanged: 0/0
+  1543 ;; Data sizes:     COMMON   BANK0   BANK1
+  1544 ;;      Params:         0       5       0
+  1545 ;;      Locals:         0       0       0
+  1546 ;;      Temps:          1       0       0
+  1547 ;;      Totals:         1       5       0
+  1548 ;;Total ram usage:        6 bytes
+  1549 ;; Hardware stack levels used:    1
+  1550 ;; Hardware stack levels required when called:    4
+  1551 ;; This function calls:
+  1552 ;;		_I2C_InitPort
+  1553 ;; This function is called by:
+  1554 ;;		_main
+  1555 ;; This function uses a non-reentrant model
+  1556 ;;
+  1557                           
+  1558                           
+  1559                           ;psect for function _I2C1_Init
+  1560  00B5                     _I2C1_Init:	
   1561                           
-  1562                           ;incstack = 0
-  1563                           ; Regs used in _I2C1_Init: [wreg-fsr0h+status,2+status,0+pclath+cstack]
-  1564  00B5  0020               	movlb	0	; select bank0
-  1565  00B6  0821               	movf	I2C1_Init@I2C1_Init_PORT+1,w
-  1566  00B7  008A               	movwf	10
-  1567  00B8  0820               	movf	I2C1_Init@I2C1_Init_PORT,w
-  1568  00B9  000A               	callw
-  1569  00BA  3180               	pagesel	$
-  1570                           
-  1571                           ;PIC_I2C1.c: 11: I2C1_Config.Mode = mode;
-  1572  00BB  0020               	movlb	0	; select bank0
-  1573  00BC  0823               	movf	I2C1_Init@mode,w
-  1574  00BD  00F5               	movwf	??_I2C1_Init
-  1575  00BE  0875               	movf	??_I2C1_Init,w
-  1576  00BF  00CE               	movwf	_I2C1_Config+18
-  1577                           
-  1578                           ;PIC_I2C1.c: 13: switch(mode)
-  1579  00C0  28F8               	goto	l1305
-  1580  00C1                     l186:	
-  1581                           ;PIC_I2C1.c: 14: {
-  1582                           ;PIC_I2C1.c: 15: case I2C_MODE_MASTER:
-  1583                           
-  1584                           
-  1585                           ;PIC_I2C1.c: 16: SSPCON1 |= (0x08<<0);
-  1586  00C1  0024               	movlb	4	; select bank4
-  1587  00C2  1595               	bsf	21,3	;volatile
-  1588                           
-  1589                           ;PIC_I2C1.c: 17: if(Speed==I2C_SPEED_STANDARD)
-  1590  00C3  0020               	movlb	0	; select bank0
-  1591  00C4  0824               	movf	I2C1_Init@Speed,w
-  1592  00C5  1D03               	btfss	3,2
-  1593  00C6  28CB               	goto	l1279
-  1594                           
-  1595                           ;PIC_I2C1.c: 18: {
-  1596                           ;PIC_I2C1.c: 19: SSPSTAT |= (1<<7);
-  1597  00C7  0024               	movlb	4	; select bank4
-  1598  00C8  1794               	bsf	20,7	;volatile
-  1599                           
-  1600                           ;PIC_I2C1.c: 20: SSPADD = 0x4F;
-  1601  00C9  304F               	movlw	79
-  1602  00CA  28D5               	goto	L1
-  1603  00CB                     l1279:	
-  1604                           ;PIC_I2C1.c: 21: }
-  1605                           
-  1606                           
-  1607                           ;PIC_I2C1.c: 22: else if(Speed==I2C_SPEED_HIGH)
-  1608  00CB  0020               	movlb	0	; select bank0
-  1609  00CC  0324               	decf	I2C1_Init@Speed,w
-  1610  00CD  1D03               	btfss	3,2
-  1611  00CE  28D6               	goto	l1285
-  1612                           
-  1613                           ;PIC_I2C1.c: 23: {
-  1614                           ;PIC_I2C1.c: 24: SSPSTAT &= ~(1<<7);
-  1615  00CF  307F               	movlw	127
-  1616  00D0  00F5               	movwf	??_I2C1_Init
-  1617  00D1  0875               	movf	??_I2C1_Init,w
-  1618  00D2  0024               	movlb	4	; select bank4
-  1619  00D3  0594               	andwf	20,f	;volatile
-  1620                           
-  1621                           ;PIC_I2C1.c: 25: SSPADD = 0x13;
-  1622  00D4  3013               	movlw	19
-  1623  00D5                     L1:	
-  1624  00D5  0092               	movwf	18	;volatile
-  1625  00D6                     l1285:	
-  1626                           
-  1627                           ;PIC_I2C1.c: 26: }
-  1628                           ;PIC_I2C1.c: 27: SSPCON1bits.SSPEN = 1;
-  1629  00D6  0024               	movlb	4	; select bank4
-  1630  00D7  28F6               	goto	l1301
-  1631  00D8                     l1287:	
-  1632                           ;PIC_I2C1.c: 30: case I2C_MODE_SLAVE:
-  1633                           
-  1634                           ;PIC_I2C1.c: 28: break;
+  1562                           ;PIC_I2C1.c: 10: I2C1_Init_PORT();
+  1563                           
+  1564                           ;incstack = 0
+  1565                           ; Regs used in _I2C1_Init: [wreg-fsr0h+status,2+status,0+pclath+cstack]
+  1566  00B5  0020               	movlb	0	; select bank0
+  1567  00B6  0821               	movf	I2C1_Init@I2C1_Init_PORT+1,w
+  1568  00B7  008A               	movwf	10
+  1569  00B8  0820               	movf	I2C1_Init@I2C1_Init_PORT,w
+  1570  00B9  000A               	callw
+  1571  00BA  3180               	pagesel	$
+  1572                           
+  1573                           ;PIC_I2C1.c: 11: I2C1_Config.Mode = mode;
+  1574  00BB  0020               	movlb	0	; select bank0
+  1575  00BC  0823               	movf	I2C1_Init@mode,w
+  1576  00BD  00F5               	movwf	??_I2C1_Init
+  1577  00BE  0875               	movf	??_I2C1_Init,w
+  1578  00BF  00CE               	movwf	_I2C1_Config+18
+  1579                           
+  1580                           ;PIC_I2C1.c: 13: switch(mode)
+  1581  00C0  28F8               	goto	l1329
+  1582  00C1                     l190:	
+  1583                           ;PIC_I2C1.c: 14: {
+  1584                           ;PIC_I2C1.c: 15: case I2C_MODE_MASTER:
+  1585                           
+  1586                           
+  1587                           ;PIC_I2C1.c: 16: SSPCON1 |= (0x08<<0);
+  1588  00C1  0024               	movlb	4	; select bank4
+  1589  00C2  1595               	bsf	21,3	;volatile
+  1590                           
+  1591                           ;PIC_I2C1.c: 17: if(Speed==I2C_SPEED_STANDARD)
+  1592  00C3  0020               	movlb	0	; select bank0
+  1593  00C4  0824               	movf	I2C1_Init@Speed,w
+  1594  00C5  1D03               	btfss	3,2
+  1595  00C6  28CB               	goto	l1303
+  1596                           
+  1597                           ;PIC_I2C1.c: 18: {
+  1598                           ;PIC_I2C1.c: 19: SSPSTAT |= (1<<7);
+  1599  00C7  0024               	movlb	4	; select bank4
+  1600  00C8  1794               	bsf	20,7	;volatile
+  1601                           
+  1602                           ;PIC_I2C1.c: 20: SSPADD = 0x4F;
+  1603  00C9  304F               	movlw	79
+  1604  00CA  28D5               	goto	L1
+  1605  00CB                     l1303:	
+  1606                           ;PIC_I2C1.c: 21: }
+  1607                           
+  1608                           
+  1609                           ;PIC_I2C1.c: 22: else if(Speed==I2C_SPEED_HIGH)
+  1610  00CB  0020               	movlb	0	; select bank0
+  1611  00CC  0324               	decf	I2C1_Init@Speed,w
+  1612  00CD  1D03               	btfss	3,2
+  1613  00CE  28D6               	goto	l1309
+  1614                           
+  1615                           ;PIC_I2C1.c: 23: {
+  1616                           ;PIC_I2C1.c: 24: SSPSTAT &= ~(1<<7);
+  1617  00CF  307F               	movlw	127
+  1618  00D0  00F5               	movwf	??_I2C1_Init
+  1619  00D1  0875               	movf	??_I2C1_Init,w
+  1620  00D2  0024               	movlb	4	; select bank4
+  1621  00D3  0594               	andwf	20,f	;volatile
+  1622                           
+  1623                           ;PIC_I2C1.c: 25: SSPADD = 0x13;
+  1624  00D4  3013               	movlw	19
+  1625  00D5                     L1:	
+  1626  00D5  0092               	movwf	18	;volatile
+  1627  00D6                     l1309:	
+  1628                           
+  1629                           ;PIC_I2C1.c: 26: }
+  1630                           ;PIC_I2C1.c: 27: SSPCON1bits.SSPEN = 1;
+  1631  00D6  0024               	movlb	4	; select bank4
+  1632  00D7  28F6               	goto	l1325
+  1633  00D8                     l1311:	
+  1634                           ;PIC_I2C1.c: 30: case I2C_MODE_SLAVE:
   1635                           
-  1636                           
-  1637                           ;PIC_I2C1.c: 31: SSPSTAT = 0x00;
-  1638  00D8  0024               	movlb	4	; select bank4
-  1639  00D9  0194               	clrf	20	;volatile
-  1640                           
-  1641                           ;PIC_I2C1.c: 32: if(Speed==I2C_SPEED_STANDARD)
-  1642  00DA  0020               	movlb	0	; select bank0
-  1643  00DB  0824               	movf	I2C1_Init@Speed,w
-  1644  00DC  1D03               	btfss	3,2
-  1645  00DD  28E1               	goto	l1293
-  1646                           
-  1647                           ;PIC_I2C1.c: 33: SSPSTAT |= (1<<7);
-  1648  00DE  0024               	movlb	4	; select bank4
-  1649  00DF  1794               	bsf	20,7	;volatile
-  1650  00E0  28EA               	goto	l193
-  1651  00E1                     l1293:	
-  1652                           
-  1653                           ;PIC_I2C1.c: 34: else if(Speed==I2C_SPEED_HIGH)
-  1654  00E1  0020               	movlb	0	; select bank0
-  1655  00E2  0324               	decf	I2C1_Init@Speed,w
-  1656  00E3  1D03               	btfss	3,2
-  1657  00E4  28EA               	goto	l193
-  1658                           
-  1659                           ;PIC_I2C1.c: 35: SSPSTAT &= ~(1<<7);
-  1660  00E5  307F               	movlw	127
-  1661  00E6  00F5               	movwf	??_I2C1_Init
-  1662  00E7  0875               	movf	??_I2C1_Init,w
-  1663  00E8  0024               	movlb	4	; select bank4
-  1664  00E9  0594               	andwf	20,f	;volatile
-  1665  00EA                     l193:	
-  1666                           
-  1667                           ;PIC_I2C1.c: 37: SSPCON1 |= (0x06<<0);
-  1668  00EA  3006               	movlw	6
-  1669  00EB  00F5               	movwf	??_I2C1_Init
-  1670  00EC  0875               	movf	??_I2C1_Init,w
-  1671  00ED  0024               	movlb	4	; select bank4
-  1672  00EE  0495               	iorwf	21,f	;volatile
-  1673                           
-  1674                           ;PIC_I2C1.c: 38: SSPCON2bits.SEN= 1;
-  1675  00EF  1416               	bsf	22,0	;volatile
-  1676                           
-  1677                           ;PIC_I2C1.c: 39: SSPADD = address << 1;
-  1678  00F0  0020               	movlb	0	; select bank0
-  1679  00F1  3522               	lslf	I2C1_Init@address,w
-  1680  00F2  0024               	movlb	4	; select bank4
-  1681  00F3  0092               	movwf	18	;volatile
-  1682                           
-  1683                           ;PIC_I2C1.c: 40: SSPMSK = 0xFE;
-  1684  00F4  30FE               	movlw	254
-  1685  00F5  0093               	movwf	19	;volatile
-  1686  00F6                     l1301:	
-  1687                           
-  1688                           ;PIC_I2C1.c: 41: SSPCON1bits.SSPEN = 1;
-  1689  00F6  1695               	bsf	21,5	;volatile
-  1690                           
-  1691                           ;PIC_I2C1.c: 43: }
+  1636                           ;PIC_I2C1.c: 28: break;
+  1637                           
+  1638                           
+  1639                           ;PIC_I2C1.c: 31: SSPSTAT = 0x00;
+  1640  00D8  0024               	movlb	4	; select bank4
+  1641  00D9  0194               	clrf	20	;volatile
+  1642                           
+  1643                           ;PIC_I2C1.c: 32: if(Speed==I2C_SPEED_STANDARD)
+  1644  00DA  0020               	movlb	0	; select bank0
+  1645  00DB  0824               	movf	I2C1_Init@Speed,w
+  1646  00DC  1D03               	btfss	3,2
+  1647  00DD  28E1               	goto	l1317
+  1648                           
+  1649                           ;PIC_I2C1.c: 33: SSPSTAT |= (1<<7);
+  1650  00DE  0024               	movlb	4	; select bank4
+  1651  00DF  1794               	bsf	20,7	;volatile
+  1652  00E0  28EA               	goto	l197
+  1653  00E1                     l1317:	
+  1654                           
+  1655                           ;PIC_I2C1.c: 34: else if(Speed==I2C_SPEED_HIGH)
+  1656  00E1  0020               	movlb	0	; select bank0
+  1657  00E2  0324               	decf	I2C1_Init@Speed,w
+  1658  00E3  1D03               	btfss	3,2
+  1659  00E4  28EA               	goto	l197
+  1660                           
+  1661                           ;PIC_I2C1.c: 35: SSPSTAT &= ~(1<<7);
+  1662  00E5  307F               	movlw	127
+  1663  00E6  00F5               	movwf	??_I2C1_Init
+  1664  00E7  0875               	movf	??_I2C1_Init,w
+  1665  00E8  0024               	movlb	4	; select bank4
+  1666  00E9  0594               	andwf	20,f	;volatile
+  1667  00EA                     l197:	
+  1668                           
+  1669                           ;PIC_I2C1.c: 37: SSPCON1 |= (0x06<<0);
+  1670  00EA  3006               	movlw	6
+  1671  00EB  00F5               	movwf	??_I2C1_Init
+  1672  00EC  0875               	movf	??_I2C1_Init,w
+  1673  00ED  0024               	movlb	4	; select bank4
+  1674  00EE  0495               	iorwf	21,f	;volatile
+  1675                           
+  1676                           ;PIC_I2C1.c: 38: SSPCON2bits.SEN= 1;
+  1677  00EF  1416               	bsf	22,0	;volatile
+  1678                           
+  1679                           ;PIC_I2C1.c: 39: SSPADD = address << 1;
+  1680  00F0  0020               	movlb	0	; select bank0
+  1681  00F1  3522               	lslf	I2C1_Init@address,w
+  1682  00F2  0024               	movlb	4	; select bank4
+  1683  00F3  0092               	movwf	18	;volatile
+  1684                           
+  1685                           ;PIC_I2C1.c: 40: SSPMSK = 0xFE;
+  1686  00F4  30FE               	movlw	254
+  1687  00F5  0093               	movwf	19	;volatile
+  1688  00F6                     l1325:	
+  1689                           
+  1690                           ;PIC_I2C1.c: 41: SSPCON1bits.SSPEN = 1;
+  1691  00F6  1695               	bsf	21,5	;volatile
   1692                           
-  1693                           ;PIC_I2C1.c: 42: break;
-  1694  00F7  2901               	goto	l190
-  1695  00F8                     l1305:	
-  1696  00F8  0020               	movlb	0	; select bank0
-  1697  00F9  0823               	movf	I2C1_Init@mode,w
-  1698                           
-  1699                           ; Switch size 1, requested type "space"
-  1700                           ; Number of cases is 2, Range of values is 0 to 1
-  1701                           ; switch strategies available:
-  1702                           ; Name         Instructions Cycles
-  1703                           ; simple_byte            7     4 (average)
-  1704                           ; direct_byte           10     6 (fixed)
-  1705                           ; jumptable            260     6 (fixed)
-  1706                           ;	Chosen strategy is simple_byte
-  1707  00FA  3A00               	xorlw	0	; case 0
-  1708  00FB  1903               	skipnz
-  1709  00FC  28C1               	goto	l186
-  1710  00FD  3A01               	xorlw	1	; case 1
-  1711  00FE  1903               	skipnz
-  1712  00FF  28D8               	goto	l1287
-  1713  0100  2901               	goto	l190
-  1714  0101                     l190:	
-  1715                           
-  1716                           ;PIC_I2C1.c: 44: SSP1IE = 1;
-  1717  0101  0021               	movlb	1	; select bank1
-  1718  0102  1591               	bsf	17,3	;volatile
-  1719                           
-  1720                           ;PIC_I2C1.c: 45: BCL1IE = 1;
-  1721  0103  1592               	bsf	18,3	;volatile
-  1722                           
-  1723                           ;PIC_I2C1.c: 46: SSP1IF = 0;
-  1724  0104  0020               	movlb	0	; select bank0
-  1725  0105  1191               	bcf	17,3	;volatile
-  1726                           
-  1727                           ;PIC_I2C1.c: 47: BCL1IF = 0;
-  1728  0106  1192               	bcf	18,3	;volatile
-  1729                           
-  1730                           ;PIC_I2C1.c: 49: PEIE = 1;
-  1731  0107  170B               	bsf	11,6	;volatile
-  1732                           
-  1733                           ;PIC_I2C1.c: 50: GIE = 1;
-  1734  0108  178B               	bsf	11,7	;volatile
-  1735  0109  0008               	return
-  1736  010A                     __end_of_I2C1_Init:	
-  1737                           
-  1738                           	psect	text6
-  1739  0235                     __ptext6:	
-  1740 ;; *************** function _I2C_InitPort *****************
-  1741 ;; Defined at:
-  1742 ;;		line 46 in file "main.c"
-  1743 ;; Parameters:    Size  Location     Type
-  1744 ;;		None
-  1745 ;; Auto vars:     Size  Location     Type
+  1693                           ;PIC_I2C1.c: 43: }
+  1694                           
+  1695                           ;PIC_I2C1.c: 42: break;
+  1696  00F7  2901               	goto	l194
+  1697  00F8                     l1329:	
+  1698  00F8  0020               	movlb	0	; select bank0
+  1699  00F9  0823               	movf	I2C1_Init@mode,w
+  1700                           
+  1701                           ; Switch size 1, requested type "space"
+  1702                           ; Number of cases is 2, Range of values is 0 to 1
+  1703                           ; switch strategies available:
+  1704                           ; Name         Instructions Cycles
+  1705                           ; simple_byte            7     4 (average)
+  1706                           ; direct_byte           10     6 (fixed)
+  1707                           ; jumptable            260     6 (fixed)
+  1708                           ;	Chosen strategy is simple_byte
+  1709  00FA  3A00               	xorlw	0	; case 0
+  1710  00FB  1903               	skipnz
+  1711  00FC  28C1               	goto	l190
+  1712  00FD  3A01               	xorlw	1	; case 1
+  1713  00FE  1903               	skipnz
+  1714  00FF  28D8               	goto	l1311
+  1715  0100  2901               	goto	l194
+  1716  0101                     l194:	
+  1717                           
+  1718                           ;PIC_I2C1.c: 44: SSP1IE = 1;
+  1719  0101  0021               	movlb	1	; select bank1
+  1720  0102  1591               	bsf	17,3	;volatile
+  1721                           
+  1722                           ;PIC_I2C1.c: 45: BCL1IE = 1;
+  1723  0103  1592               	bsf	18,3	;volatile
+  1724                           
+  1725                           ;PIC_I2C1.c: 46: SSP1IF = 0;
+  1726  0104  0020               	movlb	0	; select bank0
+  1727  0105  1191               	bcf	17,3	;volatile
+  1728                           
+  1729                           ;PIC_I2C1.c: 47: BCL1IF = 0;
+  1730  0106  1192               	bcf	18,3	;volatile
+  1731                           
+  1732                           ;PIC_I2C1.c: 49: PEIE = 1;
+  1733  0107  170B               	bsf	11,6	;volatile
+  1734                           
+  1735                           ;PIC_I2C1.c: 50: GIE = 1;
+  1736  0108  178B               	bsf	11,7	;volatile
+  1737  0109  0008               	return
+  1738  010A                     __end_of_I2C1_Init:	
+  1739                           
+  1740                           	psect	text6
+  1741  0235                     __ptext6:	
+  1742 ;; *************** function _I2C_InitPort *****************
+  1743 ;; Defined at:
+  1744 ;;		line 51 in file "main.c"
+  1745 ;; Parameters:    Size  Location     Type
   1746 ;;		None
-  1747 ;; Return value:  Size  Location     Type
-  1748 ;;                  1    wreg      void 
-  1749 ;; Registers used:
-  1750 ;;		wreg, status,2, status,0
-  1751 ;; Tracked objects:
-  1752 ;;		On entry : 0/0
-  1753 ;;		On exit  : 0/0
-  1754 ;;		Unchanged: 0/0
-  1755 ;; Data sizes:     COMMON   BANK0   BANK1
-  1756 ;;      Params:         0       0       0
-  1757 ;;      Locals:         0       0       0
-  1758 ;;      Temps:          1       0       0
-  1759 ;;      Totals:         1       0       0
-  1760 ;;Total ram usage:        1 bytes
-  1761 ;; Hardware stack levels used:    1
-  1762 ;; Hardware stack levels required when called:    3
-  1763 ;; This function calls:
-  1764 ;;		Nothing
-  1765 ;; This function is called by:
-  1766 ;;		_main
-  1767 ;;		_I2C1_Init
-  1768 ;; This function uses a non-reentrant model
-  1769 ;;
-  1770                           
-  1771                           
-  1772                           ;psect for function _I2C_InitPort
-  1773  0235                     _I2C_InitPort:	
-  1774                           
-  1775                           ;main.c: 48: TRISA |= (1<<1);
+  1747 ;; Auto vars:     Size  Location     Type
+  1748 ;;		None
+  1749 ;; Return value:  Size  Location     Type
+  1750 ;;                  1    wreg      void 
+  1751 ;; Registers used:
+  1752 ;;		wreg, status,2, status,0
+  1753 ;; Tracked objects:
+  1754 ;;		On entry : 0/0
+  1755 ;;		On exit  : 0/0
+  1756 ;;		Unchanged: 0/0
+  1757 ;; Data sizes:     COMMON   BANK0   BANK1
+  1758 ;;      Params:         0       0       0
+  1759 ;;      Locals:         0       0       0
+  1760 ;;      Temps:          1       0       0
+  1761 ;;      Totals:         1       0       0
+  1762 ;;Total ram usage:        1 bytes
+  1763 ;; Hardware stack levels used:    1
+  1764 ;; Hardware stack levels required when called:    3
+  1765 ;; This function calls:
+  1766 ;;		Nothing
+  1767 ;; This function is called by:
+  1768 ;;		_main
+  1769 ;;		_I2C1_Init
+  1770 ;; This function uses a non-reentrant model
+  1771 ;;
+  1772                           
+  1773                           
+  1774                           ;psect for function _I2C_InitPort
+  1775  0235                     _I2C_InitPort:	
   1776                           
-  1777                           ;incstack = 0
-  1778                           ; Regs used in _I2C_InitPort: [wreg+status,2+status,0]
-  1779  0235  0021               	movlb	1	; select bank1
-  1780  0236  148C               	bsf	12,1	;volatile
-  1781                           
-  1782                           ;main.c: 49: TRISA |= (1<<2);
-  1783  0237  150C               	bsf	12,2	;volatile
-  1784                           
-  1785                           ;main.c: 51: ANSELA &= ~(1<<1);
-  1786  0238  30FD               	movlw	253
-  1787  0239  00F4               	movwf	??_I2C_InitPort
-  1788  023A  0874               	movf	??_I2C_InitPort,w
-  1789  023B  0023               	movlb	3	; select bank3
-  1790  023C  058C               	andwf	12,f	;volatile
-  1791                           
-  1792                           ;main.c: 52: ANSELA &= ~(1<<2);
-  1793  023D  30FB               	movlw	251
-  1794  023E  00F4               	movwf	??_I2C_InitPort
-  1795  023F  0874               	movf	??_I2C_InitPort,w
-  1796  0240  058C               	andwf	12,f	;volatile
-  1797  0241  0008               	return
-  1798  0242                     __end_of_I2C_InitPort:	
-  1799                           
-  1800                           	psect	text7
-  1801  0242                     __ptext7:	
-  1802 ;; *************** function _Basic_Init *****************
-  1803 ;; Defined at:
-  1804 ;;		line 29 in file "main.c"
-  1805 ;; Parameters:    Size  Location     Type
-  1806 ;;		None
-  1807 ;; Auto vars:     Size  Location     Type
+  1777                           ;main.c: 53: TRISA |= (1<<1);
+  1778                           
+  1779                           ;incstack = 0
+  1780                           ; Regs used in _I2C_InitPort: [wreg+status,2+status,0]
+  1781  0235  0021               	movlb	1	; select bank1
+  1782  0236  148C               	bsf	12,1	;volatile
+  1783                           
+  1784                           ;main.c: 54: TRISA |= (1<<2);
+  1785  0237  150C               	bsf	12,2	;volatile
+  1786                           
+  1787                           ;main.c: 56: ANSELA &= ~(1<<1);
+  1788  0238  30FD               	movlw	253
+  1789  0239  00F4               	movwf	??_I2C_InitPort
+  1790  023A  0874               	movf	??_I2C_InitPort,w
+  1791  023B  0023               	movlb	3	; select bank3
+  1792  023C  058C               	andwf	12,f	;volatile
+  1793                           
+  1794                           ;main.c: 57: ANSELA &= ~(1<<2);
+  1795  023D  30FB               	movlw	251
+  1796  023E  00F4               	movwf	??_I2C_InitPort
+  1797  023F  0874               	movf	??_I2C_InitPort,w
+  1798  0240  058C               	andwf	12,f	;volatile
+  1799  0241  0008               	return
+  1800  0242                     __end_of_I2C_InitPort:	
+  1801                           
+  1802                           	psect	text7
+  1803  0242                     __ptext7:	
+  1804 ;; *************** function _Basic_Init *****************
+  1805 ;; Defined at:
+  1806 ;;		line 29 in file "main.c"
+  1807 ;; Parameters:    Size  Location     Type
   1808 ;;		None
-  1809 ;; Return value:  Size  Location     Type
-  1810 ;;                  1    wreg      void 
-  1811 ;; Registers used:
-  1812 ;;		status,2
-  1813 ;; Tracked objects:
-  1814 ;;		On entry : 0/0
-  1815 ;;		On exit  : 0/0
-  1816 ;;		Unchanged: 0/0
-  1817 ;; Data sizes:     COMMON   BANK0   BANK1
-  1818 ;;      Params:         0       0       0
-  1819 ;;      Locals:         0       0       0
-  1820 ;;      Temps:          0       0       0
-  1821 ;;      Totals:         0       0       0
-  1822 ;;Total ram usage:        0 bytes
-  1823 ;; Hardware stack levels used:    1
-  1824 ;; Hardware stack levels required when called:    3
-  1825 ;; This function calls:
-  1826 ;;		Nothing
-  1827 ;; This function is called by:
-  1828 ;;		_main
-  1829 ;; This function uses a non-reentrant model
-  1830 ;;
-  1831                           
-  1832                           
-  1833                           ;psect for function _Basic_Init
-  1834  0242                     _Basic_Init:	
-  1835                           
-  1836                           ;main.c: 31: TRISA = 0x00;
+  1809 ;; Auto vars:     Size  Location     Type
+  1810 ;;		None
+  1811 ;; Return value:  Size  Location     Type
+  1812 ;;                  1    wreg      void 
+  1813 ;; Registers used:
+  1814 ;;		wreg, status,2
+  1815 ;; Tracked objects:
+  1816 ;;		On entry : 0/0
+  1817 ;;		On exit  : 0/0
+  1818 ;;		Unchanged: 0/0
+  1819 ;; Data sizes:     COMMON   BANK0   BANK1
+  1820 ;;      Params:         0       0       0
+  1821 ;;      Locals:         0       0       0
+  1822 ;;      Temps:          0       0       0
+  1823 ;;      Totals:         0       0       0
+  1824 ;;Total ram usage:        0 bytes
+  1825 ;; Hardware stack levels used:    1
+  1826 ;; Hardware stack levels required when called:    3
+  1827 ;; This function calls:
+  1828 ;;		Nothing
+  1829 ;; This function is called by:
+  1830 ;;		_main
+  1831 ;; This function uses a non-reentrant model
+  1832 ;;
+  1833                           
+  1834                           
+  1835                           ;psect for function _Basic_Init
+  1836  0242                     _Basic_Init:	
   1837                           
-  1838                           ;incstack = 0
-  1839                           ; Regs used in _Basic_Init: [status,2]
-  1840  0242  0021               	movlb	1	; select bank1
-  1841  0243  018C               	clrf	12	;volatile
-  1842                           
-  1843                           ;main.c: 33: ANSELA = 0x00;
-  1844  0244  0023               	movlb	3	; select bank3
-  1845  0245  018C               	clrf	12	;volatile
-  1846                           
-  1847                           ;main.c: 35: APFCON = 0x00;
-  1848  0246  0022               	movlb	2	; select bank2
-  1849  0247  019D               	clrf	29	;volatile
-  1850                           
-  1851                           ;main.c: 37: PORTA = 0x00;
-  1852  0248  0020               	movlb	0	; select bank0
-  1853  0249  018C               	clrf	12	;volatile
-  1854  024A  0008               	return
-  1855  024B                     __end_of_Basic_Init:	
+  1838                           ;main.c: 31: OSCCON = 0xF0;
+  1839                           
+  1840                           ;incstack = 0
+  1841                           ; Regs used in _Basic_Init: [wreg+status,2]
+  1842  0242  30F0               	movlw	240
+  1843  0243  0021               	movlb	1	; select bank1
+  1844  0244  0099               	movwf	25	;volatile
+  1845                           
+  1846                           ;main.c: 35: TRISA = 0x00;
+  1847  0245  018C               	clrf	12	;volatile
+  1848                           
+  1849                           ;main.c: 36: ANSELA = 0x00;
+  1850  0246  0023               	movlb	3	; select bank3
+  1851  0247  018C               	clrf	12	;volatile
+  1852                           
+  1853                           ;main.c: 37: WPUA = 0x00;
+  1854  0248  0024               	movlb	4	; select bank4
+  1855  0249  018C               	clrf	12	;volatile
   1856                           
-  1857                           	psect	intentry
-  1858  0004                     __pintentry:	
-  1859 ;; *************** function _Handle *****************
-  1860 ;; Defined at:
-  1861 ;;		line 23 in file "main.c"
-  1862 ;; Parameters:    Size  Location     Type
-  1863 ;;		None
-  1864 ;; Auto vars:     Size  Location     Type
-  1865 ;;		None
-  1866 ;; Return value:  Size  Location     Type
-  1867 ;;                  1    wreg      void 
-  1868 ;; Registers used:
-  1869 ;;		wreg, fsr1l, fsr1h, status,2, status,0, pclath, cstack
-  1870 ;; Tracked objects:
-  1871 ;;		On entry : 0/0
-  1872 ;;		On exit  : 0/0
-  1873 ;;		Unchanged: 0/0
-  1874 ;; Data sizes:     COMMON   BANK0   BANK1
-  1875 ;;      Params:         0       0       0
-  1876 ;;      Locals:         0       0       0
-  1877 ;;      Temps:          1       0       0
-  1878 ;;      Totals:         1       0       0
-  1879 ;;Total ram usage:        1 bytes
-  1880 ;; Hardware stack levels used:    1
-  1881 ;; Hardware stack levels required when called:    2
-  1882 ;; This function calls:
-  1883 ;;		_I2C_Interrupt
-  1884 ;;		_UART_Interrupt
-  1885 ;; This function is called by:
-  1886 ;;		Interrupt level 1
-  1887 ;; This function uses a non-reentrant model
-  1888 ;;
-  1889                           
-  1890  0004                     _Handle:	
-  1891                           
-  1892                           ;incstack = 0
-  1893  0004  147E               	bsf	126,0	;set compiler interrupt flag (level 1)
-  1894                           
-  1895                           ; Regs used in _Handle: [wreg+fsr1l+fsr1h+status,2+status,0+pclath+cstack]
-  1896  0005  3180               	pagesel	$
-  1897  0006  0020               	movlb	0	; select bank0
-  1898  0007  087F               	movf	127,w
-  1899  0008  00F3               	movwf	??_Handle
-  1900                           
-  1901                           ;main.c: 25: UART_Interrupt();
-  1902  0009  21CA               	fcall	_UART_Interrupt
-  1903                           
-  1904                           ;main.c: 26: I2C_Interrupt();
-  1905  000A  2257               	fcall	_I2C_Interrupt
-  1906  000B  0873               	movf	??_Handle,w
-  1907  000C  0020               	movlb	0	; select bank0
-  1908  000D  00FF               	movwf	127
-  1909  000E  107E               	bcf	126,0	;clear compiler interrupt flag (level 1)
-  1910  000F  0009               	retfie
-  1911  0010                     __end_of_Handle:	
-  1912                           
-  1913                           	psect	text9
-  1914  01CA                     __ptext9:	
-  1915 ;; *************** function _UART_Interrupt *****************
-  1916 ;; Defined at:
-  1917 ;;		line 107 in file "PIC_UART.c"
-  1918 ;; Parameters:    Size  Location     Type
-  1919 ;;		None
-  1920 ;; Auto vars:     Size  Location     Type
-  1921 ;;  x               1    2[COMMON] unsigned char 
-  1922 ;;  dt              1    1[COMMON] unsigned char 
-  1923 ;; Return value:  Size  Location     Type
-  1924 ;;                  1    wreg      void 
-  1925 ;; Registers used:
-  1926 ;;		wreg, fsr1l, fsr1h, status,2, status,0
-  1927 ;; Tracked objects:
-  1928 ;;		On entry : 0/0
-  1929 ;;		On exit  : 0/0
-  1930 ;;		Unchanged: 0/0
-  1931 ;; Data sizes:     COMMON   BANK0   BANK1
-  1932 ;;      Params:         0       0       0
-  1933 ;;      Locals:         2       0       0
-  1934 ;;      Temps:          1       0       0
-  1935 ;;      Totals:         3       0       0
-  1936 ;;Total ram usage:        3 bytes
-  1937 ;; Hardware stack levels used:    1
-  1938 ;; This function calls:
-  1939 ;;		Nothing
-  1940 ;; This function is called by:
-  1941 ;;		_Handle
-  1942 ;; This function uses a non-reentrant model
-  1943 ;;
-  1944                           
-  1945                           
-  1946                           ;psect for function _UART_Interrupt
-  1947  01CA                     _UART_Interrupt:	
-  1948                           
-  1949                           ;PIC_UART.c: 109: uint8_t x;
-  1950                           ;PIC_UART.c: 110: uint8_t dt;
-  1951                           ;PIC_UART.c: 112: if (RCIF == 1)
-  1952                           
-  1953                           ;incstack = 0
-  1954                           ; Regs used in _UART_Interrupt: [wreg+fsr1l+fsr1h+status,2+status,0]
-  1955  01CA  0020               	movlb	0	; select bank0
-  1956  01CB  1E91               	btfss	17,5	;volatile
-  1957  01CC  0008               	return
+  1857                           ;main.c: 40: APFCON = 0x00;
+  1858  024A  0022               	movlb	2	; select bank2
+  1859  024B  019D               	clrf	29	;volatile
+  1860                           
+  1861                           ;main.c: 42: PORTA = 0x00;
+  1862  024C  0020               	movlb	0	; select bank0
+  1863  024D  018C               	clrf	12	;volatile
+  1864  024E  0008               	return
+  1865  024F                     __end_of_Basic_Init:	
+  1866                           
+  1867                           	psect	intentry
+  1868  0004                     __pintentry:	
+  1869 ;; *************** function _Handle *****************
+  1870 ;; Defined at:
+  1871 ;;		line 23 in file "main.c"
+  1872 ;; Parameters:    Size  Location     Type
+  1873 ;;		None
+  1874 ;; Auto vars:     Size  Location     Type
+  1875 ;;		None
+  1876 ;; Return value:  Size  Location     Type
+  1877 ;;                  1    wreg      void 
+  1878 ;; Registers used:
+  1879 ;;		wreg, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+  1880 ;; Tracked objects:
+  1881 ;;		On entry : 0/0
+  1882 ;;		On exit  : 0/0
+  1883 ;;		Unchanged: 0/0
+  1884 ;; Data sizes:     COMMON   BANK0   BANK1
+  1885 ;;      Params:         0       0       0
+  1886 ;;      Locals:         0       0       0
+  1887 ;;      Temps:          1       0       0
+  1888 ;;      Totals:         1       0       0
+  1889 ;;Total ram usage:        1 bytes
+  1890 ;; Hardware stack levels used:    1
+  1891 ;; Hardware stack levels required when called:    2
+  1892 ;; This function calls:
+  1893 ;;		_I2C_Interrupt
+  1894 ;;		_UART_Interrupt
+  1895 ;; This function is called by:
+  1896 ;;		Interrupt level 1
+  1897 ;; This function uses a non-reentrant model
+  1898 ;;
+  1899                           
+  1900  0004                     _Handle:	
+  1901                           
+  1902                           ;incstack = 0
+  1903  0004  147E               	bsf	126,0	;set compiler interrupt flag (level 1)
+  1904                           
+  1905                           ; Regs used in _Handle: [wreg+fsr1l+fsr1h+status,2+status,0+pclath+cstack]
+  1906  0005  3180               	pagesel	$
+  1907  0006  0020               	movlb	0	; select bank0
+  1908  0007  087F               	movf	127,w
+  1909  0008  00F3               	movwf	??_Handle
+  1910                           
+  1911                           ;main.c: 25: UART_Interrupt();
+  1912  0009  21CA               	fcall	_UART_Interrupt
+  1913                           
+  1914                           ;main.c: 26: I2C_Interrupt();
+  1915  000A  225B               	fcall	_I2C_Interrupt
+  1916  000B  0873               	movf	??_Handle,w
+  1917  000C  0020               	movlb	0	; select bank0
+  1918  000D  00FF               	movwf	127
+  1919  000E  107E               	bcf	126,0	;clear compiler interrupt flag (level 1)
+  1920  000F  0009               	retfie
+  1921  0010                     __end_of_Handle:	
+  1922                           
+  1923                           	psect	text9
+  1924  01CA                     __ptext9:	
+  1925 ;; *************** function _UART_Interrupt *****************
+  1926 ;; Defined at:
+  1927 ;;		line 107 in file "PIC_UART.c"
+  1928 ;; Parameters:    Size  Location     Type
+  1929 ;;		None
+  1930 ;; Auto vars:     Size  Location     Type
+  1931 ;;  x               1    2[COMMON] unsigned char 
+  1932 ;;  dt              1    1[COMMON] unsigned char 
+  1933 ;; Return value:  Size  Location     Type
+  1934 ;;                  1    wreg      void 
+  1935 ;; Registers used:
+  1936 ;;		wreg, fsr1l, fsr1h, status,2, status,0
+  1937 ;; Tracked objects:
+  1938 ;;		On entry : 0/0
+  1939 ;;		On exit  : 0/0
+  1940 ;;		Unchanged: 0/0
+  1941 ;; Data sizes:     COMMON   BANK0   BANK1
+  1942 ;;      Params:         0       0       0
+  1943 ;;      Locals:         2       0       0
+  1944 ;;      Temps:          1       0       0
+  1945 ;;      Totals:         3       0       0
+  1946 ;;Total ram usage:        3 bytes
+  1947 ;; Hardware stack levels used:    1
+  1948 ;; This function calls:
+  1949 ;;		Nothing
+  1950 ;; This function is called by:
+  1951 ;;		_Handle
+  1952 ;; This function uses a non-reentrant model
+  1953 ;;
+  1954                           
+  1955                           
+  1956                           ;psect for function _UART_Interrupt
+  1957  01CA                     _UART_Interrupt:	
   1958                           
-  1959                           ;PIC_UART.c: 113: {
-  1960                           ;PIC_UART.c: 114: dt = RCREG;
-  1961  01CD  0023               	movlb	3	; select bank3
-  1962  01CE  0819               	movf	25,w	;volatile
-  1963  01CF  00F0               	movwf	??_UART_Interrupt
-  1964  01D0  0870               	movf	??_UART_Interrupt,w
-  1965  01D1  00F1               	movwf	UART_Interrupt@dt
-  1966                           
-  1967                           ;PIC_UART.c: 115: x = (UART_Buffer_outptr + 1) % 32;
-  1968  01D2  0878               	movf	_UART_Buffer_outptr,w
-  1969  01D3  3E01               	addlw	1
-  1970  01D4  391F               	andlw	31
-  1971  01D5  00F0               	movwf	??_UART_Interrupt
-  1972  01D6  0870               	movf	??_UART_Interrupt,w
-  1973  01D7  00F2               	movwf	UART_Interrupt@x
-  1974                           
-  1975                           ;PIC_UART.c: 116: if (x != UART_Buffer_inptr)
-  1976  01D8  0872               	movf	UART_Interrupt@x,w
-  1977  01D9  0679               	xorwf	_UART_Buffer_inptr,w
-  1978  01DA  1903               	skipnz
-  1979  01DB  29E8               	goto	i1l1191
-  1980                           
-  1981                           ;PIC_UART.c: 117: {
-  1982                           ;PIC_UART.c: 118: UART_Buffer[UART_Buffer_outptr] = dt;
-  1983  01DC  0871               	movf	UART_Interrupt@dt,w
-  1984  01DD  00F0               	movwf	??_UART_Interrupt
-  1985  01DE  0878               	movf	_UART_Buffer_outptr,w
-  1986  01DF  3EA0               	addlw	(low (_UART_Buffer| 0))& (0+255)
-  1987  01E0  0086               	movwf	6
-  1988  01E1  0187               	clrf	7
-  1989  01E2  0870               	movf	??_UART_Interrupt,w
-  1990  01E3  0081               	movwf	1
-  1991                           
-  1992                           ;PIC_UART.c: 119: UART_Buffer_outptr = x;
-  1993  01E4  0872               	movf	UART_Interrupt@x,w
-  1994  01E5  00F0               	movwf	??_UART_Interrupt
-  1995  01E6  0870               	movf	??_UART_Interrupt,w
-  1996  01E7  00F8               	movwf	_UART_Buffer_outptr
-  1997  01E8                     i1l1191:	
-  1998                           
-  1999                           ;PIC_UART.c: 120: }
-  2000                           ;PIC_UART.c: 122: if (OERR == 1)
-  2001  01E8  1C9D               	btfss	29,1	;volatile
-  2002  01E9  29EE               	goto	i1l123
-  2003                           
-  2004                           ;PIC_UART.c: 123: {
-  2005                           ;PIC_UART.c: 124: CREN = 0;
-  2006  01EA  121D               	bcf	29,4	;volatile
-  2007  01EB                     i1l124:	
-  2008                           ;PIC_UART.c: 125: while (OERR);
-  2009                           
-  2010  01EB  189D               	btfsc	29,1	;volatile
-  2011  01EC  29EB               	goto	i1l124
-  2012                           
-  2013                           ;PIC_UART.c: 126: CREN = 1;
-  2014  01ED  161D               	bsf	29,4	;volatile
-  2015  01EE                     i1l123:	
-  2016                           
-  2017                           ;PIC_UART.c: 127: }
-  2018                           ;PIC_UART.c: 128: RCIF = 0;
-  2019  01EE  0020               	movlb	0	; select bank0
-  2020  01EF  1291               	bcf	17,5	;volatile
-  2021  01F0  0008               	return
-  2022  01F1                     __end_of_UART_Interrupt:	
-  2023                           
-  2024                           	psect	text10
-  2025  0257                     __ptext10:	
-  2026 ;; *************** function _I2C_Interrupt *****************
-  2027 ;; Defined at:
-  2028 ;;		line 31 in file "PIC_I2C.c"
-  2029 ;; Parameters:    Size  Location     Type
-  2030 ;;		None
-  2031 ;; Auto vars:     Size  Location     Type
-  2032 ;;		None
-  2033 ;; Return value:  Size  Location     Type
-  2034 ;;                  1    wreg      void 
-  2035 ;; Registers used:
-  2036 ;;		wreg, fsr1l, fsr1h, status,2, status,0, pclath, cstack
-  2037 ;; Tracked objects:
-  2038 ;;		On entry : 0/0
-  2039 ;;		On exit  : 0/0
-  2040 ;;		Unchanged: 0/0
-  2041 ;; Data sizes:     COMMON   BANK0   BANK1
-  2042 ;;      Params:         0       0       0
-  2043 ;;      Locals:         0       0       0
-  2044 ;;      Temps:          0       0       0
-  2045 ;;      Totals:         0       0       0
-  2046 ;;Total ram usage:        0 bytes
-  2047 ;; Hardware stack levels used:    1
-  2048 ;; Hardware stack levels required when called:    1
-  2049 ;; This function calls:
-  2050 ;;		_I2C1_Interrupt
-  2051 ;; This function is called by:
-  2052 ;;		_Handle
-  2053 ;; This function uses a non-reentrant model
-  2054 ;;
-  2055                           
-  2056                           
-  2057                           ;psect for function _I2C_Interrupt
-  2058  0257                     _I2C_Interrupt:	
-  2059                           
-  2060                           ;PIC_I2C.c: 33: I2C1_Interrupt();
-  2061                           
-  2062                           ;incstack = 0
-  2063                           ; Regs used in _I2C_Interrupt: [wreg+fsr1l+fsr1h+status,2+status,0+pclath+cstack]
-  2064  0257  210A               	fcall	_I2C1_Interrupt
-  2065  0258  0008               	return
-  2066  0259                     __end_of_I2C_Interrupt:	
-  2067                           
-  2068                           	psect	text11
-  2069  010A                     __ptext11:	
-  2070 ;; *************** function _I2C1_Interrupt *****************
-  2071 ;; Defined at:
-  2072 ;;		line 153 in file "PIC_I2C1.c"
-  2073 ;; Parameters:    Size  Location     Type
-  2074 ;;		None
-  2075 ;; Auto vars:     Size  Location     Type
-  2076 ;;		None
-  2077 ;; Return value:  Size  Location     Type
-  2078 ;;                  1    wreg      void 
-  2079 ;; Registers used:
-  2080 ;;		wreg, fsr1l, fsr1h, status,2, status,0
-  2081 ;; Tracked objects:
-  2082 ;;		On entry : 0/0
-  2083 ;;		On exit  : 0/0
-  2084 ;;		Unchanged: 0/0
-  2085 ;; Data sizes:     COMMON   BANK0   BANK1
-  2086 ;;      Params:         0       0       0
-  2087 ;;      Locals:         0       0       0
-  2088 ;;      Temps:          1       0       0
-  2089 ;;      Totals:         1       0       0
-  2090 ;;Total ram usage:        1 bytes
-  2091 ;; Hardware stack levels used:    1
-  2092 ;; This function calls:
-  2093 ;;		Nothing
-  2094 ;; This function is called by:
-  2095 ;;		_I2C_Interrupt
-  2096 ;; This function uses a non-reentrant model
-  2097 ;;
-  2098                           
-  2099                           
-  2100                           ;psect for function _I2C1_Interrupt
-  2101  010A                     _I2C1_Interrupt:	
-  2102                           
-  2103                           ;PIC_I2C1.c: 155: if(SSP1IF&&SSP1IE)
-  2104                           
-  2105                           ;incstack = 0
-  2106                           ; Regs used in _I2C1_Interrupt: [wreg+fsr1l+fsr1h+status,2+status,0]
-  2107  010A  0020               	movlb	0	; select bank0
-  2108  010B  1D91               	btfss	17,3	;volatile
-  2109  010C  2956               	goto	i1l851
-  2110  010D  0021               	movlb	1	; select bank1
-  2111  010E  1D91               	btfss	17,3	;volatile
-  2112  010F  2956               	goto	i1l851
-  2113                           
-  2114                           ;PIC_I2C1.c: 156: {
-  2115                           ;PIC_I2C1.c: 157: if(SSPSTATbits.D_nA)
-  2116  0110  0024               	movlb	4	; select bank4
-  2117  0111  1E94               	btfss	20,5	;volatile
-  2118  0112  292D               	goto	i1l272
-  2119                           
-  2120                           ;PIC_I2C1.c: 158: {
-  2121                           ;PIC_I2C1.c: 159: if(SSPSTATbits.R_nW)
-  2122  0113  1D14               	btfss	20,2	;volatile
-  2123  0114  2920               	goto	i1l827
-  2124                           
-  2125                           ;PIC_I2C1.c: 160: {
-  2126                           ;PIC_I2C1.c: 161: if(!SSPCON2bits.ACKSTAT)
-  2127  0115  1B16               	btfsc	22,6	;volatile
-  2128  0116  2954               	goto	i1l849
-  2129  0117                     i1l819:	
-  2130                           ;PIC_I2C1.c: 162: {
-  2131                           ;PIC_I2C1.c: 163: while((SSPCON1bits.CKP)|(SSPSTATbits.BF));
-  2132                           
-  2133  0117  0814               	movf	20,w	;volatile
-  2134  0118  3901               	andlw	1
-  2135  0119  00F0               	movwf	??_I2C1_Interrupt
-  2136  011A  0E15               	swapf	21,w	;volatile
-  2137  011B  3901               	andlw	1
-  2138  011C  0470               	iorwf	??_I2C1_Interrupt,w
-  2139  011D  1D03               	btfss	3,2
-  2140  011E  2917               	goto	i1l819
-  2141  011F  2940               	goto	L2
-  2142  0120                     i1l827:	
-  2143                           ;PIC_I2C1.c: 167: }
-  2144                           ;PIC_I2C1.c: 168: }
-  2145                           
-  2146                           ;PIC_I2C1.c: 166: SSPCON1bits.CKP = 1;
-  2147                           
-  2148                           ;PIC_I2C1.c: 165: I2C1_Config.TransmitPoint++;
-  2149                           
-  2150                           ;PIC_I2C1.c: 164: SSPBUF = *I2C1_Config.TransmitPoint;
-  2151                           
-  2152                           
-  2153                           ;PIC_I2C1.c: 169: else
-  2154                           ;PIC_I2C1.c: 170: {
-  2155                           ;PIC_I2C1.c: 171: *I2C1_Config.ReceivePoint = SSPBUF;
-  2156  0120  0811               	movf	17,w	;volatile
-  2157  0121  00F0               	movwf	??_I2C1_Interrupt
-  2158  0122  0020               	movlb	0	; select bank0
-  2159  0123  084D               	movf	low ((_I2C1_Config| 0+17)),w
-  2160  0124  0086               	movwf	6
-  2161  0125  0187               	clrf	7
-  2162  0126  0870               	movf	??_I2C1_Interrupt,w
-  2163  0127  0081               	movwf	1
-  2164                           
-  2165                           ;PIC_I2C1.c: 172: I2C1_Config.ReceivePoint++;
-  2166  0128  3001               	movlw	1
-  2167  0129  00F0               	movwf	??_I2C1_Interrupt
-  2168  012A  0870               	movf	??_I2C1_Interrupt,w
-  2169  012B  07CD               	addwf	low ((_I2C1_Config| 0+17)),f
-  2170  012C  2952               	goto	i1l847
-  2171  012D                     i1l272:	
-  2172                           ;PIC_I2C1.c: 174: }
-  2173                           ;PIC_I2C1.c: 175: }
+  1959                           ;PIC_UART.c: 109: uint8_t x;
+  1960                           ;PIC_UART.c: 110: uint8_t dt;
+  1961                           ;PIC_UART.c: 112: if (RCIF == 1)
+  1962                           
+  1963                           ;incstack = 0
+  1964                           ; Regs used in _UART_Interrupt: [wreg+fsr1l+fsr1h+status,2+status,0]
+  1965  01CA  0020               	movlb	0	; select bank0
+  1966  01CB  1E91               	btfss	17,5	;volatile
+  1967  01CC  0008               	return
+  1968                           
+  1969                           ;PIC_UART.c: 113: {
+  1970                           ;PIC_UART.c: 114: dt = RCREG;
+  1971  01CD  0023               	movlb	3	; select bank3
+  1972  01CE  0819               	movf	25,w	;volatile
+  1973  01CF  00F0               	movwf	??_UART_Interrupt
+  1974  01D0  0870               	movf	??_UART_Interrupt,w
+  1975  01D1  00F1               	movwf	UART_Interrupt@dt
+  1976                           
+  1977                           ;PIC_UART.c: 115: x = (UART_Buffer_outptr + 1) % 32;
+  1978  01D2  0878               	movf	_UART_Buffer_outptr,w
+  1979  01D3  3E01               	addlw	1
+  1980  01D4  391F               	andlw	31
+  1981  01D5  00F0               	movwf	??_UART_Interrupt
+  1982  01D6  0870               	movf	??_UART_Interrupt,w
+  1983  01D7  00F2               	movwf	UART_Interrupt@x
+  1984                           
+  1985                           ;PIC_UART.c: 116: if (x != UART_Buffer_inptr)
+  1986  01D8  0872               	movf	UART_Interrupt@x,w
+  1987  01D9  0679               	xorwf	_UART_Buffer_inptr,w
+  1988  01DA  1903               	skipnz
+  1989  01DB  29E8               	goto	i1l1215
+  1990                           
+  1991                           ;PIC_UART.c: 117: {
+  1992                           ;PIC_UART.c: 118: UART_Buffer[UART_Buffer_outptr] = dt;
+  1993  01DC  0871               	movf	UART_Interrupt@dt,w
+  1994  01DD  00F0               	movwf	??_UART_Interrupt
+  1995  01DE  0878               	movf	_UART_Buffer_outptr,w
+  1996  01DF  3EA0               	addlw	(low (_UART_Buffer| 0))& (0+255)
+  1997  01E0  0086               	movwf	6
+  1998  01E1  0187               	clrf	7
+  1999  01E2  0870               	movf	??_UART_Interrupt,w
+  2000  01E3  0081               	movwf	1
+  2001                           
+  2002                           ;PIC_UART.c: 119: UART_Buffer_outptr = x;
+  2003  01E4  0872               	movf	UART_Interrupt@x,w
+  2004  01E5  00F0               	movwf	??_UART_Interrupt
+  2005  01E6  0870               	movf	??_UART_Interrupt,w
+  2006  01E7  00F8               	movwf	_UART_Buffer_outptr
+  2007  01E8                     i1l1215:	
+  2008                           
+  2009                           ;PIC_UART.c: 120: }
+  2010                           ;PIC_UART.c: 122: if (OERR == 1)
+  2011  01E8  1C9D               	btfss	29,1	;volatile
+  2012  01E9  29EE               	goto	i1l127
+  2013                           
+  2014                           ;PIC_UART.c: 123: {
+  2015                           ;PIC_UART.c: 124: CREN = 0;
+  2016  01EA  121D               	bcf	29,4	;volatile
+  2017  01EB                     i1l128:	
+  2018                           ;PIC_UART.c: 125: while (OERR);
+  2019                           
+  2020  01EB  189D               	btfsc	29,1	;volatile
+  2021  01EC  29EB               	goto	i1l128
+  2022                           
+  2023                           ;PIC_UART.c: 126: CREN = 1;
+  2024  01ED  161D               	bsf	29,4	;volatile
+  2025  01EE                     i1l127:	
+  2026                           
+  2027                           ;PIC_UART.c: 127: }
+  2028                           ;PIC_UART.c: 128: RCIF = 0;
+  2029  01EE  0020               	movlb	0	; select bank0
+  2030  01EF  1291               	bcf	17,5	;volatile
+  2031  01F0  0008               	return
+  2032  01F1                     __end_of_UART_Interrupt:	
+  2033                           
+  2034                           	psect	text10
+  2035  025B                     __ptext10:	
+  2036 ;; *************** function _I2C_Interrupt *****************
+  2037 ;; Defined at:
+  2038 ;;		line 31 in file "PIC_I2C.c"
+  2039 ;; Parameters:    Size  Location     Type
+  2040 ;;		None
+  2041 ;; Auto vars:     Size  Location     Type
+  2042 ;;		None
+  2043 ;; Return value:  Size  Location     Type
+  2044 ;;                  1    wreg      void 
+  2045 ;; Registers used:
+  2046 ;;		wreg, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+  2047 ;; Tracked objects:
+  2048 ;;		On entry : 0/0
+  2049 ;;		On exit  : 0/0
+  2050 ;;		Unchanged: 0/0
+  2051 ;; Data sizes:     COMMON   BANK0   BANK1
+  2052 ;;      Params:         0       0       0
+  2053 ;;      Locals:         0       0       0
+  2054 ;;      Temps:          0       0       0
+  2055 ;;      Totals:         0       0       0
+  2056 ;;Total ram usage:        0 bytes
+  2057 ;; Hardware stack levels used:    1
+  2058 ;; Hardware stack levels required when called:    1
+  2059 ;; This function calls:
+  2060 ;;		_I2C1_Interrupt
+  2061 ;; This function is called by:
+  2062 ;;		_Handle
+  2063 ;; This function uses a non-reentrant model
+  2064 ;;
+  2065                           
+  2066                           
+  2067                           ;psect for function _I2C_Interrupt
+  2068  025B                     _I2C_Interrupt:	
+  2069                           
+  2070                           ;PIC_I2C.c: 33: I2C1_Interrupt();
+  2071                           
+  2072                           ;incstack = 0
+  2073                           ; Regs used in _I2C_Interrupt: [wreg+fsr1l+fsr1h+status,2+status,0+pclath+cstack]
+  2074  025B  210A               	fcall	_I2C1_Interrupt
+  2075  025C  0008               	return
+  2076  025D                     __end_of_I2C_Interrupt:	
+  2077                           
+  2078                           	psect	text11
+  2079  010A                     __ptext11:	
+  2080 ;; *************** function _I2C1_Interrupt *****************
+  2081 ;; Defined at:
+  2082 ;;		line 153 in file "PIC_I2C1.c"
+  2083 ;; Parameters:    Size  Location     Type
+  2084 ;;		None
+  2085 ;; Auto vars:     Size  Location     Type
+  2086 ;;		None
+  2087 ;; Return value:  Size  Location     Type
+  2088 ;;                  1    wreg      void 
+  2089 ;; Registers used:
+  2090 ;;		wreg, fsr1l, fsr1h, status,2, status,0
+  2091 ;; Tracked objects:
+  2092 ;;		On entry : 0/0
+  2093 ;;		On exit  : 0/0
+  2094 ;;		Unchanged: 0/0
+  2095 ;; Data sizes:     COMMON   BANK0   BANK1
+  2096 ;;      Params:         0       0       0
+  2097 ;;      Locals:         0       0       0
+  2098 ;;      Temps:          1       0       0
+  2099 ;;      Totals:         1       0       0
+  2100 ;;Total ram usage:        1 bytes
+  2101 ;; Hardware stack levels used:    1
+  2102 ;; This function calls:
+  2103 ;;		Nothing
+  2104 ;; This function is called by:
+  2105 ;;		_I2C_Interrupt
+  2106 ;; This function uses a non-reentrant model
+  2107 ;;
+  2108                           
+  2109                           
+  2110                           ;psect for function _I2C1_Interrupt
+  2111  010A                     _I2C1_Interrupt:	
+  2112                           
+  2113                           ;PIC_I2C1.c: 155: if(SSP1IF&&SSP1IE)
+  2114                           
+  2115                           ;incstack = 0
+  2116                           ; Regs used in _I2C1_Interrupt: [wreg+fsr1l+fsr1h+status,2+status,0]
+  2117  010A  0020               	movlb	0	; select bank0
+  2118  010B  1D91               	btfss	17,3	;volatile
+  2119  010C  2956               	goto	i1l855
+  2120  010D  0021               	movlb	1	; select bank1
+  2121  010E  1D91               	btfss	17,3	;volatile
+  2122  010F  2956               	goto	i1l855
+  2123                           
+  2124                           ;PIC_I2C1.c: 156: {
+  2125                           ;PIC_I2C1.c: 157: if(SSPSTATbits.D_nA)
+  2126  0110  0024               	movlb	4	; select bank4
+  2127  0111  1E94               	btfss	20,5	;volatile
+  2128  0112  292D               	goto	i1l276
+  2129                           
+  2130                           ;PIC_I2C1.c: 158: {
+  2131                           ;PIC_I2C1.c: 159: if(SSPSTATbits.R_nW)
+  2132  0113  1D14               	btfss	20,2	;volatile
+  2133  0114  2920               	goto	i1l831
+  2134                           
+  2135                           ;PIC_I2C1.c: 160: {
+  2136                           ;PIC_I2C1.c: 161: if(!SSPCON2bits.ACKSTAT)
+  2137  0115  1B16               	btfsc	22,6	;volatile
+  2138  0116  2954               	goto	i1l853
+  2139  0117                     i1l823:	
+  2140                           ;PIC_I2C1.c: 162: {
+  2141                           ;PIC_I2C1.c: 163: while((SSPCON1bits.CKP)|(SSPSTATbits.BF));
+  2142                           
+  2143  0117  0814               	movf	20,w	;volatile
+  2144  0118  3901               	andlw	1
+  2145  0119  00F0               	movwf	??_I2C1_Interrupt
+  2146  011A  0E15               	swapf	21,w	;volatile
+  2147  011B  3901               	andlw	1
+  2148  011C  0470               	iorwf	??_I2C1_Interrupt,w
+  2149  011D  1D03               	btfss	3,2
+  2150  011E  2917               	goto	i1l823
+  2151  011F  2940               	goto	L2
+  2152  0120                     i1l831:	
+  2153                           ;PIC_I2C1.c: 167: }
+  2154                           ;PIC_I2C1.c: 168: }
+  2155                           
+  2156                           ;PIC_I2C1.c: 166: SSPCON1bits.CKP = 1;
+  2157                           
+  2158                           ;PIC_I2C1.c: 165: I2C1_Config.TransmitPoint++;
+  2159                           
+  2160                           ;PIC_I2C1.c: 164: SSPBUF = *I2C1_Config.TransmitPoint;
+  2161                           
+  2162                           
+  2163                           ;PIC_I2C1.c: 169: else
+  2164                           ;PIC_I2C1.c: 170: {
+  2165                           ;PIC_I2C1.c: 171: *I2C1_Config.ReceivePoint = SSPBUF;
+  2166  0120  0811               	movf	17,w	;volatile
+  2167  0121  00F0               	movwf	??_I2C1_Interrupt
+  2168  0122  0020               	movlb	0	; select bank0
+  2169  0123  084D               	movf	low ((_I2C1_Config| 0+17)),w
+  2170  0124  0086               	movwf	6
+  2171  0125  0187               	clrf	7
+  2172  0126  0870               	movf	??_I2C1_Interrupt,w
+  2173  0127  0081               	movwf	1
   2174                           
-  2175                           ;PIC_I2C1.c: 173: SSPCON1bits.CKP = 1;
-  2176                           
-  2177                           
-  2178                           ;PIC_I2C1.c: 176: else if(!SSPSTATbits.D_nA)
-  2179  012D  1A94               	btfsc	20,5	;volatile
-  2180  012E  2954               	goto	i1l849
-  2181                           
-  2182                           ;PIC_I2C1.c: 177: {
-  2183                           ;PIC_I2C1.c: 178: SSPBUF;
-  2184  012F  0811               	movf	17,w	;volatile
-  2185                           
-  2186                           ;PIC_I2C1.c: 180: if(SSPSTATbits.R_nW)
-  2187  0130  1D14               	btfss	20,2	;volatile
-  2188  0131  294D               	goto	i1l845
-  2189                           
-  2190                           ;PIC_I2C1.c: 181: {
-  2191                           ;PIC_I2C1.c: 182: I2C1_Config.TransmitPoint = I2C1_Config.SlaveTransmitBuff;
-  2192  0132  303C               	movlw	(low (_I2C1_Config| 0))& (0+255)
-  2193  0133  00F0               	movwf	??_I2C1_Interrupt
-  2194  0134  0870               	movf	??_I2C1_Interrupt,w
-  2195  0135  0020               	movlb	0	; select bank0
-  2196  0136  00CC               	movwf	low ((_I2C1_Config| 0+16))
-  2197  0137                     i1l839:	
-  2198                           ;PIC_I2C1.c: 184: while((SSPCON1bits.CKP)|(SSPSTATbits.BF));
+  2175                           ;PIC_I2C1.c: 172: I2C1_Config.ReceivePoint++;
+  2176  0128  3001               	movlw	1
+  2177  0129  00F0               	movwf	??_I2C1_Interrupt
+  2178  012A  0870               	movf	??_I2C1_Interrupt,w
+  2179  012B  07CD               	addwf	low ((_I2C1_Config| 0+17)),f
+  2180  012C  2952               	goto	i1l851
+  2181  012D                     i1l276:	
+  2182                           ;PIC_I2C1.c: 174: }
+  2183                           ;PIC_I2C1.c: 175: }
+  2184                           
+  2185                           ;PIC_I2C1.c: 173: SSPCON1bits.CKP = 1;
+  2186                           
+  2187                           
+  2188                           ;PIC_I2C1.c: 176: else if(!SSPSTATbits.D_nA)
+  2189  012D  1A94               	btfsc	20,5	;volatile
+  2190  012E  2954               	goto	i1l853
+  2191                           
+  2192                           ;PIC_I2C1.c: 177: {
+  2193                           ;PIC_I2C1.c: 178: SSPBUF;
+  2194  012F  0811               	movf	17,w	;volatile
+  2195                           
+  2196                           ;PIC_I2C1.c: 180: if(SSPSTATbits.R_nW)
+  2197  0130  1D14               	btfss	20,2	;volatile
+  2198  0131  294D               	goto	i1l849
   2199                           
-  2200  0137  0024               	movlb	4	; select bank4
-  2201  0138  0814               	movf	20,w	;volatile
-  2202  0139  3901               	andlw	1
-  2203  013A  00F0               	movwf	??_I2C1_Interrupt
-  2204  013B  0E15               	swapf	21,w	;volatile
-  2205  013C  3901               	andlw	1
-  2206  013D  0470               	iorwf	??_I2C1_Interrupt,w
-  2207  013E  1D03               	btfss	3,2
-  2208  013F  2937               	goto	i1l839
-  2209  0140                     L2:	
-  2210                           
-  2211                           ;PIC_I2C1.c: 185: SSPBUF = *I2C1_Config.TransmitPoint;
-  2212  0140  0020               	movlb	0	; select bank0
-  2213  0141  084C               	movf	low ((_I2C1_Config| 0+16)),w
-  2214  0142  0086               	movwf	6
-  2215  0143  0187               	clrf	7
-  2216  0144  0801               	movf	1,w
-  2217  0145  0024               	movlb	4	; select bank4
-  2218  0146  0091               	movwf	17	;volatile
-  2219                           
-  2220                           ;PIC_I2C1.c: 186: I2C1_Config.TransmitPoint++;
-  2221  0147  3001               	movlw	1
-  2222  0148  00F0               	movwf	??_I2C1_Interrupt
-  2223  0149  0870               	movf	??_I2C1_Interrupt,w
-  2224  014A  0020               	movlb	0	; select bank0
-  2225  014B  07CC               	addwf	low ((_I2C1_Config| 0+16)),f
-  2226                           
-  2227                           ;PIC_I2C1.c: 187: }
-  2228  014C  2952               	goto	i1l847
-  2229  014D                     i1l845:	
-  2230                           
-  2231                           ;PIC_I2C1.c: 188: else
-  2232                           ;PIC_I2C1.c: 189: {
-  2233                           ;PIC_I2C1.c: 190: I2C1_Config.ReceivePoint = I2C1_Config.SlaveReceiveBuff;
-  2234  014D  3044               	movlw	(low ((_I2C1_Config| 0+8)))& (0+255)
-  2235  014E  00F0               	movwf	??_I2C1_Interrupt
-  2236  014F  0870               	movf	??_I2C1_Interrupt,w
-  2237  0150  0020               	movlb	0	; select bank0
-  2238  0151  00CD               	movwf	low ((_I2C1_Config| 0+17))
-  2239  0152                     i1l847:	
+  2200                           ;PIC_I2C1.c: 181: {
+  2201                           ;PIC_I2C1.c: 182: I2C1_Config.TransmitPoint = I2C1_Config.SlaveTransmitBuff;
+  2202  0132  303C               	movlw	(low (_I2C1_Config| 0))& (0+255)
+  2203  0133  00F0               	movwf	??_I2C1_Interrupt
+  2204  0134  0870               	movf	??_I2C1_Interrupt,w
+  2205  0135  0020               	movlb	0	; select bank0
+  2206  0136  00CC               	movwf	low ((_I2C1_Config| 0+16))
+  2207  0137                     i1l843:	
+  2208                           ;PIC_I2C1.c: 184: while((SSPCON1bits.CKP)|(SSPSTATbits.BF));
+  2209                           
+  2210  0137  0024               	movlb	4	; select bank4
+  2211  0138  0814               	movf	20,w	;volatile
+  2212  0139  3901               	andlw	1
+  2213  013A  00F0               	movwf	??_I2C1_Interrupt
+  2214  013B  0E15               	swapf	21,w	;volatile
+  2215  013C  3901               	andlw	1
+  2216  013D  0470               	iorwf	??_I2C1_Interrupt,w
+  2217  013E  1D03               	btfss	3,2
+  2218  013F  2937               	goto	i1l843
+  2219  0140                     L2:	
+  2220                           
+  2221                           ;PIC_I2C1.c: 185: SSPBUF = *I2C1_Config.TransmitPoint;
+  2222  0140  0020               	movlb	0	; select bank0
+  2223  0141  084C               	movf	low ((_I2C1_Config| 0+16)),w
+  2224  0142  0086               	movwf	6
+  2225  0143  0187               	clrf	7
+  2226  0144  0801               	movf	1,w
+  2227  0145  0024               	movlb	4	; select bank4
+  2228  0146  0091               	movwf	17	;volatile
+  2229                           
+  2230                           ;PIC_I2C1.c: 186: I2C1_Config.TransmitPoint++;
+  2231  0147  3001               	movlw	1
+  2232  0148  00F0               	movwf	??_I2C1_Interrupt
+  2233  0149  0870               	movf	??_I2C1_Interrupt,w
+  2234  014A  0020               	movlb	0	; select bank0
+  2235  014B  07CC               	addwf	low ((_I2C1_Config| 0+16)),f
+  2236                           
+  2237                           ;PIC_I2C1.c: 187: }
+  2238  014C  2952               	goto	i1l851
+  2239  014D                     i1l849:	
   2240                           
-  2241                           ;PIC_I2C1.c: 191: }
-  2242                           ;PIC_I2C1.c: 192: SSPCON1bits.CKP = 1;
-  2243  0152  0024               	movlb	4	; select bank4
-  2244  0153  1615               	bsf	21,4	;volatile
-  2245  0154                     i1l849:	
-  2246                           
-  2247                           ;PIC_I2C1.c: 193: }
-  2248                           ;PIC_I2C1.c: 194: SSP1IF = 0;
-  2249  0154  0020               	movlb	0	; select bank0
-  2250  0155  1191               	bcf	17,3	;volatile
-  2251  0156                     i1l851:	
-  2252                           
-  2253                           ;PIC_I2C1.c: 195: }
-  2254                           ;PIC_I2C1.c: 197: if(BCL1IE&&BCL1IF)
-  2255  0156  0021               	movlb	1	; select bank1
-  2256  0157  1D92               	btfss	18,3	;volatile
-  2257  0158  0008               	return
-  2258  0159  0020               	movlb	0	; select bank0
-  2259  015A  1D92               	btfss	18,3	;volatile
-  2260  015B  0008               	return
-  2261                           
-  2262                           ;PIC_I2C1.c: 198: BCL1IF = 0;
-  2263  015C  1192               	bcf	18,3	;volatile
-  2264  015D  0008               	return
-  2265  015E                     __end_of_I2C1_Interrupt:	
-  2266  007E                     btemp	set	126	;btemp
-  2267  007E                     int$flags	set	126
-  2268  007E                     wtemp0	set	126
+  2241                           ;PIC_I2C1.c: 188: else
+  2242                           ;PIC_I2C1.c: 189: {
+  2243                           ;PIC_I2C1.c: 190: I2C1_Config.ReceivePoint = I2C1_Config.SlaveReceiveBuff;
+  2244  014D  3044               	movlw	(low ((_I2C1_Config| 0+8)))& (0+255)
+  2245  014E  00F0               	movwf	??_I2C1_Interrupt
+  2246  014F  0870               	movf	??_I2C1_Interrupt,w
+  2247  0150  0020               	movlb	0	; select bank0
+  2248  0151  00CD               	movwf	low ((_I2C1_Config| 0+17))
+  2249  0152                     i1l851:	
+  2250                           
+  2251                           ;PIC_I2C1.c: 191: }
+  2252                           ;PIC_I2C1.c: 192: SSPCON1bits.CKP = 1;
+  2253  0152  0024               	movlb	4	; select bank4
+  2254  0153  1615               	bsf	21,4	;volatile
+  2255  0154                     i1l853:	
+  2256                           
+  2257                           ;PIC_I2C1.c: 193: }
+  2258                           ;PIC_I2C1.c: 194: SSP1IF = 0;
+  2259  0154  0020               	movlb	0	; select bank0
+  2260  0155  1191               	bcf	17,3	;volatile
+  2261  0156                     i1l855:	
+  2262                           
+  2263                           ;PIC_I2C1.c: 195: }
+  2264                           ;PIC_I2C1.c: 197: if(BCL1IE&&BCL1IF)
+  2265  0156  0021               	movlb	1	; select bank1
+  2266  0157  1D92               	btfss	18,3	;volatile
+  2267  0158  0008               	return
+  2268  0159  0020               	movlb	0	; select bank0
+  2269  015A  1D92               	btfss	18,3	;volatile
+  2270  015B  0008               	return
+  2271                           
+  2272                           ;PIC_I2C1.c: 198: BCL1IF = 0;
+  2273  015C  1192               	bcf	18,3	;volatile
+  2274  015D  0008               	return
+  2275  015E                     __end_of_I2C1_Interrupt:	
+  2276  007E                     btemp	set	126	;btemp
+  2277  007E                     int$flags	set	126
+  2278  007E                     wtemp0	set	126
 
 
 Data Sizes:
@@ -2307,13 +2317,13 @@ Pointer List with Targets:
     I2C_Transmit@pData	PTR unsigned char  size(1) Largest target is 13
 		 -> main@testdata(BANK0[13]), 
 
-    S151$ReceivePoint	PTR unsigned char  size(1) Largest target is 21
+    S153$ReceivePoint	PTR unsigned char  size(1) Largest target is 21
 		 -> I2C1_Config(BANK0[19]), 
 
     I2C1_Config.ReceivePoint	PTR unsigned char  size(1) Largest target is 21
 		 -> I2C1_Config.SlaveReceiveBuff(BANK0[8]), I2C1_Config(BANK0[19]), 
 
-    S151$TransmitPoint	PTR unsigned char  size(1) Largest target is 21
+    S153$TransmitPoint	PTR unsigned char  size(1) Largest target is 21
 		 -> I2C1_Config(BANK0[19]), 
 
     I2C1_Config.TransmitPoint	PTR unsigned char  size(1) Largest target is 21
@@ -2509,77 +2519,78 @@ SFR31                0      0       0      32        0.0%
 
 
 Microchip Technology PIC Macro Assembler V1.43 build -156212558 
-Symbol Table                                                                                   Wed Dec 20 07:08:02 2017
+Symbol Table                                                                                   Wed Dec 20 07:19:10 2017
 
-            __CFG_CP$OFF 0000              _SSPSTATbits 0214                      l141 020A  
-                    l206 0045                      l215 006C                      l224 0085  
-                    l190 0101                      l193 00EA                      l186 00C1  
+            __CFG_CP$OFF 0000              _SSPSTATbits 0214                      l210 0045  
+                    l145 020A                      l219 006C                      l228 0085  
+                    l190 00C1                      l194 0101                      l197 00EA  
                     _GIE 005F             __CFG_CPD$OFF 0000                      u880 01B6  
            __CFG_BORV$LO 0000                      wreg 0009               _Basic_Init 0242  
-           __CFG_LVP$OFF 0000                     l1301 00F6                     l1221 0039  
-                   l1231 0059                     l1305 00F8                     l1241 0051  
-                   l1313 0205                     l1243 0055                     l1219 002F  
-                   l1323 01BA                     l1245 007A                     l1309 01F6  
-                   l1255 008B                     l1263 00AA                     l1257 00A2  
-                   l1265 00B2                     l1259 00A7                     l1293 00E1  
-                   l1285 00D6                     l1287 00D8                     l1279 00CB  
+           __CFG_LVP$OFF 0000                     l1311 00D8                     l1303 00CB  
+                   l1243 002F                     l1325 00F6                     l1317 00E1  
+                   l1309 00D6                     l1245 0039                     l1333 01F6  
+                   l1255 0059                     l1329 00F8                     l1281 00A2  
+                   l1265 0051                     l1337 0205                     l1283 00A7  
+                   l1267 0055                     l1347 01BA                     l1269 007A  
+                   l1279 008B                     l1287 00AA                     l1289 00B2  
                    _CREN 0CEC                     _PEIE 005E                     _RCIE 048D  
                    _RCIF 008D                     _OERR 0CE9                     _SPEN 0CEF  
-                   _TXIF 008C          ??_I2C1_Transmit 0076             __CFG_WRT$OFF 0000  
-  __size_of_I2C_InitPort 000D                     _main 0196                     fsr0h 0005  
-                   fsr1h 0007                     indf0 0000                     fsr0l 0004  
-                   indf1 0001                     fsr1l 0006                     btemp 007E  
-       ??_I2C1_Interrupt 0070                     start 0010            __CFG_IESO$OFF 0000  
-          __CFG_MCLRE$ON 0000    __size_of_I2C_Transmit 001A            __CFG_PLLEN$ON 0000  
-      __end_of_I2C1_Init 010A                    ?_main 0070                    _BRG16 0CFB  
-          __CFG_WDTE$OFF 0000                    i1l123 01EE                    i1l124 01EB  
-                  i1l272 012D                    i1l819 0117                    i1l827 0120  
-                  i1l851 0156                    i1l845 014D                    i1l847 0152  
-                  i1l839 0137                    i1l849 0154                    _RCREG 0199  
-                  _RCSTA 019D                    _PORTA 000C                    _TRISA 008C  
-                  _TXREG 019A                    _TXSTA 019E           __CFG_FCMEN$OFF 0000  
-     __size_of_UART_Init 0038             _I2C_InitPort 0235        _UART_Buffer_inptr 0079  
-         __CFG_BOREN$OFF 0000                    pclath 000A             main@testdata 002F  
- __size_of_I2C_Interrupt 0002                    status 0003                    wtemp0 007E  
-           _I2C_Transmit 01F1          __initialization 0011             __end_of_main 01CA  
-                 ??_main 002C              ?_Basic_Init 0070                   _BCL1IE 0493  
-                 _BCL1IF 0093                   _APFCON 011D                   _ANSELA 018C  
-                 i1l1191 01E8                   _SPBRGH 019C                   _SPBRGL 019B  
-                 _SSP1IE 048B                   _SSP1IF 008B                   _SSPADD 0212  
-                 _SSPBUF 0211                   _SSPMSK 0213                   _Handle 0004  
-         __CFG_PWRTE$OFF 0000        __end_of_UART_Init 0196       _UART_Buffer_outptr 0078  
-          _I2C_Interrupt 0257  __size_of_UART_Interrupt 0027         I2C_Transmit@I2Cx 002B  
-  __end_of_UART_InitPort 0235         I2C_Transmit@size 0026  UART_Init@UART_Init_PORT 0075  
-__end_of__initialization 0029           __pcstackCOMMON 0070      __size_of_Basic_Init 0009  
-           __pidataBANK0 021B           ?_I2C_Interrupt 0070      I2C1_Transmit@result 0023  
-             __pbssBANK0 003C               __pbssBANK1 00A0                  ?_Handle 0070  
-             __pmaintext 0196               __pintentry 0004                _I2C1_Init 00B5  
-                _SSPCON1 0215                  _SSPCON2 0216                  _SSPSTAT 0214  
-      __end_of_baudtable 021B    __end_of_I2C1_Transmit 00B5          __size_of_Handle 000C  
-        ??_I2C_Interrupt 0071          __CFG_STVREN$OFF 0000                  __ptext1 015E  
-                __ptext2 0228                  __ptext3 01F1                  __ptext4 002C  
-                __ptext5 00B5                  __ptext6 0235                  __ptext7 0242  
-                __ptext9 01CA           _UART_Interrupt 01CA               ?_I2C1_Init 0020  
-           ??_Basic_Init 0074                  clrloop0 0252     end_of_initialization 0029  
-       I2C1_Init@address 0022                  init_ram 024B                  initloop 024C  
-            _I2C1_Config 003C        I2C_Transmit@pData 0025       __end_of_Basic_Init 024B  
- __end_of_UART_Interrupt 01F1                _UART_Init 015E  __size_of_I2C1_Interrupt 0054  
-       __CFG_FOSC$INTOSC 0000           __end_of_Handle 0010         UART_Interrupt@dt 0071  
-        ?_UART_Interrupt 0070               ?_UART_Init 0075      start_initialization 0011  
-            ??_I2C1_Init 0075     I2C1_Transmit@address 0020                 ??_Handle 0073  
- __size_of_UART_InitPort 000D              __pdataBANK0 004F              __pbssCOMMON 0078  
-              ___latbits 0000            __pcstackBANK0 0020            ?_I2C_InitPort 0070  
-     I2C1_Transmit@i_327 0022       I2C1_Transmit@pData 0074                _baudtable 020B  
-          ?_I2C_Transmit 0024              ??_UART_Init 0020           _I2C1_Interrupt 010A  
-         ??_I2C_InitPort 0074            _UART_InitPort 0228  I2C1_Init@I2C1_Init_PORT 0020  
-         ??_I2C_Transmit 0027                clear_ram0 0251                main@F2367 004F  
- __end_of_I2C1_Interrupt 015E    __end_of_I2C_Interrupt 0259   __size_of_I2C1_Transmit 0089  
-         ?_UART_InitPort 0070          UART_Interrupt@x 0072         ??_UART_Interrupt 0070  
-        ?_I2C1_Interrupt 0070        I2C1_Transmit@size 0075             UART_Init@brg 0077  
-               __ptext10 0257                 __ptext11 010A            __size_of_main 0034  
-         I2C1_Init@Speed 0024            _I2C1_Transmit 002C     __end_of_I2C_InitPort 0242  
-               int$flags 007E      I2C_Transmit@address 0024     __end_of_I2C_Transmit 020B  
-        ??_UART_InitPort 0074                 intlevel1 0000           ?_I2C1_Transmit 0074  
-      __CFG_CLKOUTEN$OFF 0000              _UART_Buffer 00A0            I2C1_Init@mode 0023  
-     I2C_Transmit@result 002A            __pstringtext1 020B              _SSPCON1bits 0215  
-            _SSPCON2bits 0216           I2C1_Transmit@i 0021       __size_of_I2C1_Init 0055  
+                   _TXIF 008C                     _WPUA 020C          ??_I2C1_Transmit 0076  
+           __CFG_WRT$OFF 0000    __size_of_I2C_InitPort 000D                     _main 0196  
+                   fsr0h 0005                     fsr1h 0007                     indf0 0000  
+                   fsr0l 0004                     indf1 0001                     fsr1l 0006  
+                   btemp 007E         ??_I2C1_Interrupt 0070                     start 0010  
+          __CFG_IESO$OFF 0000            __CFG_MCLRE$ON 0000    __size_of_I2C_Transmit 001A  
+          __CFG_PLLEN$ON 0000        __end_of_I2C1_Init 010A                    ?_main 0070  
+                  _BRG16 0CFB            __CFG_WDTE$OFF 0000                    i1l127 01EE  
+                  i1l128 01EB                    i1l276 012D                    i1l823 0117  
+                  i1l831 0120                    i1l851 0152                    i1l843 0137  
+                  i1l853 0154                    i1l855 0156                    i1l849 014D  
+                  _RCREG 0199                    _RCSTA 019D                    _PORTA 000C  
+                  _TRISA 008C                    _TXREG 019A                    _TXSTA 019E  
+         __CFG_FCMEN$OFF 0000       __size_of_UART_Init 0038             _I2C_InitPort 0235  
+      _UART_Buffer_inptr 0079           __CFG_BOREN$OFF 0000                    pclath 000A  
+           main@testdata 002F   __size_of_I2C_Interrupt 0002                    status 0003  
+                  wtemp0 007E             _I2C_Transmit 01F1          __initialization 0011  
+           __end_of_main 01CA                   ??_main 002C              ?_Basic_Init 0070  
+                 _BCL1IE 0493                   _BCL1IF 0093                   _APFCON 011D  
+                 _ANSELA 018C                   i1l1215 01E8                   _OSCCON 0099  
+                 _SPBRGH 019C                   _SPBRGL 019B                   _SSP1IE 048B  
+                 _SSP1IF 008B                   _SSPADD 0212                   _SSPBUF 0211  
+                 _SSPMSK 0213                   _Handle 0004           __CFG_PWRTE$OFF 0000  
+      __end_of_UART_Init 0196       _UART_Buffer_outptr 0078            _I2C_Interrupt 025B  
+__size_of_UART_Interrupt 0027         I2C_Transmit@I2Cx 002B    __end_of_UART_InitPort 0235  
+       I2C_Transmit@size 0026  UART_Init@UART_Init_PORT 0075  __end_of__initialization 0029  
+         __pcstackCOMMON 0070      __size_of_Basic_Init 000D             __pidataBANK0 021B  
+         ?_I2C_Interrupt 0070      I2C1_Transmit@result 0023               __pbssBANK0 003C  
+             __pbssBANK1 00A0                  ?_Handle 0070               __pmaintext 0196  
+             __pintentry 0004                _I2C1_Init 00B5                  _SSPCON1 0215  
+                _SSPCON2 0216                  _SSPSTAT 0214        __end_of_baudtable 021B  
+  __end_of_I2C1_Transmit 00B5          __size_of_Handle 000C          ??_I2C_Interrupt 0071  
+        __CFG_STVREN$OFF 0000                  __ptext1 015E                  __ptext2 0228  
+                __ptext3 01F1                  __ptext4 002C                  __ptext5 00B5  
+                __ptext6 0235                  __ptext7 0242                  __ptext9 01CA  
+         _UART_Interrupt 01CA               ?_I2C1_Init 0020             ??_Basic_Init 0074  
+                clrloop0 0256     end_of_initialization 0029         I2C1_Init@address 0022  
+                init_ram 024F                  initloop 0250              _I2C1_Config 003C  
+      I2C_Transmit@pData 0025       __end_of_Basic_Init 024F   __end_of_UART_Interrupt 01F1  
+              _UART_Init 015E  __size_of_I2C1_Interrupt 0054         __CFG_FOSC$INTOSC 0000  
+         __end_of_Handle 0010         UART_Interrupt@dt 0071          ?_UART_Interrupt 0070  
+             ?_UART_Init 0075      start_initialization 0011              ??_I2C1_Init 0075  
+   I2C1_Transmit@address 0020                 ??_Handle 0073   __size_of_UART_InitPort 000D  
+            __pdataBANK0 004F              __pbssCOMMON 0078                ___latbits 0000  
+          __pcstackBANK0 0020            ?_I2C_InitPort 0070       I2C1_Transmit@i_329 0022  
+     I2C1_Transmit@pData 0074                _baudtable 020B            ?_I2C_Transmit 0024  
+            ??_UART_Init 0020           _I2C1_Interrupt 010A           ??_I2C_InitPort 0074  
+          _UART_InitPort 0228  I2C1_Init@I2C1_Init_PORT 0020           ??_I2C_Transmit 0027  
+              clear_ram0 0255                main@F2367 004F   __end_of_I2C1_Interrupt 015E  
+  __end_of_I2C_Interrupt 025D   __size_of_I2C1_Transmit 0089           ?_UART_InitPort 0070  
+        UART_Interrupt@x 0072         ??_UART_Interrupt 0070          ?_I2C1_Interrupt 0070  
+      I2C1_Transmit@size 0075             UART_Init@brg 0077                 __ptext10 025B  
+               __ptext11 010A            __size_of_main 0034           I2C1_Init@Speed 0024  
+          _I2C1_Transmit 002C     __end_of_I2C_InitPort 0242                 int$flags 007E  
+    I2C_Transmit@address 0024     __end_of_I2C_Transmit 020B          ??_UART_InitPort 0074  
+               intlevel1 0000           ?_I2C1_Transmit 0074        __CFG_CLKOUTEN$OFF 0000  
+            _UART_Buffer 00A0            I2C1_Init@mode 0023       I2C_Transmit@result 002A  
+          __pstringtext1 020B              _SSPCON1bits 0215              _SSPCON2bits 0216  
+         I2C1_Transmit@i 0021       __size_of_I2C1_Init 0055  
