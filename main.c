@@ -11,10 +11,17 @@ void main(void)
     Basic_Init();
     UART_Init(UART_InitPort,BAUD_9600);
     
+    
     while(1)
     {
         printf("Hello World\n");
     }
+}
+
+void interrupt Handle(void)
+{
+    UART_Interrupt();
+//    I2C_Interrupt();
 }
 
 void Basic_Init(void)

@@ -1,27 +1,19 @@
 Version 3.2 HI-TECH Software Intermediate Code
-[p mainexit ]
-"72 main.h
-[v _Basic_Init `(v ~T0 @X0 0 ef ]
-[v F2287 `(v ~T0 @X0 0 tf ]
-"12 main.c
-[c E2276 0 1 2 3 4 5 6 7 .. ]
-[n E2276 . BAUD_300 BAUD_1200 BAUD_2400 BAUD_9600 BAUD_10417 BAUD_19_2K BAUD_57_6K BAUD_115_2K  ]
-"28 PIC_UART.h
-[v _UART_Init `(v ~T0 @X0 0 ef2`*F2287`E2276 ]
-"73 main.h
-[v _UART_InitPort `(v ~T0 @X0 0 ef ]
-"195 /opt/microchip/xc8/v1.43/include/stdio.h
-[v _printf `(i ~T0 @X0 0 ev`*Cuc ]
-"37 PIC_UART.h
-[v _UART_Interrupt `(v ~T0 @X0 0 ef ]
-"1240 /opt/microchip/xc8/v1.43/include/pic12f1822.h
-[v _TRISA `Vuc ~T0 @X0 0 e@140 ]
-"2630
-[v _ANSELA `Vuc ~T0 @X0 0 e@396 ]
-"2488
-[v _APFCON `Vuc ~T0 @X0 0 e@285 ]
-"427
-[v _PORTA `Vuc ~T0 @X0 0 e@12 ]
+"3 PIC_I2C.c
+[c E2308 0 1 .. ]
+[n E2308 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
+"36 PIC_I2C.h
+[s S270 `uc -> 8 `i `uc -> 8 `i `*uc 1 `*uc 1 `E2308 1 ]
+[n S270 . SlaveTransmitBuff SlaveReceiveBuff TransmitPoint ReceivePoint Mode ]
+"6 PIC_I2C.c
+[c E2316 0 1 .. ]
+[n E2316 . I2C1_MODULE I2C2_MODULE  ]
+"50 PIC_I2C.h
+[v _I2C1_Transmit `(c ~T0 @X0 0 ef3`uc`*uc`uc ]
+"51
+[v _I2C1_Receive `(c ~T0 @X0 0 ef3`uc`*uc`uc ]
+"49
+[v _I2C1_Interrupt `(v ~T0 @X0 0 ef ]
 "40 main.h
 [p x FOSC=INTOSC ]
 "41
@@ -2254,103 +2246,155 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_UART.h: 37: void UART_Interrupt(void);
 [; ;main.h: 72: void Basic_Init(void);
 [; ;main.h: 73: void UART_InitPort(void);
-[v $root$_main `(v ~T0 @X0 0 e ]
-"9 main.c
-[v _main `(v ~T0 @X0 1 ef ]
+[; ;PIC_I2C.h: 17: typedef enum
+[; ;PIC_I2C.h: 18: {
+[; ;PIC_I2C.h: 19: I2C_MODE_MASTER,
+[; ;PIC_I2C.h: 20: I2C_MODE_SLAVE
+[; ;PIC_I2C.h: 21: }I2Cx_Mode;
+[; ;PIC_I2C.h: 23: typedef enum
+[; ;PIC_I2C.h: 24: {
+[; ;PIC_I2C.h: 25: I2C_SPEED_STANDARD,
+[; ;PIC_I2C.h: 26: I2C_SPEED_HIGH
+[; ;PIC_I2C.h: 27: }I2Cx_Speed;
+[; ;PIC_I2C.h: 29: typedef enum
+[; ;PIC_I2C.h: 30: {
+[; ;PIC_I2C.h: 31: I2C1_MODULE,
+[; ;PIC_I2C.h: 32: I2C2_MODULE
+[; ;PIC_I2C.h: 33: }I2Cx_Module;
+[; ;PIC_I2C.h: 35: typedef struct
+[; ;PIC_I2C.h: 36: {
+[; ;PIC_I2C.h: 37: uint8_t SlaveTransmitBuff[8];
+[; ;PIC_I2C.h: 38: uint8_t SlaveReceiveBuff[8];
+[; ;PIC_I2C.h: 39: uint8_t *TransmitPoint;
+[; ;PIC_I2C.h: 40: uint8_t *ReceivePoint;
+[; ;PIC_I2C.h: 41: I2Cx_Mode Mode;
+[; ;PIC_I2C.h: 42: }I2Cx_Configuration;
+[; ;PIC_I2C.h: 45: typedef void (*I2C1_Init_PORTTypedef)(void);
+[; ;PIC_I2C.h: 46: typedef void (*I2C2_Init_PORTTypedef)(void);
+[; ;PIC_I2C.h: 48: void I2C1_Init(I2C1_Init_PORTTypedef I2C1_Init_PORT,uint8_t address,I2Cx_Mode mode,I2Cx_Speed Speed);
+[; ;PIC_I2C.h: 49: void I2C1_Interrupt(void);
+[; ;PIC_I2C.h: 50: int8_t I2C1_Transmit(uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 51: int8_t I2C1_Receive(uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 53: int8_t I2C_Transmit(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 54: int8_t I2C_Receive(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 55: void I2C_Interrupt(void);
+"3 PIC_I2C.c
+[v _I2C1_Config `S270 ~T0 @X0 1 e ]
+[; ;PIC_I2C.c: 3: I2Cx_Configuration I2C1_Config;
+"5
+[v _I2C_Transmit `(c ~T0 @X0 1 ef4`E2316`uc`*uc`uc ]
+"6
+{
+[; ;PIC_I2C.c: 5: int8_t I2C_Transmit(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size)
+[; ;PIC_I2C.c: 6: {
+[e :U _I2C_Transmit ]
+"5
+[v _I2Cx `E2316 ~T0 @X0 1 r1 ]
+[v _address `uc ~T0 @X0 1 r2 ]
+[v _pData `*uc ~T0 @X0 1 r3 ]
+[v _size `uc ~T0 @X0 1 r4 ]
+"6
+[f ]
+"7
+[v _result `c ~T0 @X0 1 a ]
+[; ;PIC_I2C.c: 7: int8_t result = -1;
+[e = _result -> -U -> 1 `i `c ]
+[; ;PIC_I2C.c: 9: switch(I2Cx)
+"9
+[e $U 273  ]
+[; ;PIC_I2C.c: 10: {
 "10
 {
-[; ;main.c: 9: void main(void)
-[; ;main.c: 10: {
-[e :U _main ]
-[f ]
-[; ;main.c: 11: Basic_Init();
+[; ;PIC_I2C.c: 11: case I2C1_MODULE:
 "11
-[e ( _Basic_Init ..  ]
-[; ;main.c: 12: UART_Init(UART_InitPort,BAUD_9600);
+[e :U 274 ]
+[; ;PIC_I2C.c: 12: result = I2C1_Transmit(address,pData,size);
 "12
-[e ( _UART_Init (2 , &U _UART_InitPort . `E2276 3 ]
-[; ;main.c: 15: while(1)
-"15
-[e :U 272 ]
-[; ;main.c: 16: {
-"16
-{
-[; ;main.c: 17: printf("Hello World\n");
-"17
-[e ( _printf :s 1C ]
-"18
-}
-[e :U 271 ]
-"15
+[e = _result ( _I2C1_Transmit (3 , , _address _pData _size ]
+[; ;PIC_I2C.c: 13: break;
+"13
 [e $U 272  ]
+"14
+}
+[; ;PIC_I2C.c: 14: }
+[e $U 272  ]
+"9
 [e :U 273 ]
-[; ;main.c: 18: }
-[; ;main.c: 19: }
+[e [\ _I2Cx , $ . `E2316 0 274
+ 272 ]
+"14
+[e :U 272 ]
+[; ;PIC_I2C.c: 15: return result;
+"15
+[e ) _result ]
+[e $UE 271  ]
+[; ;PIC_I2C.c: 16: }
+"16
+[e :UE 271 ]
+}
+"18
+[v _I2C_Receive `(c ~T0 @X0 1 ef4`E2316`uc`*uc`uc ]
 "19
-[e :UE 270 ]
-}
-[v $root$_Handle `(v ~T0 @X0 0 e ]
-[v F2313 `(v ~T0 @X0 1 tf ]
-"21
-[v _Handle `IF2313 ~T0 @X0 1 e ]
+{
+[; ;PIC_I2C.c: 18: int8_t I2C_Receive(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size)
+[; ;PIC_I2C.c: 19: {
+[e :U _I2C_Receive ]
+"18
+[v _I2Cx `E2316 ~T0 @X0 1 r1 ]
+[v _address `uc ~T0 @X0 1 r2 ]
+[v _pData `*uc ~T0 @X0 1 r3 ]
+[v _size `uc ~T0 @X0 1 r4 ]
+"19
+[f ]
+"20
+[v _result `c ~T0 @X0 1 a ]
+[; ;PIC_I2C.c: 20: int8_t result = -1;
+[e = _result -> -U -> 1 `i `c ]
+[; ;PIC_I2C.c: 22: switch(I2Cx)
 "22
-{
-[; ;main.c: 21: void interrupt Handle(void)
-[; ;main.c: 22: {
-[e :U _Handle ]
-[f ]
-[; ;main.c: 23: UART_Interrupt();
+[e $U 277  ]
+[; ;PIC_I2C.c: 23: {
 "23
-[e ( _UART_Interrupt ..  ]
-[; ;main.c: 25: }
-"25
-[e :UE 274 ]
-}
-"27
-[v _Basic_Init `(v ~T0 @X0 1 ef ]
-"28
 {
-[; ;main.c: 27: void Basic_Init(void)
-[; ;main.c: 28: {
-[e :U _Basic_Init ]
-[f ]
-[; ;main.c: 29: TRISA = 0x00;
+[; ;PIC_I2C.c: 24: case I2C1_MODULE:
+"24
+[e :U 278 ]
+[; ;PIC_I2C.c: 25: result = I2C1_Receive(address,pData,size);
+"25
+[e = _result ( _I2C1_Receive (3 , , _address _pData _size ]
+[; ;PIC_I2C.c: 26: break;
+"26
+[e $U 276  ]
+"27
+}
+[; ;PIC_I2C.c: 27: }
+[e $U 276  ]
+"22
+[e :U 277 ]
+[e [\ _I2Cx , $ . `E2316 0 278
+ 276 ]
+"27
+[e :U 276 ]
+[; ;PIC_I2C.c: 28: return result;
+"28
+[e ) _result ]
+[e $UE 275  ]
+[; ;PIC_I2C.c: 29: }
 "29
-[e = _TRISA -> -> 0 `i `uc ]
-[; ;main.c: 31: ANSELA = 0x00;
-"31
-[e = _ANSELA -> -> 0 `i `uc ]
-[; ;main.c: 33: APFCON = 0x00;
-"33
-[e = _APFCON -> -> 0 `i `uc ]
-[; ;main.c: 35: PORTA = 0x00;
-"35
-[e = _PORTA -> -> 0 `i `uc ]
-[; ;main.c: 36: }
-"36
 [e :UE 275 ]
 }
-"38
-[v _UART_InitPort `(v ~T0 @X0 1 ef ]
-"39
+"31
+[v _I2C_Interrupt `(v ~T0 @X0 1 ef ]
+"32
 {
-[; ;main.c: 38: void UART_InitPort(void)
-[; ;main.c: 39: {
-[e :U _UART_InitPort ]
+[; ;PIC_I2C.c: 31: void I2C_Interrupt(void)
+[; ;PIC_I2C.c: 32: {
+[e :U _I2C_Interrupt ]
 [f ]
-[; ;main.c: 40: TRISA &= ~(1<<4);
-"40
-[e =& _TRISA -> ~ << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 41: APFCON |= (1<<4);
-"41
-[e =| _APFCON -> << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 42: ANSELA &= ~(1<<4);
-"42
-[e =& _ANSELA -> ~ << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 43: }
-"43
-[e :UE 276 ]
+[; ;PIC_I2C.c: 33: I2C1_Interrupt();
+"33
+[e ( _I2C1_Interrupt ..  ]
+[; ;PIC_I2C.c: 34: }
+"34
+[e :UE 279 ]
 }
-[p f _printf 8388608 ]
-[a 1C 72 101 108 108 111 32 87 111 114 108 100 10 0 ]
-

@@ -41,10 +41,10 @@ void I2C1_Init(I2C1_Init_PORTTypedef I2C1_Init_PORT,uint8_t address,I2Cx_Mode mo
             SSPCON1bits.SSPEN = 1;         //Enable I2C
         break;
     }
-    SSPIE = 1;                             //Enable SSP interrupt
-    BCLIE = 1;                             //Enable Bus collisioni interrupt
-    SSPIF = 0;                             //Clear SSP interrupt flag
-    BCLIF = 0;                             //Clear Bus collisioni interrupt flag
+    SSP1IE = 1;                             //Enable SSP interrupt
+    BCL1IE = 1;                             //Enable Bus collisioni interrupt
+    SSP1IF = 0;                             //Clear SSP interrupt flag
+    BCL1IF = 0;                             //Clear Bus collisioni interrupt flag
 
     PEIE = 1;
     GIE = 1;
@@ -152,7 +152,7 @@ int8_t I2C1_Receive(uint8_t address,uint8_t *pData,uint8_t size)
 
 void I2C1_Interrupt(void) 
 {
-    if(SSPIF&&SSPIE)
+    if(SSP1IF&&SSP1IE)
     {   //Check Received data is data or address
         if(SSPSTATbits.D_nA)           //Received Data from master
         {
@@ -191,9 +191,9 @@ void I2C1_Interrupt(void)
             }
             SSPCON1bits.CKP = 1;           //return acknowledge to master
         } 
-        SSPIF = 0;
+        SSP1IF = 0;
     }
 
-    if(BCLIE&&BCLIF)      //If occured bus collision
-        BCLIF = 0;
+    if(BCL1IE&&BCL1IF)      //If occured bus collision
+        BCL1IF = 0;
 }

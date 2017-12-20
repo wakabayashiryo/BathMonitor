@@ -1,27 +1,66 @@
 Version 3.2 HI-TECH Software Intermediate Code
-[p mainexit ]
-"72 main.h
-[v _Basic_Init `(v ~T0 @X0 0 ef ]
-[v F2287 `(v ~T0 @X0 0 tf ]
-"12 main.c
-[c E2276 0 1 2 3 4 5 6 7 .. ]
-[n E2276 . BAUD_300 BAUD_1200 BAUD_2400 BAUD_9600 BAUD_10417 BAUD_19_2K BAUD_57_6K BAUD_115_2K  ]
-"28 PIC_UART.h
-[v _UART_Init `(v ~T0 @X0 0 ef2`*F2287`E2276 ]
-"73 main.h
-[v _UART_InitPort `(v ~T0 @X0 0 ef ]
-"195 /opt/microchip/xc8/v1.43/include/stdio.h
-[v _printf `(i ~T0 @X0 0 ev`*Cuc ]
-"37 PIC_UART.h
-[v _UART_Interrupt `(v ~T0 @X0 0 ef ]
-"1240 /opt/microchip/xc8/v1.43/include/pic12f1822.h
-[v _TRISA `Vuc ~T0 @X0 0 e@140 ]
-"2630
-[v _ANSELA `Vuc ~T0 @X0 0 e@396 ]
-"2488
-[v _APFCON `Vuc ~T0 @X0 0 e@285 ]
-"427
-[v _PORTA `Vuc ~T0 @X0 0 e@12 ]
+[v F2328 `(v ~T0 @X0 0 tf ]
+"9 PIC_I2C1.c
+[c E2308 0 1 .. ]
+[n E2308 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
+[c E2312 0 1 .. ]
+[n E2312 . I2C_SPEED_STANDARD I2C_SPEED_HIGH  ]
+"36 PIC_I2C.h
+[s S270 `uc -> 8 `i `uc -> 8 `i `*uc 1 `*uc 1 `E2308 1 ]
+[n S270 . SlaveTransmitBuff SlaveReceiveBuff TransmitPoint ReceivePoint Mode ]
+"6 PIC_I2C1.c
+[v _I2C1_Config `S270 ~T0 @X0 0 e ]
+"3485 /opt/microchip/xc8/v1.43/include/pic12f1822.h
+[v _SSPCON1 `Vuc ~T0 @X0 0 e@533 ]
+"3363
+[v _SSPSTAT `Vuc ~T0 @X0 0 e@532 ]
+"3287
+[v _SSPADD `Vuc ~T0 @X0 0 e@530 ]
+"3558
+[s S193 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S193 . SSPM0 SSPM1 SSPM2 SSPM3 CKP SSPEN SSPOV WCOL ]
+"3568
+[s S194 :4 `uc 1 ]
+[n S194 . SSPM ]
+"3557
+[u S192 `S193 1 `S194 1 ]
+[n S192 . . . ]
+"3572
+[v _SSPCON1bits `VS192 ~T0 @X0 0 e@533 ]
+"3750
+[s S201 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S201 . SEN RSEN PEN RCEN ACKEN ACKDT ACKSTAT GCEN ]
+"3749
+[u S200 `S201 1 ]
+[n S200 . . ]
+"3761
+[v _SSPCON2bits `VS200 ~T0 @X0 0 e@534 ]
+"3325
+[v _SSPMSK `Vuc ~T0 @X0 0 e@531 ]
+"5614
+[v _SSP1IE `Vb ~T0 @X0 0 e@1163 ]
+"5110
+[v _BCL1IE `Vb ~T0 @X0 0 e@1171 ]
+"5616
+[v _SSP1IF `Vb ~T0 @X0 0 e@139 ]
+"5112
+[v _BCL1IF `Vb ~T0 @X0 0 e@147 ]
+"5486
+[v _PEIE `Vb ~T0 @X0 0 e@94 ]
+"5312
+[v _GIE `Vb ~T0 @X0 0 e@95 ]
+"3689
+[v _SSPCON2 `Vuc ~T0 @X0 0 e@534 ]
+"3249
+[v _SSPBUF `Vuc ~T0 @X0 0 e@529 ]
+"3424
+[s S188 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S188 . BF UA R_nW S P D_nA CKE SMP ]
+"3423
+[u S187 `S188 1 ]
+[n S187 . . ]
+"3435
+[v _SSPSTATbits `VS187 ~T0 @X0 0 e@532 ]
 "40 main.h
 [p x FOSC=INTOSC ]
 "41
@@ -2254,103 +2293,728 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_UART.h: 37: void UART_Interrupt(void);
 [; ;main.h: 72: void Basic_Init(void);
 [; ;main.h: 73: void UART_InitPort(void);
-[v $root$_main `(v ~T0 @X0 0 e ]
-"9 main.c
-[v _main `(v ~T0 @X0 1 ef ]
+[; ;PIC_I2C.h: 17: typedef enum
+[; ;PIC_I2C.h: 18: {
+[; ;PIC_I2C.h: 19: I2C_MODE_MASTER,
+[; ;PIC_I2C.h: 20: I2C_MODE_SLAVE
+[; ;PIC_I2C.h: 21: }I2Cx_Mode;
+[; ;PIC_I2C.h: 23: typedef enum
+[; ;PIC_I2C.h: 24: {
+[; ;PIC_I2C.h: 25: I2C_SPEED_STANDARD,
+[; ;PIC_I2C.h: 26: I2C_SPEED_HIGH
+[; ;PIC_I2C.h: 27: }I2Cx_Speed;
+[; ;PIC_I2C.h: 29: typedef enum
+[; ;PIC_I2C.h: 30: {
+[; ;PIC_I2C.h: 31: I2C1_MODULE,
+[; ;PIC_I2C.h: 32: I2C2_MODULE
+[; ;PIC_I2C.h: 33: }I2Cx_Module;
+[; ;PIC_I2C.h: 35: typedef struct
+[; ;PIC_I2C.h: 36: {
+[; ;PIC_I2C.h: 37: uint8_t SlaveTransmitBuff[8];
+[; ;PIC_I2C.h: 38: uint8_t SlaveReceiveBuff[8];
+[; ;PIC_I2C.h: 39: uint8_t *TransmitPoint;
+[; ;PIC_I2C.h: 40: uint8_t *ReceivePoint;
+[; ;PIC_I2C.h: 41: I2Cx_Mode Mode;
+[; ;PIC_I2C.h: 42: }I2Cx_Configuration;
+[; ;PIC_I2C.h: 45: typedef void (*I2C1_Init_PORTTypedef)(void);
+[; ;PIC_I2C.h: 46: typedef void (*I2C2_Init_PORTTypedef)(void);
+[; ;PIC_I2C.h: 48: void I2C1_Init(I2C1_Init_PORTTypedef I2C1_Init_PORT,uint8_t address,I2Cx_Mode mode,I2Cx_Speed Speed);
+[; ;PIC_I2C.h: 49: void I2C1_Interrupt(void);
+[; ;PIC_I2C.h: 50: int8_t I2C1_Transmit(uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 51: int8_t I2C1_Receive(uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 53: int8_t I2C_Transmit(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 54: int8_t I2C_Receive(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 55: void I2C_Interrupt(void);
+[; ;PIC_I2C1.c: 6: extern I2Cx_Configuration I2C1_Config;
+"8 PIC_I2C1.c
+[v _I2C1_Init `(v ~T0 @X0 1 ef4`*F2328`uc`E2308`E2312 ]
+"9
+{
+[; ;PIC_I2C1.c: 8: void I2C1_Init(I2C1_Init_PORTTypedef I2C1_Init_PORT,uint8_t address,I2Cx_Mode mode,I2Cx_Speed Speed)
+[; ;PIC_I2C1.c: 9: {
+[e :U _I2C1_Init ]
+"8
+[v _I2C1_Init_PORT `*F2328 ~T0 @X0 1 r1 ]
+[v _address `uc ~T0 @X0 1 r2 ]
+[v _mode `E2308 ~T0 @X0 1 r3 ]
+[v _Speed `E2312 ~T0 @X0 1 r4 ]
+"9
+[f ]
+[; ;PIC_I2C1.c: 10: I2C1_Init_PORT();
 "10
-{
-[; ;main.c: 9: void main(void)
-[; ;main.c: 10: {
-[e :U _main ]
-[f ]
-[; ;main.c: 11: Basic_Init();
+[e ( *U _I2C1_Init_PORT ..  ]
+[; ;PIC_I2C1.c: 11: I2C1_Config.Mode = mode;
 "11
-[e ( _Basic_Init ..  ]
-[; ;main.c: 12: UART_Init(UART_InitPort,BAUD_9600);
-"12
-[e ( _UART_Init (2 , &U _UART_InitPort . `E2276 3 ]
-[; ;main.c: 15: while(1)
+[e = . _I2C1_Config 4 _mode ]
+[; ;PIC_I2C1.c: 13: switch(mode)
+"13
+[e $U 273  ]
+[; ;PIC_I2C1.c: 14: {
+"14
+{
+[; ;PIC_I2C1.c: 15: case I2C_MODE_MASTER:
 "15
-[e :U 272 ]
-[; ;main.c: 16: {
+[e :U 274 ]
+[; ;PIC_I2C1.c: 16: SSPCON1 |= (0x08<<0);
 "16
-{
-[; ;main.c: 17: printf("Hello World\n");
+[e =| _SSPCON1 -> << -> 8 `i -> 0 `i `uc ]
+[; ;PIC_I2C1.c: 17: if(Speed==I2C_SPEED_STANDARD)
 "17
-[e ( _printf :s 1C ]
+[e $ ! == -> _Speed `i -> . `E2312 0 `i 275  ]
+[; ;PIC_I2C1.c: 18: {
 "18
-}
-[e :U 271 ]
-"15
-[e $U 272  ]
-[e :U 273 ]
-[; ;main.c: 18: }
-[; ;main.c: 19: }
+{
+[; ;PIC_I2C1.c: 19: SSPSTAT |= (1<<7);
 "19
-[e :UE 270 ]
-}
-[v $root$_Handle `(v ~T0 @X0 0 e ]
-[v F2313 `(v ~T0 @X0 1 tf ]
+[e =| _SSPSTAT -> << -> 1 `i -> 7 `i `uc ]
+[; ;PIC_I2C1.c: 20: SSPADD = 0x4F;
+"20
+[e = _SSPADD -> -> 79 `i `uc ]
 "21
-[v _Handle `IF2313 ~T0 @X0 1 e ]
+}
+[; ;PIC_I2C1.c: 21: }
+[e $U 276  ]
 "22
-{
-[; ;main.c: 21: void interrupt Handle(void)
-[; ;main.c: 22: {
-[e :U _Handle ]
-[f ]
-[; ;main.c: 23: UART_Interrupt();
+[e :U 275 ]
+[; ;PIC_I2C1.c: 22: else if(Speed==I2C_SPEED_HIGH)
+[e $ ! == -> _Speed `i -> . `E2312 1 `i 277  ]
+[; ;PIC_I2C1.c: 23: {
 "23
-[e ( _UART_Interrupt ..  ]
-[; ;main.c: 25: }
+{
+[; ;PIC_I2C1.c: 24: SSPSTAT &= ~(1<<7);
+"24
+[e =& _SSPSTAT -> ~ << -> 1 `i -> 7 `i `uc ]
+[; ;PIC_I2C1.c: 25: SSPADD = 0x13;
 "25
-[e :UE 274 ]
+[e = _SSPADD -> -> 19 `i `uc ]
+"26
 }
+[e :U 277 ]
 "27
-[v _Basic_Init `(v ~T0 @X0 1 ef ]
+[e :U 276 ]
+[; ;PIC_I2C1.c: 26: }
+[; ;PIC_I2C1.c: 27: SSPCON1bits.SSPEN = 1;
+[e = . . _SSPCON1bits 0 5 -> -> 1 `i `uc ]
+[; ;PIC_I2C1.c: 28: break;
 "28
-{
-[; ;main.c: 27: void Basic_Init(void)
-[; ;main.c: 28: {
-[e :U _Basic_Init ]
-[f ]
-[; ;main.c: 29: TRISA = 0x00;
-"29
-[e = _TRISA -> -> 0 `i `uc ]
-[; ;main.c: 31: ANSELA = 0x00;
+[e $U 272  ]
+[; ;PIC_I2C1.c: 30: case I2C_MODE_SLAVE:
+"30
+[e :U 278 ]
+[; ;PIC_I2C1.c: 31: SSPSTAT = 0x00;
 "31
-[e = _ANSELA -> -> 0 `i `uc ]
-[; ;main.c: 33: APFCON = 0x00;
+[e = _SSPSTAT -> -> 0 `i `uc ]
+[; ;PIC_I2C1.c: 32: if(Speed==I2C_SPEED_STANDARD)
+"32
+[e $ ! == -> _Speed `i -> . `E2312 0 `i 279  ]
+[; ;PIC_I2C1.c: 33: SSPSTAT |= (1<<7);
 "33
-[e = _APFCON -> -> 0 `i `uc ]
-[; ;main.c: 35: PORTA = 0x00;
+[e =| _SSPSTAT -> << -> 1 `i -> 7 `i `uc ]
+[e $U 280  ]
+"34
+[e :U 279 ]
+[; ;PIC_I2C1.c: 34: else if(Speed==I2C_SPEED_HIGH)
+[e $ ! == -> _Speed `i -> . `E2312 1 `i 281  ]
+[; ;PIC_I2C1.c: 35: SSPSTAT &= ~(1<<7);
 "35
-[e = _PORTA -> -> 0 `i `uc ]
-[; ;main.c: 36: }
-"36
-[e :UE 275 ]
-}
+[e =& _SSPSTAT -> ~ << -> 1 `i -> 7 `i `uc ]
+[e :U 281 ]
+"37
+[e :U 280 ]
+[; ;PIC_I2C1.c: 37: SSPCON1 |= (0x06<<0);
+[e =| _SSPCON1 -> << -> 6 `i -> 0 `i `uc ]
+[; ;PIC_I2C1.c: 38: SSPCON2bits.SEN= 1;
 "38
-[v _UART_InitPort `(v ~T0 @X0 1 ef ]
+[e = . . _SSPCON2bits 0 0 -> -> 1 `i `uc ]
+[; ;PIC_I2C1.c: 39: SSPADD = address << 1;
 "39
-{
-[; ;main.c: 38: void UART_InitPort(void)
-[; ;main.c: 39: {
-[e :U _UART_InitPort ]
-[f ]
-[; ;main.c: 40: TRISA &= ~(1<<4);
+[e = _SSPADD -> << -> _address `i -> 1 `i `uc ]
+[; ;PIC_I2C1.c: 40: SSPMSK = 0xFE;
 "40
-[e =& _TRISA -> ~ << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 41: APFCON |= (1<<4);
+[e = _SSPMSK -> -> 254 `i `uc ]
+[; ;PIC_I2C1.c: 41: SSPCON1bits.SSPEN = 1;
 "41
-[e =| _APFCON -> << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 42: ANSELA &= ~(1<<4);
+[e = . . _SSPCON1bits 0 5 -> -> 1 `i `uc ]
+[; ;PIC_I2C1.c: 42: break;
 "42
-[e =& _ANSELA -> ~ << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 43: }
+[e $U 272  ]
 "43
-[e :UE 276 ]
 }
-[p f _printf 8388608 ]
-[a 1C 72 101 108 108 111 32 87 111 114 108 100 10 0 ]
-
+[; ;PIC_I2C1.c: 43: }
+[e $U 272  ]
+"13
+[e :U 273 ]
+[e [\ _mode , $ . `E2308 0 274
+ , $ . `E2308 1 278
+ 272 ]
+"43
+[e :U 272 ]
+[; ;PIC_I2C1.c: 44: SSP1IE = 1;
+"44
+[e = _SSP1IE -> -> 1 `i `b ]
+[; ;PIC_I2C1.c: 45: BCL1IE = 1;
+"45
+[e = _BCL1IE -> -> 1 `i `b ]
+[; ;PIC_I2C1.c: 46: SSP1IF = 0;
+"46
+[e = _SSP1IF -> -> 0 `i `b ]
+[; ;PIC_I2C1.c: 47: BCL1IF = 0;
+"47
+[e = _BCL1IF -> -> 0 `i `b ]
+[; ;PIC_I2C1.c: 49: PEIE = 1;
+"49
+[e = _PEIE -> -> 1 `i `b ]
+[; ;PIC_I2C1.c: 50: GIE = 1;
+"50
+[e = _GIE -> -> 1 `i `b ]
+[; ;PIC_I2C1.c: 51: }
+"51
+[e :UE 271 ]
+}
+"53
+[v _I2C1_Transmit `(c ~T0 @X0 1 ef3`uc`*uc`uc ]
+"54
+{
+[; ;PIC_I2C1.c: 53: int8_t I2C1_Transmit(uint8_t address,uint8_t *pData,uint8_t size)
+[; ;PIC_I2C1.c: 54: {
+[e :U _I2C1_Transmit ]
+"53
+[v _address `uc ~T0 @X0 1 r1 ]
+[v _pData `*uc ~T0 @X0 1 r2 ]
+[v _size `uc ~T0 @X0 1 r3 ]
+"54
+[f ]
+"55
+[v _result `c ~T0 @X0 1 a ]
+[; ;PIC_I2C1.c: 55: int8_t result;
+[; ;PIC_I2C1.c: 57: switch(I2C1_Config.Mode)
+"57
+[e $U 284  ]
+[; ;PIC_I2C1.c: 58: {
+"58
+{
+[; ;PIC_I2C1.c: 59: case I2C_MODE_MASTER:
+"59
+[e :U 285 ]
+[; ;PIC_I2C1.c: 60: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+"60
+[e $U 286  ]
+[e :U 287 ]
+[e :U 286 ]
+[e $ != | & -> _SSPCON2 `i -> 31 `i & -> _SSPSTAT `i -> 5 `i -> 0 `i 287  ]
+[e :U 288 ]
+[; ;PIC_I2C1.c: 61: SSPCON2bits.SEN = 1;
+"61
+[e = . . _SSPCON2bits 0 0 -> -> 1 `i `uc ]
+[; ;PIC_I2C1.c: 63: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+"63
+[e $U 289  ]
+[e :U 290 ]
+[e :U 289 ]
+[e $ != | & -> _SSPCON2 `i -> 31 `i & -> _SSPSTAT `i -> 5 `i -> 0 `i 290  ]
+[e :U 291 ]
+[; ;PIC_I2C1.c: 64: SSPBUF = address << 1;
+"64
+[e = _SSPBUF -> << -> _address `i -> 1 `i `uc ]
+[; ;PIC_I2C1.c: 65: while(SSPSTATbits.R_nW);
+"65
+[e $U 292  ]
+[e :U 293 ]
+[e :U 292 ]
+[e $ != -> . . _SSPSTATbits 0 2 `i -> -> -> 0 `i `Vuc `i 293  ]
+[e :U 294 ]
+[; ;PIC_I2C1.c: 67: result = SSPCON2bits.ACKSTAT;
+"67
+[e = _result -> . . _SSPCON2bits 0 6 `c ]
+[; ;PIC_I2C1.c: 68: if (!result)
+"68
+[e $ ! ! != -> _result `i -> -> -> 0 `i `c `i 295  ]
+[; ;PIC_I2C1.c: 69: {
+"69
+{
+[; ;PIC_I2C1.c: 70: for(uint8_t i=0;i<size;i++)
+"70
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $U 299  ]
+"71
+[e :U 296 ]
+[; ;PIC_I2C1.c: 71: {
+{
+[; ;PIC_I2C1.c: 72: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+"72
+[e $U 300  ]
+[e :U 301 ]
+[e :U 300 ]
+[e $ != | & -> _SSPCON2 `i -> 31 `i & -> _SSPSTAT `i -> 5 `i -> 0 `i 301  ]
+[e :U 302 ]
+[; ;PIC_I2C1.c: 73: SSPBUF = *(pData+i);
+"73
+[e = _SSPBUF *U + _pData * -> _i `ux -> -> # *U _pData `ui `ux ]
+[; ;PIC_I2C1.c: 74: while(SSPSTATbits.R_nW);
+"74
+[e $U 303  ]
+[e :U 304 ]
+[e :U 303 ]
+[e $ != -> . . _SSPSTATbits 0 2 `i -> -> -> 0 `i `Vuc `i 304  ]
+[e :U 305 ]
+[; ;PIC_I2C1.c: 76: result = SSPCON2bits.ACKSTAT;
+"76
+[e = _result -> . . _SSPCON2bits 0 6 `c ]
+[; ;PIC_I2C1.c: 77: if (result)
+"77
+[e $ ! != -> _result `i -> -> -> 0 `i `c `i 306  ]
+[; ;PIC_I2C1.c: 78: {
+"78
+{
+[; ;PIC_I2C1.c: 79: result = 2;
+"79
+[e = _result -> -> 2 `i `c ]
+[; ;PIC_I2C1.c: 80: break;
+"80
+[e $U 297  ]
+"81
+}
+[e :U 306 ]
+"82
+}
+"70
+[e ++ _i -> -> 1 `i `uc ]
+[e :U 299 ]
+[e $ < -> _i `i -> _size `i 296  ]
+[e :U 297 ]
+"82
+}
+"83
+}
+[e :U 295 ]
+[; ;PIC_I2C1.c: 81: }
+[; ;PIC_I2C1.c: 82: }
+[; ;PIC_I2C1.c: 83: }
+[; ;PIC_I2C1.c: 85: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+"85
+[e $U 307  ]
+[e :U 308 ]
+[e :U 307 ]
+[e $ != | & -> _SSPCON2 `i -> 31 `i & -> _SSPSTAT `i -> 5 `i -> 0 `i 308  ]
+[e :U 309 ]
+[; ;PIC_I2C1.c: 86: SSPCON2bits.PEN = 1;
+"86
+[e = . . _SSPCON2bits 0 2 -> -> 1 `i `uc ]
+[; ;PIC_I2C1.c: 87: break;
+"87
+[e $U 283  ]
+[; ;PIC_I2C1.c: 89: case I2C_MODE_SLAVE:
+"89
+[e :U 310 ]
+[; ;PIC_I2C1.c: 90: if((SSPSTATbits.S==0)&&(SSPSTATbits.P==1))
+"90
+[e $ ! && == -> . . _SSPSTATbits 0 3 `i -> 0 `i == -> . . _SSPSTATbits 0 4 `i -> 1 `i 311  ]
+[; ;PIC_I2C1.c: 91: {
+"91
+{
+[; ;PIC_I2C1.c: 92: for(uint8_t i = 0;i<size;i++)
+"92
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $U 315  ]
+"93
+[e :U 312 ]
+[; ;PIC_I2C1.c: 93: I2C1_Config.SlaveTransmitBuff[i] = pData[i];
+[e = *U + &U . _I2C1_Config 0 * -> _i `ux -> -> # *U &U . _I2C1_Config 0 `ui `ux *U + _pData * -> _i `ux -> -> # *U _pData `ui `ux ]
+"92
+[e ++ _i -> -> 1 `i `uc ]
+[e :U 315 ]
+[e $ < -> _i `i -> _size `i 312  ]
+[e :U 313 ]
+"93
+}
+[; ;PIC_I2C1.c: 94: result = size;
+"94
+[e = _result -> _size `c ]
+"95
+}
+[; ;PIC_I2C1.c: 95: }
+[e $U 316  ]
+"96
+[e :U 311 ]
+[; ;PIC_I2C1.c: 96: else
+[; ;PIC_I2C1.c: 97: result = 0;
+"97
+[e = _result -> -> 0 `i `c ]
+[e :U 316 ]
+[; ;PIC_I2C1.c: 98: break;
+"98
+[e $U 283  ]
+"99
+}
+[; ;PIC_I2C1.c: 99: }
+[e $U 283  ]
+"57
+[e :U 284 ]
+[e [\ . _I2C1_Config 4 , $ . `E2308 0 285
+ , $ . `E2308 1 310
+ 283 ]
+"99
+[e :U 283 ]
+[; ;PIC_I2C1.c: 101: return result;
+"101
+[e ) _result ]
+[e $UE 282  ]
+[; ;PIC_I2C1.c: 102: }
+"102
+[e :UE 282 ]
+}
+"104
+[v _I2C1_Receive `(c ~T0 @X0 1 ef3`uc`*uc`uc ]
+"105
+{
+[; ;PIC_I2C1.c: 104: int8_t I2C1_Receive(uint8_t address,uint8_t *pData,uint8_t size)
+[; ;PIC_I2C1.c: 105: {
+[e :U _I2C1_Receive ]
+"104
+[v _address `uc ~T0 @X0 1 r1 ]
+[v _pData `*uc ~T0 @X0 1 r2 ]
+[v _size `uc ~T0 @X0 1 r3 ]
+"105
+[f ]
+"106
+[v _result `c ~T0 @X0 1 a ]
+[; ;PIC_I2C1.c: 106: int8_t result;
+[; ;PIC_I2C1.c: 108: switch(I2C1_Config.Mode)
+"108
+[e $U 319  ]
+[; ;PIC_I2C1.c: 109: {
+"109
+{
+[; ;PIC_I2C1.c: 110: case I2C_MODE_MASTER:
+"110
+[e :U 320 ]
+[; ;PIC_I2C1.c: 111: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+"111
+[e $U 321  ]
+[e :U 322 ]
+[e :U 321 ]
+[e $ != | & -> _SSPCON2 `i -> 31 `i & -> _SSPSTAT `i -> 5 `i -> 0 `i 322  ]
+[e :U 323 ]
+[; ;PIC_I2C1.c: 112: SSPCON2bits.SEN = 1;
+"112
+[e = . . _SSPCON2bits 0 0 -> -> 1 `i `uc ]
+[; ;PIC_I2C1.c: 114: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+"114
+[e $U 324  ]
+[e :U 325 ]
+[e :U 324 ]
+[e $ != | & -> _SSPCON2 `i -> 31 `i & -> _SSPSTAT `i -> 5 `i -> 0 `i 325  ]
+[e :U 326 ]
+[; ;PIC_I2C1.c: 115: SSPBUF = ((address << 1)|0x01);
+"115
+[e = _SSPBUF -> | << -> _address `i -> 1 `i -> 1 `i `uc ]
+[; ;PIC_I2C1.c: 116: while(SSPSTATbits.R_nW);
+"116
+[e $U 327  ]
+[e :U 328 ]
+[e :U 327 ]
+[e $ != -> . . _SSPSTATbits 0 2 `i -> -> -> 0 `i `Vuc `i 328  ]
+[e :U 329 ]
+[; ;PIC_I2C1.c: 118: result = SSPCON2bits.ACKSTAT;
+"118
+[e = _result -> . . _SSPCON2bits 0 6 `c ]
+[; ;PIC_I2C1.c: 119: if (!result)
+"119
+[e $ ! ! != -> _result `i -> -> -> 0 `i `c `i 330  ]
+[; ;PIC_I2C1.c: 120: {
+"120
+{
+[; ;PIC_I2C1.c: 121: for (uint8_t i=0;i<size;i++)
+"121
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $U 334  ]
+"122
+[e :U 331 ]
+[; ;PIC_I2C1.c: 122: {
+{
+[; ;PIC_I2C1.c: 123: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+"123
+[e $U 335  ]
+[e :U 336 ]
+[e :U 335 ]
+[e $ != | & -> _SSPCON2 `i -> 31 `i & -> _SSPSTAT `i -> 5 `i -> 0 `i 336  ]
+[e :U 337 ]
+[; ;PIC_I2C1.c: 124: SSPCON2bits.RCEN = 1;
+"124
+[e = . . _SSPCON2bits 0 3 -> -> 1 `i `uc ]
+[; ;PIC_I2C1.c: 125: while(SSPCON2bits.RCEN);
+"125
+[e $U 338  ]
+[e :U 339 ]
+[e :U 338 ]
+[e $ != -> . . _SSPCON2bits 0 3 `i -> -> -> 0 `i `Vuc `i 339  ]
+[e :U 340 ]
+[; ;PIC_I2C1.c: 126: *(pData+i) = SSPBUF;
+"126
+[e = *U + _pData * -> _i `ux -> -> # *U _pData `ui `ux _SSPBUF ]
+[; ;PIC_I2C1.c: 127: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+"127
+[e $U 341  ]
+[e :U 342 ]
+[e :U 341 ]
+[e $ != | & -> _SSPCON2 `i -> 31 `i & -> _SSPSTAT `i -> 5 `i -> 0 `i 342  ]
+[e :U 343 ]
+[; ;PIC_I2C1.c: 128: if (i == size-1)
+"128
+[e $ ! == -> _i `i - -> _size `i -> 1 `i 344  ]
+[; ;PIC_I2C1.c: 129: SSPCON2bits.ACKDT = 1;
+"129
+[e = . . _SSPCON2bits 0 5 -> -> 1 `i `uc ]
+[e $U 345  ]
+"130
+[e :U 344 ]
+[; ;PIC_I2C1.c: 130: else
+[; ;PIC_I2C1.c: 131: SSPCON2bits.ACKDT = 0;
+"131
+[e = . . _SSPCON2bits 0 5 -> -> 0 `i `uc ]
+[e :U 345 ]
+[; ;PIC_I2C1.c: 132: SSPCON2bits.ACKEN = 1;
+"132
+[e = . . _SSPCON2bits 0 4 -> -> 1 `i `uc ]
+"133
+}
+"121
+[e ++ _i -> -> 1 `i `uc ]
+[e :U 334 ]
+[e $ < -> _i `i -> _size `i 331  ]
+[e :U 332 ]
+"133
+}
+"134
+}
+[e :U 330 ]
+[; ;PIC_I2C1.c: 133: }
+[; ;PIC_I2C1.c: 134: }
+[; ;PIC_I2C1.c: 136: while((SSPCON2&0x1F)|(SSPSTAT&0x05));
+"136
+[e $U 346  ]
+[e :U 347 ]
+[e :U 346 ]
+[e $ != | & -> _SSPCON2 `i -> 31 `i & -> _SSPSTAT `i -> 5 `i -> 0 `i 347  ]
+[e :U 348 ]
+[; ;PIC_I2C1.c: 137: SSPCON2bits.PEN = 1;
+"137
+[e = . . _SSPCON2bits 0 2 -> -> 1 `i `uc ]
+[; ;PIC_I2C1.c: 138: break;
+"138
+[e $U 318  ]
+[; ;PIC_I2C1.c: 140: case I2C_MODE_SLAVE:
+"140
+[e :U 349 ]
+[; ;PIC_I2C1.c: 141: if((SSPSTATbits.S==0)&&(SSPSTATbits.P==1))
+"141
+[e $ ! && == -> . . _SSPSTATbits 0 3 `i -> 0 `i == -> . . _SSPSTATbits 0 4 `i -> 1 `i 350  ]
+[; ;PIC_I2C1.c: 142: {
+"142
+{
+[; ;PIC_I2C1.c: 143: for(uint8_t i = 0;i<size;i++)
+"143
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $U 354  ]
+"144
+[e :U 351 ]
+[; ;PIC_I2C1.c: 144: pData[i] = I2C1_Config.SlaveReceiveBuff[i];
+[e = *U + _pData * -> _i `ux -> -> # *U _pData `ui `ux *U + &U . _I2C1_Config 1 * -> _i `ux -> -> # *U &U . _I2C1_Config 1 `ui `ux ]
+"143
+[e ++ _i -> -> 1 `i `uc ]
+[e :U 354 ]
+[e $ < -> _i `i -> _size `i 351  ]
+[e :U 352 ]
+"144
+}
+[; ;PIC_I2C1.c: 145: result = I2C1_Config.ReceivePoint - I2C1_Config.SlaveReceiveBuff;
+"145
+[e = _result -> / - -> . _I2C1_Config 3 `x -> &U . _I2C1_Config 1 `x -> -> # *U . _I2C1_Config 3 `i `x `c ]
+"146
+}
+[e :U 350 ]
+[; ;PIC_I2C1.c: 146: }
+[; ;PIC_I2C1.c: 147: break;
+"147
+[e $U 318  ]
+"148
+}
+[; ;PIC_I2C1.c: 148: }
+[e $U 318  ]
+"108
+[e :U 319 ]
+[e [\ . _I2C1_Config 4 , $ . `E2308 0 320
+ , $ . `E2308 1 349
+ 318 ]
+"148
+[e :U 318 ]
+[; ;PIC_I2C1.c: 150: return result;
+"150
+[e ) _result ]
+[e $UE 317  ]
+[; ;PIC_I2C1.c: 151: }
+"151
+[e :UE 317 ]
+}
+"153
+[v _I2C1_Interrupt `(v ~T0 @X0 1 ef ]
+"154
+{
+[; ;PIC_I2C1.c: 153: void I2C1_Interrupt(void)
+[; ;PIC_I2C1.c: 154: {
+[e :U _I2C1_Interrupt ]
+[f ]
+[; ;PIC_I2C1.c: 155: if(SSP1IF&&SSP1IE)
+"155
+[e $ ! && _SSP1IF _SSP1IE 356  ]
+[; ;PIC_I2C1.c: 156: {
+"156
+{
+[; ;PIC_I2C1.c: 157: if(SSPSTATbits.D_nA)
+"157
+[e $ ! != -> . . _SSPSTATbits 0 5 `i -> -> -> 0 `i `Vuc `i 357  ]
+[; ;PIC_I2C1.c: 158: {
+"158
+{
+[; ;PIC_I2C1.c: 159: if(SSPSTATbits.R_nW)
+"159
+[e $ ! != -> . . _SSPSTATbits 0 2 `i -> -> -> 0 `i `Vuc `i 358  ]
+[; ;PIC_I2C1.c: 160: {
+"160
+{
+[; ;PIC_I2C1.c: 161: if(!SSPCON2bits.ACKSTAT)
+"161
+[e $ ! ! != -> . . _SSPCON2bits 0 6 `i -> -> -> 0 `i `Vuc `i 359  ]
+[; ;PIC_I2C1.c: 162: {
+"162
+{
+[; ;PIC_I2C1.c: 163: while((SSPCON1bits.CKP)|(SSPSTATbits.BF));
+"163
+[e $U 360  ]
+[e :U 361 ]
+[e :U 360 ]
+[e $ != | -> . . _SSPCON1bits 0 4 `i -> . . _SSPSTATbits 0 0 `i -> 0 `i 361  ]
+[e :U 362 ]
+[; ;PIC_I2C1.c: 164: SSPBUF = *I2C1_Config.TransmitPoint;
+"164
+[e = _SSPBUF *U . _I2C1_Config 2 ]
+[; ;PIC_I2C1.c: 165: I2C1_Config.TransmitPoint++;
+"165
+[e ++ . _I2C1_Config 2 * -> -> 1 `i `x -> -> # *U . _I2C1_Config 2 `i `x ]
+[; ;PIC_I2C1.c: 166: SSPCON1bits.CKP = 1;
+"166
+[e = . . _SSPCON1bits 0 4 -> -> 1 `i `uc ]
+"167
+}
+[e :U 359 ]
+"168
+}
+[; ;PIC_I2C1.c: 167: }
+[; ;PIC_I2C1.c: 168: }
+[e $U 363  ]
+"169
+[e :U 358 ]
+[; ;PIC_I2C1.c: 169: else
+[; ;PIC_I2C1.c: 170: {
+"170
+{
+[; ;PIC_I2C1.c: 171: *I2C1_Config.ReceivePoint = SSPBUF;
+"171
+[e = *U . _I2C1_Config 3 _SSPBUF ]
+[; ;PIC_I2C1.c: 172: I2C1_Config.ReceivePoint++;
+"172
+[e ++ . _I2C1_Config 3 * -> -> 1 `i `x -> -> # *U . _I2C1_Config 3 `i `x ]
+[; ;PIC_I2C1.c: 173: SSPCON1bits.CKP = 1;
+"173
+[e = . . _SSPCON1bits 0 4 -> -> 1 `i `uc ]
+"174
+}
+[e :U 363 ]
+"175
+}
+[; ;PIC_I2C1.c: 174: }
+[; ;PIC_I2C1.c: 175: }
+[e $U 364  ]
+"176
+[e :U 357 ]
+[; ;PIC_I2C1.c: 176: else if(!SSPSTATbits.D_nA)
+[e $ ! ! != -> . . _SSPSTATbits 0 5 `i -> -> -> 0 `i `Vuc `i 365  ]
+[; ;PIC_I2C1.c: 177: {
+"177
+{
+[; ;PIC_I2C1.c: 178: SSPBUF;
+"178
+[e _SSPBUF ]
+[; ;PIC_I2C1.c: 180: if(SSPSTATbits.R_nW)
+"180
+[e $ ! != -> . . _SSPSTATbits 0 2 `i -> -> -> 0 `i `Vuc `i 366  ]
+[; ;PIC_I2C1.c: 181: {
+"181
+{
+[; ;PIC_I2C1.c: 182: I2C1_Config.TransmitPoint = I2C1_Config.SlaveTransmitBuff;
+"182
+[e = . _I2C1_Config 2 &U . _I2C1_Config 0 ]
+[; ;PIC_I2C1.c: 184: while((SSPCON1bits.CKP)|(SSPSTATbits.BF));
+"184
+[e $U 367  ]
+[e :U 368 ]
+[e :U 367 ]
+[e $ != | -> . . _SSPCON1bits 0 4 `i -> . . _SSPSTATbits 0 0 `i -> 0 `i 368  ]
+[e :U 369 ]
+[; ;PIC_I2C1.c: 185: SSPBUF = *I2C1_Config.TransmitPoint;
+"185
+[e = _SSPBUF *U . _I2C1_Config 2 ]
+[; ;PIC_I2C1.c: 186: I2C1_Config.TransmitPoint++;
+"186
+[e ++ . _I2C1_Config 2 * -> -> 1 `i `x -> -> # *U . _I2C1_Config 2 `i `x ]
+"187
+}
+[; ;PIC_I2C1.c: 187: }
+[e $U 370  ]
+"188
+[e :U 366 ]
+[; ;PIC_I2C1.c: 188: else
+[; ;PIC_I2C1.c: 189: {
+"189
+{
+[; ;PIC_I2C1.c: 190: I2C1_Config.ReceivePoint = I2C1_Config.SlaveReceiveBuff;
+"190
+[e = . _I2C1_Config 3 &U . _I2C1_Config 1 ]
+"191
+}
+[e :U 370 ]
+[; ;PIC_I2C1.c: 191: }
+[; ;PIC_I2C1.c: 192: SSPCON1bits.CKP = 1;
+"192
+[e = . . _SSPCON1bits 0 4 -> -> 1 `i `uc ]
+"193
+}
+[e :U 365 ]
+"194
+[e :U 364 ]
+[; ;PIC_I2C1.c: 193: }
+[; ;PIC_I2C1.c: 194: SSP1IF = 0;
+[e = _SSP1IF -> -> 0 `i `b ]
+"195
+}
+[e :U 356 ]
+[; ;PIC_I2C1.c: 195: }
+[; ;PIC_I2C1.c: 197: if(BCL1IE&&BCL1IF)
+"197
+[e $ ! && _BCL1IE _BCL1IF 371  ]
+[; ;PIC_I2C1.c: 198: BCL1IF = 0;
+"198
+[e = _BCL1IF -> -> 0 `i `b ]
+[e :U 371 ]
+[; ;PIC_I2C1.c: 199: }
+"199
+[e :UE 355 ]
+}
