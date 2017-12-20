@@ -1,0 +1,145 @@
+[p LITE_MODE AUTOSTATIC PIC14 PIC14E ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 12F1822 ]
+[d frameptr 6 ]
+"12 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
+[e E2276 . `uc
+BAUD_300 0
+BAUD_1200 1
+BAUD_2400 2
+BAUD_9600 3
+BAUD_10417 4
+BAUD_19_2K 5
+BAUD_57_6K 6
+BAUD_115_2K 7
+]
+"38 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_UART.c
+[e E2280 . `uc
+BAUD_300 0
+BAUD_1200 1
+BAUD_2400 2
+BAUD_9600 3
+BAUD_10417 4
+BAUD_19_2K 5
+BAUD_57_6K 6
+BAUD_115_2K 7
+]
+"464 /opt/microchip/xc8/v1.43/sources/common/doprnt.c
+[v _printf printf `(i  1 e 2 0 ]
+"62 /opt/microchip/xc8/v1.43/sources/common/float.c
+[v ___ftpack __ftpack `(f  1 e 3 0 ]
+"86 /opt/microchip/xc8/v1.43/sources/common/ftadd.c
+[v ___ftadd __ftadd `(f  1 e 3 0 ]
+"6 /opt/microchip/xc8/v1.43/sources/pic/eeprom.c
+[v _eecpymem eecpymem `(v  1 e 1 0 ]
+"39
+[v _memcpyee memcpyee `(v  1 e 1 0 ]
+"9 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
+[v _main main `(v  1 e 1 0 ]
+"20
+[v _Basic_Init Basic_Init `(v  1 e 1 0 ]
+"31
+[v _UART_InitPort UART_InitPort `(v  1 e 1 0 ]
+"37 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_UART.c
+[v _UART_Init UART_Init `(v  1 e 1 0 ]
+"70
+[v _UART_Transmit UART_Transmit `(v  1 e 1 0 ]
+"76
+[v _putch putch `(v  1 e 1 0 ]
+"427 /opt/microchip/xc8/v1.43/include/pic12f1822.h
+[v _PORTA PORTA `VEuc  1 e 1 @12 ]
+"1240
+[v _TRISA TRISA `VEuc  1 e 1 @140 ]
+"2488
+[v _APFCON APFCON `VEuc  1 e 1 @285 ]
+"2630
+[v _ANSELA ANSELA `VEuc  1 e 1 @396 ]
+"2871
+[v _RCREG RCREG `VEuc  1 e 1 @409 ]
+"2891
+[v _TXREG TXREG `VEuc  1 e 1 @410 ]
+"2927
+[v _SPBRGL SPBRGL `VEuc  1 e 1 @411 ]
+"2977
+[v _SPBRGH SPBRGH `VEuc  1 e 1 @412 ]
+"3010
+[v _RCSTA RCSTA `VEuc  1 e 1 @413 ]
+"3072
+[v _TXSTA TXSTA `VEuc  1 e 1 @414 ]
+"5120
+[v _BRG16 BRG16 `VEb  1 e 0 @3323 ]
+"5254
+[v _CREN CREN `VEb  1 e 0 @3308 ]
+"5312
+[v _GIE GIE `VEb  1 e 0 @95 ]
+"5450
+[v _OERR OERR `VEb  1 e 0 @3305 ]
+"5486
+[v _PEIE PEIE `VEb  1 e 0 @94 ]
+"5524
+[v _RCIE RCIE `VEb  1 e 0 @1165 ]
+"5526
+[v _RCIF RCIF `VEb  1 e 0 @141 ]
+"5572
+[v _SPEN SPEN `VEb  1 e 0 @3311 ]
+"5776
+[v _TXIF TXIF `VEb  1 e 0 @140 ]
+"3 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_UART.c
+[v _UART_Buffer UART_Buffer `[32]uc  1 s 32 UART_Buffer ]
+"4
+[v _UART_Buffer_inptr UART_Buffer_inptr `uc  1 s 1 UART_Buffer_inptr ]
+"5
+[v _UART_Buffer_outptr UART_Buffer_outptr `uc  1 s 1 UART_Buffer_outptr ]
+"13
+[v _baudtable baudtable `DC[8]ui  1 s 16 baudtable ]
+"9 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
+[v _main main `(v  1 e 1 0 ]
+{
+"18
+} 0
+"464 /opt/microchip/xc8/v1.43/sources/common/doprnt.c
+[v _printf printf `(i  1 e 2 0 ]
+{
+"499
+[v printf@c c `c  1 a 1 8 ]
+"466
+[v printf@ap ap `[1]*.1v  1 a 1 7 ]
+"464
+[v printf@f f `*.25DCuc  1 p 2 2 ]
+"1541
+} 0
+"76 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_UART.c
+[v _putch putch `(v  1 e 1 0 ]
+{
+[v putch@c c `uc  1 a 1 wreg ]
+[v putch@c c `uc  1 a 1 wreg ]
+"78
+[v putch@c c `uc  1 a 1 1 ]
+"79
+} 0
+"70
+[v _UART_Transmit UART_Transmit `(v  1 e 1 0 ]
+{
+[v UART_Transmit@dt dt `uc  1 a 1 wreg ]
+[v UART_Transmit@dt dt `uc  1 a 1 wreg ]
+[v UART_Transmit@dt dt `uc  1 a 1 0 ]
+"74
+} 0
+"37
+[v _UART_Init UART_Init `(v  1 e 1 0 ]
+{
+[v UART_Init@UART_Init_PORT UART_Init_PORT `*.37(v  1 p 2 1 ]
+[v UART_Init@brg brg `E2280  1 p 1 3 ]
+"57
+} 0
+"31 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
+[v _UART_InitPort UART_InitPort `(v  1 e 1 0 ]
+{
+"36
+} 0
+"20
+[v _Basic_Init Basic_Init `(v  1 e 1 0 ]
+{
+"29
+} 0
