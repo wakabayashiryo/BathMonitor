@@ -34,3 +34,4 @@ void UART_InitPort(void)
     APFCON |= (1<<4);
     ANSELA &= ~(1<<4);
 }
+
