@@ -62,6 +62,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "PIC_UART.h"
+#include "PIC_I2C.h"
 
 #ifdef	__cplusplus
 extern "C" {
@@ -71,6 +72,7 @@ extern "C" {
     
 void Basic_Init(void);
 void UART_InitPort(void);
+void I2C_InitPort(void);
     // TODO If C++ is being used, regular C code needs function names to have C 
     // linkage so the functions can be used by the c code. 
 

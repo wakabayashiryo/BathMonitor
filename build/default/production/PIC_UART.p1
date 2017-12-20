@@ -1,8 +1,8 @@
 Version 3.2 HI-TECH Software Intermediate Code
-[v F2291 `(v ~T0 @X0 0 tf ]
+[v F2345 `(v ~T0 @X0 0 tf ]
 "38 PIC_UART.c
-[c E2280 0 1 2 3 4 5 6 7 .. ]
-[n E2280 . BAUD_300 BAUD_1200 BAUD_2400 BAUD_9600 BAUD_10417 BAUD_19_2K BAUD_57_6K BAUD_115_2K  ]
+[c E2334 0 1 2 3 4 5 6 7 .. ]
+[n E2334 . BAUD_300 BAUD_1200 BAUD_2400 BAUD_9600 BAUD_10417 BAUD_19_2K BAUD_57_6K BAUD_115_2K  ]
 "3072 /opt/microchip/xc8/v1.43/include/pic12f1822.h
 [v _TXSTA `Vuc ~T0 @X0 0 e@414 ]
 "3010
@@ -2244,8 +2244,41 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;stdint.h: 205: typedef uint32_t uintmax_t;
 [; ;stdint.h: 210: typedef int16_t intptr_t;
 [; ;stdint.h: 215: typedef uint16_t uintptr_t;
-[; ;main.h: 72: void Basic_Init(void);
-[; ;main.h: 73: void UART_InitPort(void);
+[; ;PIC_I2C.h: 17: typedef enum
+[; ;PIC_I2C.h: 18: {
+[; ;PIC_I2C.h: 19: I2C_MODE_MASTER,
+[; ;PIC_I2C.h: 20: I2C_MODE_SLAVE
+[; ;PIC_I2C.h: 21: }I2Cx_Mode;
+[; ;PIC_I2C.h: 23: typedef enum
+[; ;PIC_I2C.h: 24: {
+[; ;PIC_I2C.h: 25: I2C_SPEED_STANDARD,
+[; ;PIC_I2C.h: 26: I2C_SPEED_HIGH
+[; ;PIC_I2C.h: 27: }I2Cx_Speed;
+[; ;PIC_I2C.h: 29: typedef enum
+[; ;PIC_I2C.h: 30: {
+[; ;PIC_I2C.h: 31: I2C1_MODULE,
+[; ;PIC_I2C.h: 32: I2C2_MODULE
+[; ;PIC_I2C.h: 33: }I2Cx_Module;
+[; ;PIC_I2C.h: 35: typedef struct
+[; ;PIC_I2C.h: 36: {
+[; ;PIC_I2C.h: 37: uint8_t SlaveTransmitBuff[8];
+[; ;PIC_I2C.h: 38: uint8_t SlaveReceiveBuff[8];
+[; ;PIC_I2C.h: 39: uint8_t *TransmitPoint;
+[; ;PIC_I2C.h: 40: uint8_t *ReceivePoint;
+[; ;PIC_I2C.h: 41: I2Cx_Mode Mode;
+[; ;PIC_I2C.h: 42: }I2Cx_Configuration;
+[; ;PIC_I2C.h: 45: typedef void (*I2C1_Init_PORTTypedef)(void);
+[; ;PIC_I2C.h: 46: typedef void (*I2C2_Init_PORTTypedef)(void);
+[; ;PIC_I2C.h: 48: void I2C1_Init(I2C1_Init_PORTTypedef I2C1_Init_PORT,uint8_t address,I2Cx_Mode mode,I2Cx_Speed Speed);
+[; ;PIC_I2C.h: 49: void I2C1_Interrupt(void);
+[; ;PIC_I2C.h: 50: int8_t I2C1_Transmit(uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 51: int8_t I2C1_Receive(uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 53: int8_t I2C_Transmit(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 54: int8_t I2C_Receive(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 55: void I2C_Interrupt(void);
+[; ;main.h: 73: void Basic_Init(void);
+[; ;main.h: 74: void UART_InitPort(void);
+[; ;main.h: 75: void I2C_InitPort(void);
 [; ;PIC_UART.h: 14: typedef enum
 [; ;PIC_UART.h: 15: {
 [; ;PIC_UART.h: 16: BAUD_300 = 0,
@@ -2307,15 +2340,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_UART.c: 21: 16
 [; ;PIC_UART.c: 22: };
 "37
-[v _UART_Init `(v ~T0 @X0 1 ef2`*F2291`E2280 ]
+[v _UART_Init `(v ~T0 @X0 1 ef2`*F2345`E2334 ]
 "38
 {
 [; ;PIC_UART.c: 37: void UART_Init(UART_Init_PORTTypedef UART_Init_PORT,BAUDRATE_u brg)
 [; ;PIC_UART.c: 38: {
 [e :U _UART_Init ]
 "37
-[v _UART_Init_PORT `*F2291 ~T0 @X0 1 r1 ]
-[v _brg `E2280 ~T0 @X0 1 r2 ]
+[v _UART_Init_PORT `*F2345 ~T0 @X0 1 r1 ]
+[v _brg `E2334 ~T0 @X0 1 r2 ]
 "38
 [f ]
 [; ;PIC_UART.c: 39: UART_Init_PORT();
@@ -2359,7 +2392,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _UART_Buffer_outptr -> -> 0 `i `uc ]
 [; ;PIC_UART.c: 57: }
 "57
-[e :UE 270 ]
+[e :UE 271 ]
 }
 "59
 [v _UART_StringTransmit `(v ~T0 @X0 1 ef1`*Cuc ]
@@ -2374,38 +2407,38 @@ Version 3.2 HI-TECH Software Intermediate Code
 [f ]
 [; ;PIC_UART.c: 61: while (1)
 "61
-[e :U 273 ]
+[e :U 274 ]
 [; ;PIC_UART.c: 62: {
 "62
 {
 [; ;PIC_UART.c: 63: while (TXIF == 0);
 "63
-[e $U 275  ]
-[e :U 276 ]
-[e :U 275 ]
-[e $ == -> _TXIF `i -> 0 `i 276  ]
+[e $U 276  ]
 [e :U 277 ]
+[e :U 276 ]
+[e $ == -> _TXIF `i -> 0 `i 277  ]
+[e :U 278 ]
 [; ;PIC_UART.c: 64: TXREG = *dt;
 "64
 [e = _TXREG *U _dt ]
 [; ;PIC_UART.c: 65: if (*dt == 0)break;
 "65
-[e $ ! == -> *U _dt `i -> 0 `i 278  ]
-[e $U 274  ]
-[e :U 278 ]
+[e $ ! == -> *U _dt `i -> 0 `i 279  ]
+[e $U 275  ]
+[e :U 279 ]
 [; ;PIC_UART.c: 66: *dt++;
 "66
 [e *U ++ _dt * -> -> 1 `i `x -> -> # *U _dt `i `x ]
 "67
 }
-[e :U 272 ]
+[e :U 273 ]
 "61
-[e $U 273  ]
-[e :U 274 ]
+[e $U 274  ]
+[e :U 275 ]
 [; ;PIC_UART.c: 67: }
 [; ;PIC_UART.c: 68: }
 "68
-[e :UE 271 ]
+[e :UE 272 ]
 }
 "70
 [v _UART_Transmit `(v ~T0 @X0 1 ef1`uc ]
@@ -2420,17 +2453,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [f ]
 [; ;PIC_UART.c: 72: while (TXIF == 0);
 "72
-[e $U 280  ]
-[e :U 281 ]
-[e :U 280 ]
-[e $ == -> _TXIF `i -> 0 `i 281  ]
+[e $U 281  ]
 [e :U 282 ]
+[e :U 281 ]
+[e $ == -> _TXIF `i -> 0 `i 282  ]
+[e :U 283 ]
 [; ;PIC_UART.c: 73: TXREG = dt;
 "73
 [e = _TXREG _dt ]
 [; ;PIC_UART.c: 74: }
 "74
-[e :UE 279 ]
+[e :UE 280 ]
 }
 "76
 [v _putch `(v ~T0 @X0 1 ef1`uc ]
@@ -2448,7 +2481,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( _UART_Transmit (1 _c ]
 [; ;PIC_UART.c: 79: }
 "79
-[e :UE 283 ]
+[e :UE 284 ]
 }
 "81
 [v _UART_Available `(i ~T0 @X0 1 ef ]
@@ -2461,10 +2494,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_UART.c: 83: return (UART_Buffer_outptr + 32 - UART_Buffer_inptr) % 32;
 "83
 [e ) % - + -> _UART_Buffer_outptr `i -> 32 `i -> _UART_Buffer_inptr `i -> 32 `i ]
-[e $UE 284  ]
+[e $UE 285  ]
 [; ;PIC_UART.c: 84: }
 "84
-[e :UE 284 ]
+[e :UE 285 ]
 }
 "87
 [v _UART_Receive `(ui ~T0 @X0 1 ef ]
@@ -2479,10 +2512,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_UART.c: 89: uint16_t ans;
 [; ;PIC_UART.c: 91: if (UART_Buffer_inptr == UART_Buffer_outptr) return 0xFFFF;
 "91
-[e $ ! == -> _UART_Buffer_inptr `i -> _UART_Buffer_outptr `i 286  ]
+[e $ ! == -> _UART_Buffer_inptr `i -> _UART_Buffer_outptr `i 287  ]
 [e ) -> 65535 `ui ]
-[e $UE 285  ]
-[e :U 286 ]
+[e $UE 286  ]
+[e :U 287 ]
 [; ;PIC_UART.c: 93: ans = UART_Buffer[UART_Buffer_inptr];
 "93
 [e = _ans -> *U + &U _UART_Buffer * -> _UART_Buffer_inptr `ux -> -> # *U &U _UART_Buffer `ui `ux `ui ]
@@ -2492,10 +2525,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_UART.c: 97: return ans;
 "97
 [e ) _ans ]
-[e $UE 285  ]
+[e $UE 286  ]
 [; ;PIC_UART.c: 98: }
 "98
-[e :UE 285 ]
+[e :UE 286 ]
 }
 "101
 [v _UART_Flush `(v ~T0 @X0 1 ef ]
@@ -2513,7 +2546,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _UART_Buffer_outptr -> -> 0 `i `uc ]
 [; ;PIC_UART.c: 105: }
 "105
-[e :UE 287 ]
+[e :UE 288 ]
 }
 "107
 [v _UART_Interrupt `(v ~T0 @X0 1 ef ]
@@ -2531,7 +2564,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_UART.c: 110: uint8_t dt;
 [; ;PIC_UART.c: 112: if (RCIF == 1)
 "112
-[e $ ! == -> _RCIF `i -> 1 `i 289  ]
+[e $ ! == -> _RCIF `i -> 1 `i 290  ]
 [; ;PIC_UART.c: 113: {
 "113
 {
@@ -2543,7 +2576,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _x -> % + -> _UART_Buffer_outptr `i -> 1 `i -> 32 `i `uc ]
 [; ;PIC_UART.c: 116: if (x != UART_Buffer_inptr)
 "116
-[e $ ! != -> _x `i -> _UART_Buffer_inptr `i 290  ]
+[e $ ! != -> _x `i -> _UART_Buffer_inptr `i 291  ]
 [; ;PIC_UART.c: 117: {
 "117
 {
@@ -2555,11 +2588,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _UART_Buffer_outptr _x ]
 "120
 }
-[e :U 290 ]
+[e :U 291 ]
 [; ;PIC_UART.c: 120: }
 [; ;PIC_UART.c: 122: if (OERR == 1)
 "122
-[e $ ! == -> _OERR `i -> 1 `i 291  ]
+[e $ ! == -> _OERR `i -> 1 `i 292  ]
 [; ;PIC_UART.c: 123: {
 "123
 {
@@ -2568,26 +2601,26 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _CREN -> -> 0 `i `b ]
 [; ;PIC_UART.c: 125: while (OERR);
 "125
-[e $U 292  ]
-[e :U 293 ]
-[e :U 292 ]
-[e $ _OERR 293  ]
+[e $U 293  ]
 [e :U 294 ]
+[e :U 293 ]
+[e $ _OERR 294  ]
+[e :U 295 ]
 [; ;PIC_UART.c: 126: CREN = 1;
 "126
 [e = _CREN -> -> 1 `i `b ]
 "127
 }
-[e :U 291 ]
+[e :U 292 ]
 [; ;PIC_UART.c: 127: }
 [; ;PIC_UART.c: 128: RCIF = 0;
 "128
 [e = _RCIF -> -> 0 `i `b ]
 "129
 }
-[e :U 289 ]
+[e :U 290 ]
 [; ;PIC_UART.c: 129: }
 [; ;PIC_UART.c: 130: }
 "130
-[e :UE 288 ]
+[e :UE 289 ]
 }

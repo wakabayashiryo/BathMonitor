@@ -1,12 +1,12 @@
 Version 3.2 HI-TECH Software Intermediate Code
-[v F2328 `(v ~T0 @X0 0 tf ]
+[v F2330 `(v ~T0 @X0 0 tf ]
 "9 PIC_I2C1.c
-[c E2308 0 1 .. ]
-[n E2308 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
-[c E2312 0 1 .. ]
-[n E2312 . I2C_SPEED_STANDARD I2C_SPEED_HIGH  ]
+[c E2310 0 1 .. ]
+[n E2310 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
+[c E2314 0 1 .. ]
+[n E2314 . I2C_SPEED_STANDARD I2C_SPEED_HIGH  ]
 "36 PIC_I2C.h
-[s S270 `uc -> 8 `i `uc -> 8 `i `*uc 1 `*uc 1 `E2308 1 ]
+[s S270 `uc -> 8 `i `uc -> 8 `i `*uc 1 `*uc 1 `E2310 1 ]
 [n S270 . SlaveTransmitBuff SlaveReceiveBuff TransmitPoint ReceivePoint Mode ]
 "6 PIC_I2C1.c
 [v _I2C1_Config `S270 ~T0 @X0 0 e ]
@@ -2291,8 +2291,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_UART.h: 34: int UART_Available(void);
 [; ;PIC_UART.h: 35: void UART_Flush(void);
 [; ;PIC_UART.h: 37: void UART_Interrupt(void);
-[; ;main.h: 72: void Basic_Init(void);
-[; ;main.h: 73: void UART_InitPort(void);
+[; ;main.h: 73: void Basic_Init(void);
+[; ;main.h: 74: void UART_InitPort(void);
+[; ;main.h: 75: void I2C_InitPort(void);
 [; ;PIC_I2C.h: 17: typedef enum
 [; ;PIC_I2C.h: 18: {
 [; ;PIC_I2C.h: 19: I2C_MODE_MASTER,
@@ -2327,17 +2328,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_I2C.h: 55: void I2C_Interrupt(void);
 [; ;PIC_I2C1.c: 6: extern I2Cx_Configuration I2C1_Config;
 "8 PIC_I2C1.c
-[v _I2C1_Init `(v ~T0 @X0 1 ef4`*F2328`uc`E2308`E2312 ]
+[v _I2C1_Init `(v ~T0 @X0 1 ef4`*F2330`uc`E2310`E2314 ]
 "9
 {
 [; ;PIC_I2C1.c: 8: void I2C1_Init(I2C1_Init_PORTTypedef I2C1_Init_PORT,uint8_t address,I2Cx_Mode mode,I2Cx_Speed Speed)
 [; ;PIC_I2C1.c: 9: {
 [e :U _I2C1_Init ]
 "8
-[v _I2C1_Init_PORT `*F2328 ~T0 @X0 1 r1 ]
+[v _I2C1_Init_PORT `*F2330 ~T0 @X0 1 r1 ]
 [v _address `uc ~T0 @X0 1 r2 ]
-[v _mode `E2308 ~T0 @X0 1 r3 ]
-[v _Speed `E2312 ~T0 @X0 1 r4 ]
+[v _mode `E2310 ~T0 @X0 1 r3 ]
+[v _Speed `E2314 ~T0 @X0 1 r4 ]
 "9
 [f ]
 [; ;PIC_I2C1.c: 10: I2C1_Init_PORT();
@@ -2360,7 +2361,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e =| _SSPCON1 -> << -> 8 `i -> 0 `i `uc ]
 [; ;PIC_I2C1.c: 17: if(Speed==I2C_SPEED_STANDARD)
 "17
-[e $ ! == -> _Speed `i -> . `E2312 0 `i 275  ]
+[e $ ! == -> _Speed `i -> . `E2314 0 `i 275  ]
 [; ;PIC_I2C1.c: 18: {
 "18
 {
@@ -2377,7 +2378,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "22
 [e :U 275 ]
 [; ;PIC_I2C1.c: 22: else if(Speed==I2C_SPEED_HIGH)
-[e $ ! == -> _Speed `i -> . `E2312 1 `i 277  ]
+[e $ ! == -> _Speed `i -> . `E2314 1 `i 277  ]
 [; ;PIC_I2C1.c: 23: {
 "23
 {
@@ -2406,7 +2407,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _SSPSTAT -> -> 0 `i `uc ]
 [; ;PIC_I2C1.c: 32: if(Speed==I2C_SPEED_STANDARD)
 "32
-[e $ ! == -> _Speed `i -> . `E2312 0 `i 279  ]
+[e $ ! == -> _Speed `i -> . `E2314 0 `i 279  ]
 [; ;PIC_I2C1.c: 33: SSPSTAT |= (1<<7);
 "33
 [e =| _SSPSTAT -> << -> 1 `i -> 7 `i `uc ]
@@ -2414,7 +2415,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "34
 [e :U 279 ]
 [; ;PIC_I2C1.c: 34: else if(Speed==I2C_SPEED_HIGH)
-[e $ ! == -> _Speed `i -> . `E2312 1 `i 281  ]
+[e $ ! == -> _Speed `i -> . `E2314 1 `i 281  ]
 [; ;PIC_I2C1.c: 35: SSPSTAT &= ~(1<<7);
 "35
 [e =& _SSPSTAT -> ~ << -> 1 `i -> 7 `i `uc ]
@@ -2444,8 +2445,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 272  ]
 "13
 [e :U 273 ]
-[e [\ _mode , $ . `E2308 0 274
- , $ . `E2308 1 278
+[e [\ _mode , $ . `E2310 0 274
+ , $ . `E2310 1 278
  272 ]
 "43
 [e :U 272 ]
@@ -2654,8 +2655,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 283  ]
 "57
 [e :U 284 ]
-[e [\ . _I2C1_Config 4 , $ . `E2308 0 285
- , $ . `E2308 1 310
+[e [\ . _I2C1_Config 4 , $ . `E2310 0 285
+ , $ . `E2310 1 310
  283 ]
 "99
 [e :U 283 ]
@@ -2851,8 +2852,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 318  ]
 "108
 [e :U 319 ]
-[e [\ . _I2C1_Config 4 , $ . `E2308 0 320
- , $ . `E2308 1 349
+[e [\ . _I2C1_Config 4 , $ . `E2310 0 320
+ , $ . `E2310 1 349
  318 ]
 "148
 [e :U 318 ]

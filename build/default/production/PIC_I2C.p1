@@ -1,13 +1,13 @@
 Version 3.2 HI-TECH Software Intermediate Code
 "3 PIC_I2C.c
-[c E2308 0 1 .. ]
-[n E2308 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
+[c E2310 0 1 .. ]
+[n E2310 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
 "36 PIC_I2C.h
-[s S270 `uc -> 8 `i `uc -> 8 `i `*uc 1 `*uc 1 `E2308 1 ]
+[s S270 `uc -> 8 `i `uc -> 8 `i `*uc 1 `*uc 1 `E2310 1 ]
 [n S270 . SlaveTransmitBuff SlaveReceiveBuff TransmitPoint ReceivePoint Mode ]
 "6 PIC_I2C.c
-[c E2316 0 1 .. ]
-[n E2316 . I2C1_MODULE I2C2_MODULE  ]
+[c E2318 0 1 .. ]
+[n E2318 . I2C1_MODULE I2C2_MODULE  ]
 "50 PIC_I2C.h
 [v _I2C1_Transmit `(c ~T0 @X0 0 ef3`uc`*uc`uc ]
 "51
@@ -2244,8 +2244,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_UART.h: 34: int UART_Available(void);
 [; ;PIC_UART.h: 35: void UART_Flush(void);
 [; ;PIC_UART.h: 37: void UART_Interrupt(void);
-[; ;main.h: 72: void Basic_Init(void);
-[; ;main.h: 73: void UART_InitPort(void);
+[; ;main.h: 73: void Basic_Init(void);
+[; ;main.h: 74: void UART_InitPort(void);
+[; ;main.h: 75: void I2C_InitPort(void);
 [; ;PIC_I2C.h: 17: typedef enum
 [; ;PIC_I2C.h: 18: {
 [; ;PIC_I2C.h: 19: I2C_MODE_MASTER,
@@ -2282,14 +2283,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _I2C1_Config `S270 ~T0 @X0 1 e ]
 [; ;PIC_I2C.c: 3: I2Cx_Configuration I2C1_Config;
 "5
-[v _I2C_Transmit `(c ~T0 @X0 1 ef4`E2316`uc`*uc`uc ]
+[v _I2C_Transmit `(c ~T0 @X0 1 ef4`E2318`uc`*uc`uc ]
 "6
 {
 [; ;PIC_I2C.c: 5: int8_t I2C_Transmit(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size)
 [; ;PIC_I2C.c: 6: {
 [e :U _I2C_Transmit ]
 "5
-[v _I2Cx `E2316 ~T0 @X0 1 r1 ]
+[v _I2Cx `E2318 ~T0 @X0 1 r1 ]
 [v _address `uc ~T0 @X0 1 r2 ]
 [v _pData `*uc ~T0 @X0 1 r3 ]
 [v _size `uc ~T0 @X0 1 r4 ]
@@ -2320,7 +2321,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 272  ]
 "9
 [e :U 273 ]
-[e [\ _I2Cx , $ . `E2316 0 274
+[e [\ _I2Cx , $ . `E2318 0 274
  272 ]
 "14
 [e :U 272 ]
@@ -2333,14 +2334,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 271 ]
 }
 "18
-[v _I2C_Receive `(c ~T0 @X0 1 ef4`E2316`uc`*uc`uc ]
+[v _I2C_Receive `(c ~T0 @X0 1 ef4`E2318`uc`*uc`uc ]
 "19
 {
 [; ;PIC_I2C.c: 18: int8_t I2C_Receive(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size)
 [; ;PIC_I2C.c: 19: {
 [e :U _I2C_Receive ]
 "18
-[v _I2Cx `E2316 ~T0 @X0 1 r1 ]
+[v _I2Cx `E2318 ~T0 @X0 1 r1 ]
 [v _address `uc ~T0 @X0 1 r2 ]
 [v _pData `*uc ~T0 @X0 1 r3 ]
 [v _size `uc ~T0 @X0 1 r4 ]
@@ -2371,7 +2372,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 276  ]
 "22
 [e :U 277 ]
-[e [\ _I2Cx , $ . `E2316 0 278
+[e [\ _I2Cx , $ . `E2318 0 278
  276 ]
 "27
 [e :U 276 ]

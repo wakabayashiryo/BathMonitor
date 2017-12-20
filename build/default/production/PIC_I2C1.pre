@@ -3091,9 +3091,10 @@ void UART_Flush(void);
 
 void UART_Interrupt(void);
 
-# 72 "main.h"
+# 73 "main.h"
 void Basic_Init(void);
 void UART_InitPort(void);
+void I2C_InitPort(void);
 
 # 17 "PIC_I2C.h"
 typedef enum
