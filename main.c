@@ -13,10 +13,9 @@ void main(void)
     
     I2C1_Init(I2C_InitPort,0x00,I2C_MODE_MASTER,I2C_SPEED_HIGH);
     
-    uint8_t testdata[13] = "Wakabayashi\n";
     while(1)
     {
-        I2C_Transmit(I2C1_MODULE,0x56,testdata,13);
+        accel_t_gyro_union accel_t_gyro;  
     }
 }
 

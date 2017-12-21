@@ -61,8 +61,10 @@
 #include <xc.h>
 #include <stdio.h>
 #include <stdint.h>
-#include "PIC_UART.h"
+#include <math.h>
 #include "PIC_I2C.h"
+#include "PIC_UART.h"
+#include "MPU6050.h"
 
 #ifdef	__cplusplus
 extern "C" {

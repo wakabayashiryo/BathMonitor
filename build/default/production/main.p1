@@ -1,30 +1,34 @@
 Version 3.2 HI-TECH Software Intermediate Code
 [p mainexit ]
-"73 main.h
-[v _Basic_Init `(v ~T0 @X0 0 ef ]
-[v F2287 `(v ~T0 @X0 0 tf ]
-"12 main.c
-[c E2276 0 1 2 3 4 5 6 7 .. ]
-[n E2276 . BAUD_300 BAUD_1200 BAUD_2400 BAUD_9600 BAUD_10417 BAUD_19_2K BAUD_57_6K BAUD_115_2K  ]
-"28 PIC_UART.h
-[v _UART_Init `(v ~T0 @X0 0 ef2`*F2287`E2276 ]
-"74 main.h
-[v _UART_InitPort `(v ~T0 @X0 0 ef ]
-[v F2324 `(v ~T0 @X0 0 tf ]
-"14 main.c
-[c E2304 0 1 .. ]
-[n E2304 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
-[c E2308 0 1 .. ]
-[n E2308 . I2C_SPEED_STANDARD I2C_SPEED_HIGH  ]
-"48 PIC_I2C.h
-[v _I2C1_Init `(v ~T0 @X0 0 ef4`*F2324`uc`E2304`E2308 ]
 "75 main.h
+[v _Basic_Init `(v ~T0 @X0 0 ef ]
+[v F2399 `(v ~T0 @X0 0 tf ]
+"12 main.c
+[c E2388 0 1 2 3 4 5 6 7 .. ]
+[n E2388 . BAUD_300 BAUD_1200 BAUD_2400 BAUD_9600 BAUD_10417 BAUD_19_2K BAUD_57_6K BAUD_115_2K  ]
+"28 PIC_UART.h
+[v _UART_Init `(v ~T0 @X0 0 ef2`*F2399`E2388 ]
+"76 main.h
+[v _UART_InitPort `(v ~T0 @X0 0 ef ]
+[v F2356 `(v ~T0 @X0 0 tf ]
+"14 main.c
+[c E2336 0 1 .. ]
+[n E2336 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
+[c E2340 0 1 .. ]
+[n E2340 . I2C_SPEED_STANDARD I2C_SPEED_HIGH  ]
+"48 PIC_I2C.h
+[v _I2C1_Init `(v ~T0 @X0 0 ef4`*F2356`uc`E2336`E2340 ]
+"77 main.h
 [v _I2C_InitPort `(v ~T0 @X0 0 ef ]
-"19 main.c
-[c E2312 0 1 .. ]
-[n E2312 . I2C1_MODULE I2C2_MODULE  ]
-"53 PIC_I2C.h
-[v _I2C_Transmit `(c ~T0 @X0 0 ef4`E2312`uc`*uc`uc ]
+"25 MPU6050.h
+[s S272 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 ]
+[n S272 . x_accel_h x_accel_l y_accel_h y_accel_l z_accel_h z_accel_l t_h t_l x_gyro_h x_gyro_l y_gyro_h y_gyro_l z_gyro_h z_gyro_l ]
+"42
+[s S273 `i 1 `i 1 `i 1 `i 1 `i 1 `i 1 `i 1 ]
+[n S273 . x_accel y_accel z_accel temperature x_gyro y_gyro z_gyro ]
+"24
+[u S271 `S272 1 `S273 1 ]
+[n S271 . reg value ]
 "37 PIC_UART.h
 [v _UART_Interrupt `(v ~T0 @X0 0 ef ]
 "55 PIC_I2C.h
@@ -2252,25 +2256,32 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;stdint.h: 205: typedef uint32_t uintmax_t;
 [; ;stdint.h: 210: typedef int16_t intptr_t;
 [; ;stdint.h: 215: typedef uint16_t uintptr_t;
-[; ;PIC_UART.h: 14: typedef enum
-[; ;PIC_UART.h: 15: {
-[; ;PIC_UART.h: 16: BAUD_300 = 0,
-[; ;PIC_UART.h: 17: BAUD_1200 = 1,
-[; ;PIC_UART.h: 18: BAUD_2400 = 2,
-[; ;PIC_UART.h: 19: BAUD_9600 = 3,
-[; ;PIC_UART.h: 20: BAUD_10417 = 4,
-[; ;PIC_UART.h: 21: BAUD_19_2K = 5,
-[; ;PIC_UART.h: 22: BAUD_57_6K = 6,
-[; ;PIC_UART.h: 23: BAUD_115_2K = 7,
-[; ;PIC_UART.h: 24: }BAUDRATE_u;
-[; ;PIC_UART.h: 26: typedef void (*UART_Init_PORTTypedef)(void);
-[; ;PIC_UART.h: 28: void UART_Init(UART_Init_PORTTypedef UART_Init_PORT,BAUDRATE_u brg);
-[; ;PIC_UART.h: 30: void UART_StringTransmit(const uint8_t *dt);
-[; ;PIC_UART.h: 31: void UART_Transmit(uint8_t dt);
-[; ;PIC_UART.h: 32: uint16_t UART_Receive(void);
-[; ;PIC_UART.h: 34: int UART_Available(void);
-[; ;PIC_UART.h: 35: void UART_Flush(void);
-[; ;PIC_UART.h: 37: void UART_Interrupt(void);
+[; ;math.h: 30: extern double fabs(double);
+[; ;math.h: 31: extern double floor(double);
+[; ;math.h: 32: extern double ceil(double);
+[; ;math.h: 33: extern double modf(double, double *);
+[; ;math.h: 34: extern double sqrt(double);
+[; ;math.h: 35: extern double atof(const char *);
+[; ;math.h: 36: extern double sin(double) ;
+[; ;math.h: 37: extern double cos(double) ;
+[; ;math.h: 38: extern double tan(double) ;
+[; ;math.h: 39: extern double asin(double) ;
+[; ;math.h: 40: extern double acos(double) ;
+[; ;math.h: 41: extern double atan(double);
+[; ;math.h: 42: extern double atan2(double, double) ;
+[; ;math.h: 43: extern double log(double);
+[; ;math.h: 44: extern double log10(double);
+[; ;math.h: 45: extern double pow(double, double) ;
+[; ;math.h: 46: extern double exp(double) ;
+[; ;math.h: 47: extern double sinh(double) ;
+[; ;math.h: 48: extern double cosh(double) ;
+[; ;math.h: 49: extern double tanh(double);
+[; ;math.h: 50: extern double eval_poly(double, const double *, int);
+[; ;math.h: 51: extern double frexp(double, int *);
+[; ;math.h: 52: extern double ldexp(double, int);
+[; ;math.h: 53: extern double fmod(double, double);
+[; ;math.h: 54: extern double trunc(double);
+[; ;math.h: 55: extern double round(double);
 [; ;PIC_I2C.h: 17: typedef enum
 [; ;PIC_I2C.h: 18: {
 [; ;PIC_I2C.h: 19: I2C_MODE_MASTER,
@@ -2303,9 +2314,57 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_I2C.h: 53: int8_t I2C_Transmit(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
 [; ;PIC_I2C.h: 54: int8_t I2C_Receive(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
 [; ;PIC_I2C.h: 55: void I2C_Interrupt(void);
-[; ;main.h: 73: void Basic_Init(void);
-[; ;main.h: 74: void UART_InitPort(void);
-[; ;main.h: 75: void I2C_InitPort(void);
+[; ;PIC_UART.h: 14: typedef enum
+[; ;PIC_UART.h: 15: {
+[; ;PIC_UART.h: 16: BAUD_300 = 0,
+[; ;PIC_UART.h: 17: BAUD_1200 = 1,
+[; ;PIC_UART.h: 18: BAUD_2400 = 2,
+[; ;PIC_UART.h: 19: BAUD_9600 = 3,
+[; ;PIC_UART.h: 20: BAUD_10417 = 4,
+[; ;PIC_UART.h: 21: BAUD_19_2K = 5,
+[; ;PIC_UART.h: 22: BAUD_57_6K = 6,
+[; ;PIC_UART.h: 23: BAUD_115_2K = 7,
+[; ;PIC_UART.h: 24: }BAUDRATE_u;
+[; ;PIC_UART.h: 26: typedef void (*UART_Init_PORTTypedef)(void);
+[; ;PIC_UART.h: 28: void UART_Init(UART_Init_PORTTypedef UART_Init_PORT,BAUDRATE_u brg);
+[; ;PIC_UART.h: 30: void UART_StringTransmit(const uint8_t *dt);
+[; ;PIC_UART.h: 31: void UART_Transmit(uint8_t dt);
+[; ;PIC_UART.h: 32: uint16_t UART_Receive(void);
+[; ;PIC_UART.h: 34: int UART_Available(void);
+[; ;PIC_UART.h: 35: void UART_Flush(void);
+[; ;PIC_UART.h: 37: void UART_Interrupt(void);
+[; ;MPU6050.h: 24: typedef union {
+[; ;MPU6050.h: 25: struct {
+[; ;MPU6050.h: 26: uint8_t x_accel_h;
+[; ;MPU6050.h: 27: uint8_t x_accel_l;
+[; ;MPU6050.h: 28: uint8_t y_accel_h;
+[; ;MPU6050.h: 29: uint8_t y_accel_l;
+[; ;MPU6050.h: 30: uint8_t z_accel_h;
+[; ;MPU6050.h: 31: uint8_t z_accel_l;
+[; ;MPU6050.h: 32: uint8_t t_h;
+[; ;MPU6050.h: 33: uint8_t t_l;
+[; ;MPU6050.h: 34: uint8_t x_gyro_h;
+[; ;MPU6050.h: 35: uint8_t x_gyro_l;
+[; ;MPU6050.h: 36: uint8_t y_gyro_h;
+[; ;MPU6050.h: 37: uint8_t y_gyro_l;
+[; ;MPU6050.h: 38: uint8_t z_gyro_h;
+[; ;MPU6050.h: 39: uint8_t z_gyro_l;
+[; ;MPU6050.h: 40: }
+[; ;MPU6050.h: 41: reg;
+[; ;MPU6050.h: 42: struct {
+[; ;MPU6050.h: 43: int16_t x_accel;
+[; ;MPU6050.h: 44: int16_t y_accel;
+[; ;MPU6050.h: 45: int16_t z_accel;
+[; ;MPU6050.h: 46: int16_t temperature;
+[; ;MPU6050.h: 47: int16_t x_gyro;
+[; ;MPU6050.h: 48: int16_t y_gyro;
+[; ;MPU6050.h: 49: int16_t z_gyro;
+[; ;MPU6050.h: 50: }
+[; ;MPU6050.h: 51: value;
+[; ;MPU6050.h: 52: }accel_t_gyro_union;
+[; ;main.h: 75: void Basic_Init(void);
+[; ;main.h: 76: void UART_InitPort(void);
+[; ;main.h: 77: void I2C_InitPort(void);
 [v $root$_main `(v ~T0 @X0 0 e ]
 "9 main.c
 [v _main `(v ~T0 @X0 1 ef ]
@@ -2320,144 +2379,163 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( _Basic_Init ..  ]
 [; ;main.c: 12: UART_Init(UART_InitPort,BAUD_9600);
 "12
-[e ( _UART_Init (2 , &U _UART_InitPort . `E2276 3 ]
+[e ( _UART_Init (2 , &U _UART_InitPort . `E2388 3 ]
 [; ;main.c: 14: I2C1_Init(I2C_InitPort,0x00,I2C_MODE_MASTER,I2C_SPEED_HIGH);
 "14
-[e ( _I2C1_Init (4 , , , &U _I2C_InitPort -> -> 0 `i `uc . `E2304 0 . `E2308 1 ]
-[v F2367 `uc ~T0 @X0 -> 13 `i s ]
-[i F2367
-:U ..
--> 87 `c
--> 97 `c
--> 107 `c
--> 97 `c
--> 98 `c
--> 97 `c
--> 121 `c
--> 97 `c
--> 115 `c
--> 104 `c
--> 105 `c
--> 10 `c
--> 0 `c
-..
-]
+[e ( _I2C1_Init (4 , , , &U _I2C_InitPort -> -> 0 `i `uc . `E2336 0 . `E2340 1 ]
+[; ;main.c: 16: while(1)
 "16
-[v _testdata `uc ~T0 @X0 -> 13 `i a ]
-[; ;main.c: 16: uint8_t testdata[13] = "Wakabayashi\n";
-[e = _testdata F2367 ]
-[; ;main.c: 17: while(1)
+[e :U 276 ]
+[; ;main.c: 17: {
 "17
-[e :U 273 ]
-[; ;main.c: 18: {
-"18
 {
-[; ;main.c: 19: I2C_Transmit(I2C1_MODULE,0x56,testdata,13);
 "19
-[e ( _I2C_Transmit (4 , , , . `E2312 0 -> -> 86 `i `uc &U _testdata -> -> 13 `i `uc ]
+[v _error `i ~T0 @X0 1 a ]
 "20
+[v _accel_t_gyro `S271 ~T0 @X0 1 a ]
+"27
+[v _swap `uc ~T0 @X0 1 a ]
+[; ;main.c: 19: int error;
+[; ;main.c: 20: accel_t_gyro_union accel_t_gyro;
+[; ;main.c: 27: uint8_t swap;
+[; ;main.c: 29: swap = accel_t_gyro.reg.x_accel_h; accel_t_gyro.reg.x_accel_h = accel_t_gyro.reg.x_accel_l; accel_t_gyro.reg.x_accel_l = swap;
+"29
+[e = _swap . . _accel_t_gyro 0 0 ]
+[e = . . _accel_t_gyro 0 0 . . _accel_t_gyro 0 1 ]
+[e = . . _accel_t_gyro 0 1 _swap ]
+[; ;main.c: 30: swap = accel_t_gyro.reg.y_accel_h; accel_t_gyro.reg.y_accel_h = accel_t_gyro.reg.y_accel_l; accel_t_gyro.reg.y_accel_l = swap;
+"30
+[e = _swap . . _accel_t_gyro 0 2 ]
+[e = . . _accel_t_gyro 0 2 . . _accel_t_gyro 0 3 ]
+[e = . . _accel_t_gyro 0 3 _swap ]
+[; ;main.c: 31: swap = accel_t_gyro.reg.z_accel_h; accel_t_gyro.reg.z_accel_h = accel_t_gyro.reg.z_accel_l; accel_t_gyro.reg.z_accel_l = swap;
+"31
+[e = _swap . . _accel_t_gyro 0 4 ]
+[e = . . _accel_t_gyro 0 4 . . _accel_t_gyro 0 5 ]
+[e = . . _accel_t_gyro 0 5 _swap ]
+[; ;main.c: 32: swap = accel_t_gyro.reg.t_h; accel_t_gyro.reg.t_h = accel_t_gyro.reg.t_l; accel_t_gyro.reg.t_l = swap;
+"32
+[e = _swap . . _accel_t_gyro 0 6 ]
+[e = . . _accel_t_gyro 0 6 . . _accel_t_gyro 0 7 ]
+[e = . . _accel_t_gyro 0 7 _swap ]
+[; ;main.c: 33: swap = accel_t_gyro.reg.x_gyro_h; accel_t_gyro.reg.x_gyro_h = accel_t_gyro.reg.x_gyro_l; accel_t_gyro.reg.x_gyro_l = swap;
+"33
+[e = _swap . . _accel_t_gyro 0 8 ]
+[e = . . _accel_t_gyro 0 8 . . _accel_t_gyro 0 9 ]
+[e = . . _accel_t_gyro 0 9 _swap ]
+[; ;main.c: 34: swap = accel_t_gyro.reg.y_gyro_h; accel_t_gyro.reg.y_gyro_h = accel_t_gyro.reg.y_gyro_l; accel_t_gyro.reg.y_gyro_l = swap;
+"34
+[e = _swap . . _accel_t_gyro 0 10 ]
+[e = . . _accel_t_gyro 0 10 . . _accel_t_gyro 0 11 ]
+[e = . . _accel_t_gyro 0 11 _swap ]
+[; ;main.c: 35: swap = accel_t_gyro.reg.z_gyro_h; accel_t_gyro.reg.z_gyro_h = accel_t_gyro.reg.z_gyro_l; accel_t_gyro.reg.z_gyro_l = swap;
+"35
+[e = _swap . . _accel_t_gyro 0 12 ]
+[e = . . _accel_t_gyro 0 12 . . _accel_t_gyro 0 13 ]
+[e = . . _accel_t_gyro 0 13 _swap ]
+"38
 }
-[e :U 272 ]
-"17
-[e $U 273  ]
-[e :U 274 ]
-[; ;main.c: 20: }
-[; ;main.c: 21: }
-"21
-[e :UE 271 ]
+[e :U 275 ]
+"16
+[e $U 276  ]
+[e :U 277 ]
+[; ;main.c: 38: }
+[; ;main.c: 39: }
+"39
+[e :UE 274 ]
 }
 [v $root$_Handle `(v ~T0 @X0 0 e ]
-[v F2370 `(v ~T0 @X0 1 tf ]
-"23
-[v _Handle `IF2370 ~T0 @X0 1 e ]
-"24
+[v F2458 `(v ~T0 @X0 1 tf ]
+"41
+[v _Handle `IF2458 ~T0 @X0 1 e ]
+"42
 {
-[; ;main.c: 23: void interrupt Handle(void)
-[; ;main.c: 24: {
+[; ;main.c: 41: void interrupt Handle(void)
+[; ;main.c: 42: {
 [e :U _Handle ]
 [f ]
-[; ;main.c: 25: UART_Interrupt();
-"25
+[; ;main.c: 43: UART_Interrupt();
+"43
 [e ( _UART_Interrupt ..  ]
-[; ;main.c: 26: I2C_Interrupt();
-"26
+[; ;main.c: 44: I2C_Interrupt();
+"44
 [e ( _I2C_Interrupt ..  ]
-[; ;main.c: 27: }
-"27
-[e :UE 275 ]
+[; ;main.c: 45: }
+"45
+[e :UE 278 ]
 }
-"29
+"47
 [v _Basic_Init `(v ~T0 @X0 1 ef ]
-"30
+"48
 {
-[; ;main.c: 29: void Basic_Init(void)
-[; ;main.c: 30: {
+[; ;main.c: 47: void Basic_Init(void)
+[; ;main.c: 48: {
 [e :U _Basic_Init ]
 [f ]
-[; ;main.c: 31: OSCCON = 0xF0;
-"31
+[; ;main.c: 49: OSCCON = 0xF0;
+"49
 [e = _OSCCON -> -> 240 `i `uc ]
-[; ;main.c: 35: TRISA = 0x00;
-"35
+[; ;main.c: 53: TRISA = 0x00;
+"53
 [e = _TRISA -> -> 0 `i `uc ]
-[; ;main.c: 36: ANSELA = 0x00;
-"36
+[; ;main.c: 54: ANSELA = 0x00;
+"54
 [e = _ANSELA -> -> 0 `i `uc ]
-[; ;main.c: 37: WPUA = 0x00;
-"37
+[; ;main.c: 55: WPUA = 0x00;
+"55
 [e = _WPUA -> -> 0 `i `uc ]
-[; ;main.c: 40: APFCON = 0x00;
-"40
+[; ;main.c: 58: APFCON = 0x00;
+"58
 [e = _APFCON -> -> 0 `i `uc ]
-[; ;main.c: 42: PORTA = 0x00;
-"42
+[; ;main.c: 60: PORTA = 0x00;
+"60
 [e = _PORTA -> -> 0 `i `uc ]
-[; ;main.c: 43: }
-"43
-[e :UE 276 ]
+[; ;main.c: 61: }
+"61
+[e :UE 279 ]
 }
-"45
+"63
 [v _UART_InitPort `(v ~T0 @X0 1 ef ]
-"46
+"64
 {
-[; ;main.c: 45: void UART_InitPort(void)
-[; ;main.c: 46: {
+[; ;main.c: 63: void UART_InitPort(void)
+[; ;main.c: 64: {
 [e :U _UART_InitPort ]
 [f ]
-[; ;main.c: 47: TRISA &= ~(1<<4);
-"47
+[; ;main.c: 65: TRISA &= ~(1<<4);
+"65
 [e =& _TRISA -> ~ << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 48: ANSELA &= ~(1<<4);
-"48
+[; ;main.c: 66: ANSELA &= ~(1<<4);
+"66
 [e =& _ANSELA -> ~ << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 49: APFCON |= (1<<2);
-"49
+[; ;main.c: 67: APFCON |= (1<<2);
+"67
 [e =| _APFCON -> << -> 1 `i -> 2 `i `uc ]
-[; ;main.c: 50: }
-"50
-[e :UE 277 ]
+[; ;main.c: 68: }
+"68
+[e :UE 280 ]
 }
-"51
+"69
 [v _I2C_InitPort `(v ~T0 @X0 1 ef ]
-"52
+"70
 {
-[; ;main.c: 51: void I2C_InitPort(void)
-[; ;main.c: 52: {
+[; ;main.c: 69: void I2C_InitPort(void)
+[; ;main.c: 70: {
 [e :U _I2C_InitPort ]
 [f ]
-[; ;main.c: 53: TRISA |= (1<<1);
-"53
+[; ;main.c: 71: TRISA |= (1<<1);
+"71
 [e =| _TRISA -> << -> 1 `i -> 1 `i `uc ]
-[; ;main.c: 54: TRISA |= (1<<2);
-"54
+[; ;main.c: 72: TRISA |= (1<<2);
+"72
 [e =| _TRISA -> << -> 1 `i -> 2 `i `uc ]
-[; ;main.c: 56: ANSELA &= ~(1<<1);
-"56
+[; ;main.c: 74: ANSELA &= ~(1<<1);
+"74
 [e =& _ANSELA -> ~ << -> 1 `i -> 1 `i `uc ]
-[; ;main.c: 57: ANSELA &= ~(1<<2);
-"57
+[; ;main.c: 75: ANSELA &= ~(1<<2);
+"75
 [e =& _ANSELA -> ~ << -> 1 `i -> 2 `i `uc ]
-[; ;main.c: 58: }
-"58
-[e :UE 278 ]
+[; ;main.c: 76: }
+"76
+[e :UE 281 ]
 }
