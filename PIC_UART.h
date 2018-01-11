@@ -9,7 +9,7 @@
 
 #include "main.h"
 
-#define UART_BUFFER_SIZE 32
+#define UART_BUFFER_SIZE 8
 
 typedef enum
 {

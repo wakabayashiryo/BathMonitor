@@ -3,7 +3,7 @@
 [d edition pro ]
 [d chip 12F1822 ]
 [d frameptr 6 ]
-"12 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
+"16 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
 [e E2388 . `uc
 BAUD_300 0
 BAUD_1200 1
@@ -14,7 +14,7 @@ BAUD_19_2K 5
 BAUD_57_6K 6
 BAUD_115_2K 7
 ]
-"14
+"18
 [e E2336 . `uc
 I2C_MODE_MASTER 0
 I2C_MODE_SLAVE 1
@@ -24,7 +24,7 @@ I2C_SPEED_STANDARD 0
 I2C_SPEED_HIGH 1
 ]
 "38 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_UART.c
-[e E2421 . `uc
+[e E2433 . `uc
 BAUD_300 0
 BAUD_1200 1
 BAUD_2400 2
@@ -34,44 +34,65 @@ BAUD_19_2K 5
 BAUD_57_6K 6
 BAUD_115_2K 7
 ]
+"9 /home/evaota/MPLABXProjects/BathMonitor.X/MPU6050.c
+[e E2344 . `uc
+I2C1_MODULE 0
+I2C2_MODULE 1
+]
 "3 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_I2C.c
-[e E2397 . `uc
+[e E2409 . `uc
 I2C_MODE_MASTER 0
 I2C_MODE_SLAVE 1
 ]
 "6
-[e E2405 . `uc
+[e E2417 . `uc
 I2C1_MODULE 0
 I2C2_MODULE 1
 ]
 "9 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_I2C1.c
-[e E2397 . `uc
+[e E2409 . `uc
 I2C_MODE_MASTER 0
 I2C_MODE_SLAVE 1
 ]
-[e E2401 . `uc
+[e E2413 . `uc
 I2C_SPEED_STANDARD 0
 I2C_SPEED_HIGH 1
 ]
+"464 /opt/microchip/xc8/v1.43/sources/common/doprnt.c
+[v _printf printf `(i  1 e 2 0 ]
 "62 /opt/microchip/xc8/v1.43/sources/common/float.c
 [v ___ftpack __ftpack `(f  1 e 3 0 ]
 "86 /opt/microchip/xc8/v1.43/sources/common/ftadd.c
 [v ___ftadd __ftadd `(f  1 e 3 0 ]
+"6 /opt/microchip/xc8/v1.43/sources/common/lwdiv.c
+[v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
 "6 /opt/microchip/xc8/v1.43/sources/pic/eeprom.c
 [v _eecpymem eecpymem `(v  1 e 1 0 ]
 "39
 [v _memcpyee memcpyee `(v  1 e 1 0 ]
-"9 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
+"11 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
 [v _main main `(v  1 e 1 0 ]
-"41
+"37
 [v _Handle Handle `II(v  1 e 1 0 ]
-"47
+"43
 [v _Basic_Init Basic_Init `(v  1 e 1 0 ]
-"63
+"59
 [v _UART_InitPort UART_InitPort `(v  1 e 1 0 ]
-"69
+"66
 [v _I2C_InitPort I2C_InitPort `(v  1 e 1 0 ]
-"31 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_I2C.c
+"5 /home/evaota/MPLABXProjects/BathMonitor.X/MPU6050.c
+[v _MPU6050_Write_Data MPU6050_Write_Data `(c  1 e 1 0 ]
+"16
+[v _MPU6050_Read_Data MPU6050_Read_Data `(c  1 e 1 0 ]
+"27
+[v _MPU6050_Read_MultiData MPU6050_Read_MultiData `(c  1 e 1 0 ]
+"37
+[v _MPU6050_Init MPU6050_Init `(c  1 e 1 0 ]
+"5 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_I2C.c
+[v _I2C_Transmit I2C_Transmit `(c  1 e 1 0 ]
+"18
+[v _I2C_Receive I2C_Receive `(c  1 e 1 0 ]
+"31
 [v _I2C_Interrupt I2C_Interrupt `(v  1 e 1 0 ]
 "8 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_I2C1.c
 [v _I2C1_Init I2C1_Init `(v  1 e 1 0 ]
@@ -85,6 +106,8 @@ I2C_SPEED_HIGH 1
 [v _UART_Init UART_Init `(v  1 e 1 0 ]
 "70
 [v _UART_Transmit UART_Transmit `(v  1 e 1 0 ]
+"76
+[v _putch putch `(v  1 e 1 0 ]
 "107
 [v _UART_Interrupt UART_Interrupt `(v  1 e 1 0 ]
 "427 /opt/microchip/xc8/v1.43/include/pic12f1822.h
@@ -119,7 +142,7 @@ I2C_SPEED_HIGH 1
 [v _SSPMSK SSPMSK `VEuc  1 e 1 @531 ]
 "3363
 [v _SSPSTAT SSPSTAT `VEuc  1 e 1 @532 ]
-[s S325 . 1 `uc 1 BF 1 0 :1:0 
+[s S393 . 1 `uc 1 BF 1 0 :1:0 
 `uc 1 UA 1 0 :1:1 
 `uc 1 R_nW 1 0 :1:2 
 `uc 1 S 1 0 :1:3 
@@ -129,11 +152,11 @@ I2C_SPEED_HIGH 1
 `uc 1 SMP 1 0 :1:7 
 ]
 "3435
-[u S334 . 1 `S325 1 . 1 0 ]
-[v _SSPSTATbits SSPSTATbits `VES334  1 e 1 @532 ]
+[u S402 . 1 `S393 1 . 1 0 ]
+[v _SSPSTATbits SSPSTATbits `VES402  1 e 1 @532 ]
 "3485
 [v _SSPCON1 SSPCON1 `VEuc  1 e 1 @533 ]
-[s S269 . 1 `uc 1 SSPM0 1 0 :1:0 
+[s S337 . 1 `uc 1 SSPM0 1 0 :1:0 
 `uc 1 SSPM1 1 0 :1:1 
 `uc 1 SSPM2 1 0 :1:2 
 `uc 1 SSPM3 1 0 :1:3 
@@ -143,13 +166,13 @@ I2C_SPEED_HIGH 1
 `uc 1 WCOL 1 0 :1:7 
 ]
 "3572
-[s S278 . 1 `uc 1 SSPM 1 0 :4:0 
+[s S346 . 1 `uc 1 SSPM 1 0 :4:0 
 ]
-[u S280 . 1 `S269 1 . 1 0 `S278 1 . 1 0 ]
-[v _SSPCON1bits SSPCON1bits `VES280  1 e 1 @533 ]
+[u S348 . 1 `S337 1 . 1 0 `S346 1 . 1 0 ]
+[v _SSPCON1bits SSPCON1bits `VES348  1 e 1 @533 ]
 "3689
 [v _SSPCON2 SSPCON2 `VEuc  1 e 1 @534 ]
-[s S295 . 1 `uc 1 SEN 1 0 :1:0 
+[s S363 . 1 `uc 1 SEN 1 0 :1:0 
 `uc 1 RSEN 1 0 :1:1 
 `uc 1 PEN 1 0 :1:2 
 `uc 1 RCEN 1 0 :1:3 
@@ -159,8 +182,8 @@ I2C_SPEED_HIGH 1
 `uc 1 GCEN 1 0 :1:7 
 ]
 "3761
-[u S304 . 1 `S295 1 . 1 0 ]
-[v _SSPCON2bits SSPCON2bits `VES304  1 e 1 @534 ]
+[u S372 . 1 `S363 1 . 1 0 ]
+[v _SSPCON2bits SSPCON2bits `VES372  1 e 1 @534 ]
 "5110
 [v _BCL1IE BCL1IE `VEb  1 e 0 @1171 ]
 "5112
@@ -187,64 +210,243 @@ I2C_SPEED_HIGH 1
 [v _SSP1IF SSP1IF `VEb  1 e 0 @139 ]
 "5776
 [v _TXIF TXIF `VEb  1 e 0 @140 ]
-[s S206 . 19 `[8]uc 1 SlaveTransmitBuff 8 0 `[8]uc 1 SlaveReceiveBuff 8 8 `*.4uc 1 TransmitPoint 1 16 `*.4uc 1 ReceivePoint 1 17 `E2397 1 Mode 1 18 ]
+"362 /opt/microchip/xc8/v1.43/sources/common/doprnt.c
+[v _hexpowers hexpowers `DC[4]ui  1 s 8 hexpowers ]
+[s S274 . 19 `[8]uc 1 SlaveTransmitBuff 8 0 `[8]uc 1 SlaveReceiveBuff 8 8 `*.4uc 1 TransmitPoint 1 16 `*.4uc 1 ReceivePoint 1 17 `E2409 1 Mode 1 18 ]
 "3 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_I2C.c
-[v _I2C1_Config I2C1_Config `S206  1 e 19 0 ]
+[v _I2C1_Config I2C1_Config `S274  1 e 19 0 ]
 "3 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_UART.c
-[v _UART_Buffer UART_Buffer `[32]uc  1 s 32 UART_Buffer ]
+[v _UART_Buffer UART_Buffer `[8]uc  1 s 8 UART_Buffer ]
 "4
 [v _UART_Buffer_inptr UART_Buffer_inptr `uc  1 s 1 UART_Buffer_inptr ]
 "5
 [v _UART_Buffer_outptr UART_Buffer_outptr `uc  1 s 1 UART_Buffer_outptr ]
 "13
 [v _baudtable baudtable `DC[8]ui  1 s 16 baudtable ]
-"9 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
+"11 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
 [v _main main `(v  1 e 1 0 ]
 {
-[s S62 . 14 `uc 1 x_accel_h 1 0 `uc 1 x_accel_l 1 1 `uc 1 y_accel_h 1 2 `uc 1 y_accel_l 1 3 `uc 1 z_accel_h 1 4 `uc 1 z_accel_l 1 5 `uc 1 t_h 1 6 `uc 1 t_l 1 7 `uc 1 x_gyro_h 1 8 `uc 1 x_gyro_l 1 9 `uc 1 y_gyro_h 1 10 `uc 1 y_gyro_l 1 11 `uc 1 z_gyro_h 1 12 `uc 1 z_gyro_l 1 13 ]
-"20
-[s S77 . 14 `i 1 x_accel 2 0 `i 1 y_accel 2 2 `i 1 z_accel 2 4 `i 1 temperature 2 6 `i 1 x_gyro 2 8 `i 1 y_gyro 2 10 `i 1 z_gyro 2 12 ]
-[u S85 . 14 `S62 1 reg 14 0 `S77 1 value 14 0 ]
-[v main@accel_t_gyro accel_t_gyro `S85  1 a 14 7 ]
+"32
+[v main@swap_168 swap `uc  1 a 1 36 ]
+"31
+[v main@swap_167 swap `uc  1 a 1 35 ]
+"30
+[v main@swap_166 swap `uc  1 a 1 34 ]
+"29
+[v main@swap_165 swap `uc  1 a 1 33 ]
+"28
+[v main@swap_164 swap `uc  1 a 1 32 ]
 "27
-[v main@swap swap `uc  1 a 1 6 ]
-"39
+[v main@swap_163 swap `uc  1 a 1 31 ]
+"26
+[v main@swap swap `uc  1 a 1 30 ]
+[s S19 . 14 `uc 1 x_accel_h 1 0 `uc 1 x_accel_l 1 1 `uc 1 y_accel_h 1 2 `uc 1 y_accel_l 1 3 `uc 1 z_accel_h 1 4 `uc 1 z_accel_l 1 5 `uc 1 t_h 1 6 `uc 1 t_l 1 7 `uc 1 x_gyro_h 1 8 `uc 1 x_gyro_l 1 9 `uc 1 y_gyro_h 1 10 `uc 1 y_gyro_l 1 11 `uc 1 z_gyro_h 1 12 `uc 1 z_gyro_l 1 13 ]
+"13
+[s S34 . 14 `i 1 x_accel 2 0 `i 1 y_accel 2 2 `i 1 z_accel 2 4 `i 1 temperature 2 6 `i 1 x_gyro 2 8 `i 1 y_gyro 2 10 `i 1 z_gyro 2 12 ]
+[u S42 . 14 `S19 1 reg 14 0 `S34 1 value 14 0 ]
+[v main@accel_t_gyro accel_t_gyro `S42  1 a 14 37 ]
+"22
+[v main@result result `c  1 a 1 29 ]
+"35
+} 0
+"464 /opt/microchip/xc8/v1.43/sources/common/doprnt.c
+[v _printf printf `(i  1 e 2 0 ]
+{
+"1500
+[v printf@idx idx `uc  1 a 1 19 ]
+"528
+[v printf@val val `ui  1 a 2 21 ]
+"499
+[v printf@c c `c  1 a 1 24 ]
+"506
+[v printf@prec prec `c  1 a 1 23 ]
+"466
+[v printf@ap ap `[1]*.4v  1 a 1 20 ]
+"508
+[v printf@flag flag `uc  1 a 1 18 ]
+"464
+[v printf@f f `*.25DCuc  1 p 2 4 ]
+"1541
+} 0
+"76 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_UART.c
+[v _putch putch `(v  1 e 1 0 ]
+{
+[v putch@c c `uc  1 a 1 wreg ]
+[v putch@c c `uc  1 a 1 wreg ]
+"78
+[v putch@c c `uc  1 a 1 5 ]
+"79
+} 0
+"70
+[v _UART_Transmit UART_Transmit `(v  1 e 1 0 ]
+{
+[v UART_Transmit@dt dt `uc  1 a 1 wreg ]
+[v UART_Transmit@dt dt `uc  1 a 1 wreg ]
+[v UART_Transmit@dt dt `uc  1 a 1 4 ]
+"74
+} 0
+"6 /opt/microchip/xc8/v1.43/sources/common/lwdiv.c
+[v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
+{
+"11
+[v ___lwdiv@quotient quotient `ui  1 a 2 2 ]
+"12
+[v ___lwdiv@counter counter `uc  1 a 1 1 ]
+"6
+[v ___lwdiv@divisor divisor `ui  1 p 2 4 ]
+[v ___lwdiv@dividend dividend `ui  1 p 2 6 ]
+"31
 } 0
 "37 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_UART.c
 [v _UART_Init UART_Init `(v  1 e 1 0 ]
 {
 [v UART_Init@UART_Init_PORT UART_Init_PORT `*.37(v  1 p 2 5 ]
-[v UART_Init@brg brg `E2421  1 p 1 7 ]
+[v UART_Init@brg brg `E2433  1 p 1 7 ]
 "57
 } 0
-"63 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
+"59 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
 [v _UART_InitPort UART_InitPort `(v  1 e 1 0 ]
 {
-"68
+"65
 } 0
-"8 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_I2C1.c
+"27 /home/evaota/MPLABXProjects/BathMonitor.X/MPU6050.c
+[v _MPU6050_Read_MultiData MPU6050_Read_MultiData `(c  1 e 1 0 ]
+{
+[v MPU6050_Read_MultiData@reg reg `uc  1 a 1 wreg ]
+"29
+[v MPU6050_Read_MultiData@result result `c  1 a 1 19 ]
+"27
+[v MPU6050_Read_MultiData@reg reg `uc  1 a 1 wreg ]
+[v MPU6050_Read_MultiData@pData pData `*.4uc  1 p 1 12 ]
+[v MPU6050_Read_MultiData@size size `uc  1 p 1 13 ]
+"29
+[v MPU6050_Read_MultiData@reg reg `uc  1 a 1 18 ]
+"35
+} 0
+"37
+[v _MPU6050_Init MPU6050_Init `(c  1 e 1 0 ]
+{
+"46
+[v MPU6050_Init@data data `uc  1 a 1 22 ]
+"41
+[v MPU6050_Init@addr addr `uc  1 a 1 21 ]
+"39
+[v MPU6050_Init@result result `c  1 a 1 20 ]
+"52
+} 0
+"5
+[v _MPU6050_Write_Data MPU6050_Write_Data `(c  1 e 1 0 ]
+{
+[v MPU6050_Write_Data@reg reg `uc  1 a 1 wreg ]
+"7
+[v MPU6050_Write_Data@result result `c  1 a 1 17 ]
+"5
+[v MPU6050_Write_Data@reg reg `uc  1 a 1 wreg ]
+[v MPU6050_Write_Data@pData pData `uc  1 p 1 12 ]
+"7
+[v MPU6050_Write_Data@reg reg `uc  1 a 1 16 ]
+"14
+} 0
+"16
+[v _MPU6050_Read_Data MPU6050_Read_Data `(c  1 e 1 0 ]
+{
+[v MPU6050_Read_Data@reg reg `uc  1 a 1 wreg ]
+"18
+[v MPU6050_Read_Data@result result `c  1 a 1 17 ]
+"16
+[v MPU6050_Read_Data@reg reg `uc  1 a 1 wreg ]
+[v MPU6050_Read_Data@pData pData `*.4uc  1 p 1 12 ]
+"18
+[v MPU6050_Read_Data@reg reg `uc  1 a 1 16 ]
+"25
+} 0
+"5 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_I2C.c
+[v _I2C_Transmit I2C_Transmit `(c  1 e 1 0 ]
+{
+[v I2C_Transmit@I2Cx I2Cx `E2417  1 a 1 wreg ]
+"7
+[v I2C_Transmit@result result `c  1 a 1 11 ]
+"5
+[v I2C_Transmit@I2Cx I2Cx `E2417  1 a 1 wreg ]
+[v I2C_Transmit@address address `uc  1 p 1 4 ]
+[v I2C_Transmit@pData pData `*.4uc  1 p 1 5 ]
+[v I2C_Transmit@size size `uc  1 p 1 6 ]
+"7
+[v I2C_Transmit@I2Cx I2Cx `E2417  1 a 1 10 ]
+"16
+} 0
+"53 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_I2C1.c
+[v _I2C1_Transmit I2C1_Transmit `(c  1 e 1 0 ]
+{
+[v I2C1_Transmit@address address `uc  1 a 1 wreg ]
+"92
+[v I2C1_Transmit@i_450 i `uc  1 a 1 2 ]
+"70
+[v I2C1_Transmit@i i `uc  1 a 1 1 ]
+"55
+[v I2C1_Transmit@result result `c  1 a 1 3 ]
+"53
+[v I2C1_Transmit@address address `uc  1 a 1 wreg ]
+[v I2C1_Transmit@pData pData `*.4uc  1 p 1 4 ]
+[v I2C1_Transmit@size size `uc  1 p 1 5 ]
+[v I2C1_Transmit@address address `uc  1 a 1 0 ]
+"102
+} 0
+"18 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_I2C.c
+[v _I2C_Receive I2C_Receive `(c  1 e 1 0 ]
+{
+[v I2C_Receive@I2Cx I2Cx `E2417  1 a 1 wreg ]
+"20
+[v I2C_Receive@result result `c  1 a 1 11 ]
+"18
+[v I2C_Receive@I2Cx I2Cx `E2417  1 a 1 wreg ]
+[v I2C_Receive@address address `uc  1 p 1 4 ]
+[v I2C_Receive@pData pData `*.4uc  1 p 1 5 ]
+[v I2C_Receive@size size `uc  1 p 1 6 ]
+"20
+[v I2C_Receive@I2Cx I2Cx `E2417  1 a 1 10 ]
+"29
+} 0
+"104 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_I2C1.c
+[v _I2C1_Receive I2C1_Receive `(c  1 e 1 0 ]
+{
+[v I2C1_Receive@address address `uc  1 a 1 wreg ]
+"143
+[v I2C1_Receive@i_457 i `uc  1 a 1 3 ]
+"121
+[v I2C1_Receive@i i `uc  1 a 1 2 ]
+"106
+[v I2C1_Receive@result result `c  1 a 1 1 ]
+"104
+[v I2C1_Receive@address address `uc  1 a 1 wreg ]
+[v I2C1_Receive@pData pData `*.4uc  1 p 1 4 ]
+[v I2C1_Receive@size size `uc  1 p 1 5 ]
+[v I2C1_Receive@address address `uc  1 a 1 0 ]
+"151
+} 0
+"8
 [v _I2C1_Init I2C1_Init `(v  1 e 1 0 ]
 {
 [v I2C1_Init@I2C1_Init_PORT I2C1_Init_PORT `*.37(v  1 p 2 0 ]
 [v I2C1_Init@address address `uc  1 p 1 2 ]
-[v I2C1_Init@mode mode `E2397  1 p 1 3 ]
-[v I2C1_Init@Speed Speed `E2401  1 p 1 4 ]
+[v I2C1_Init@mode mode `E2409  1 p 1 3 ]
+[v I2C1_Init@Speed Speed `E2413  1 p 1 4 ]
 "51
 } 0
-"69 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
+"66 /home/evaota/MPLABXProjects/BathMonitor.X/main.c
 [v _I2C_InitPort I2C_InitPort `(v  1 e 1 0 ]
 {
-"76
+"73
 } 0
-"47
+"43
 [v _Basic_Init Basic_Init `(v  1 e 1 0 ]
 {
-"61
+"57
 } 0
-"41
+"37
 [v _Handle Handle `II(v  1 e 1 0 ]
 {
-"45
+"41
 } 0
 "107 /home/evaota/MPLABXProjects/BathMonitor.X/PIC_UART.c
 [v _UART_Interrupt UART_Interrupt `(v  1 e 1 0 ]

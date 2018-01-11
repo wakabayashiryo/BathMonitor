@@ -1,13 +1,13 @@
 Version 3.2 HI-TECH Software Intermediate Code
 "3 PIC_I2C.c
-[c E2397 0 1 .. ]
-[n E2397 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
+[c E2409 0 1 .. ]
+[n E2409 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
 "36 PIC_I2C.h
-[s S273 `uc -> 8 `i `uc -> 8 `i `*uc 1 `*uc 1 `E2397 1 ]
+[s S273 `uc -> 8 `i `uc -> 8 `i `*uc 1 `*uc 1 `E2409 1 ]
 [n S273 . SlaveTransmitBuff SlaveReceiveBuff TransmitPoint ReceivePoint Mode ]
 "6 PIC_I2C.c
-[c E2405 0 1 .. ]
-[n E2405 . I2C1_MODULE I2C2_MODULE  ]
+[c E2417 0 1 .. ]
+[n E2417 . I2C1_MODULE I2C2_MODULE  ]
 "50 PIC_I2C.h
 [v _I2C1_Transmit `(c ~T0 @X0 0 ef3`uc`*uc`uc ]
 "51
@@ -21,7 +21,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "42
 [p x PWRTE=OFF ]
 "43
-[p x MCLRE=ON ]
+[p x MCLRE=OFF ]
 "44
 [p x CP=OFF ]
 "45
@@ -2270,35 +2270,42 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_UART.h: 34: int UART_Available(void);
 [; ;PIC_UART.h: 35: void UART_Flush(void);
 [; ;PIC_UART.h: 37: void UART_Interrupt(void);
-[; ;MPU6050.h: 24: typedef union {
-[; ;MPU6050.h: 25: struct {
-[; ;MPU6050.h: 26: uint8_t x_accel_h;
-[; ;MPU6050.h: 27: uint8_t x_accel_l;
-[; ;MPU6050.h: 28: uint8_t y_accel_h;
-[; ;MPU6050.h: 29: uint8_t y_accel_l;
-[; ;MPU6050.h: 30: uint8_t z_accel_h;
-[; ;MPU6050.h: 31: uint8_t z_accel_l;
-[; ;MPU6050.h: 32: uint8_t t_h;
-[; ;MPU6050.h: 33: uint8_t t_l;
-[; ;MPU6050.h: 34: uint8_t x_gyro_h;
-[; ;MPU6050.h: 35: uint8_t x_gyro_l;
-[; ;MPU6050.h: 36: uint8_t y_gyro_h;
-[; ;MPU6050.h: 37: uint8_t y_gyro_l;
-[; ;MPU6050.h: 38: uint8_t z_gyro_h;
-[; ;MPU6050.h: 39: uint8_t z_gyro_l;
-[; ;MPU6050.h: 40: }
-[; ;MPU6050.h: 41: reg;
-[; ;MPU6050.h: 42: struct {
-[; ;MPU6050.h: 43: int16_t x_accel;
-[; ;MPU6050.h: 44: int16_t y_accel;
-[; ;MPU6050.h: 45: int16_t z_accel;
-[; ;MPU6050.h: 46: int16_t temperature;
-[; ;MPU6050.h: 47: int16_t x_gyro;
-[; ;MPU6050.h: 48: int16_t y_gyro;
-[; ;MPU6050.h: 49: int16_t z_gyro;
-[; ;MPU6050.h: 50: }
-[; ;MPU6050.h: 51: value;
-[; ;MPU6050.h: 52: }accel_t_gyro_union;
+[; ;MPU6050.h: 140: typedef union
+[; ;MPU6050.h: 141: {
+[; ;MPU6050.h: 142: struct
+[; ;MPU6050.h: 143: {
+[; ;MPU6050.h: 144: uint8_t x_accel_h;
+[; ;MPU6050.h: 145: uint8_t x_accel_l;
+[; ;MPU6050.h: 146: uint8_t y_accel_h;
+[; ;MPU6050.h: 147: uint8_t y_accel_l;
+[; ;MPU6050.h: 148: uint8_t z_accel_h;
+[; ;MPU6050.h: 149: uint8_t z_accel_l;
+[; ;MPU6050.h: 150: uint8_t t_h;
+[; ;MPU6050.h: 151: uint8_t t_l;
+[; ;MPU6050.h: 152: uint8_t x_gyro_h;
+[; ;MPU6050.h: 153: uint8_t x_gyro_l;
+[; ;MPU6050.h: 154: uint8_t y_gyro_h;
+[; ;MPU6050.h: 155: uint8_t y_gyro_l;
+[; ;MPU6050.h: 156: uint8_t z_gyro_h;
+[; ;MPU6050.h: 157: uint8_t z_gyro_l;
+[; ;MPU6050.h: 158: }
+[; ;MPU6050.h: 159: reg;
+[; ;MPU6050.h: 160: struct
+[; ;MPU6050.h: 161: {
+[; ;MPU6050.h: 162: int16_t x_accel;
+[; ;MPU6050.h: 163: int16_t y_accel;
+[; ;MPU6050.h: 164: int16_t z_accel;
+[; ;MPU6050.h: 165: int16_t temperature;
+[; ;MPU6050.h: 166: int16_t x_gyro;
+[; ;MPU6050.h: 167: int16_t y_gyro;
+[; ;MPU6050.h: 168: int16_t z_gyro;
+[; ;MPU6050.h: 169: }
+[; ;MPU6050.h: 170: value;
+[; ;MPU6050.h: 171: }accel_t_gyro_union;
+[; ;MPU6050.h: 173: int8_t MPU6050_Write_Data(uint8_t reg,uint8_t pData);
+[; ;MPU6050.h: 174: int8_t MPU6050_Read_Data(uint8_t reg,uint8_t *pData);
+[; ;MPU6050.h: 175: int8_t MPU6050_Read_MultiData(uint8_t reg,uint8_t *pData,uint8_t size);
+[; ;MPU6050.h: 176: int8_t MPU6050_Init(void);
 [; ;main.h: 75: void Basic_Init(void);
 [; ;main.h: 76: void UART_InitPort(void);
 [; ;main.h: 77: void I2C_InitPort(void);
@@ -2338,14 +2345,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _I2C1_Config `S273 ~T0 @X0 1 e ]
 [; ;PIC_I2C.c: 3: I2Cx_Configuration I2C1_Config;
 "5
-[v _I2C_Transmit `(c ~T0 @X0 1 ef4`E2405`uc`*uc`uc ]
+[v _I2C_Transmit `(c ~T0 @X0 1 ef4`E2417`uc`*uc`uc ]
 "6
 {
 [; ;PIC_I2C.c: 5: int8_t I2C_Transmit(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size)
 [; ;PIC_I2C.c: 6: {
 [e :U _I2C_Transmit ]
 "5
-[v _I2Cx `E2405 ~T0 @X0 1 r1 ]
+[v _I2Cx `E2417 ~T0 @X0 1 r1 ]
 [v _address `uc ~T0 @X0 1 r2 ]
 [v _pData `*uc ~T0 @X0 1 r3 ]
 [v _size `uc ~T0 @X0 1 r4 ]
@@ -2376,7 +2383,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 275  ]
 "9
 [e :U 276 ]
-[e [\ _I2Cx , $ . `E2405 0 277
+[e [\ _I2Cx , $ . `E2417 0 277
  275 ]
 "14
 [e :U 275 ]
@@ -2389,14 +2396,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 274 ]
 }
 "18
-[v _I2C_Receive `(c ~T0 @X0 1 ef4`E2405`uc`*uc`uc ]
+[v _I2C_Receive `(c ~T0 @X0 1 ef4`E2417`uc`*uc`uc ]
 "19
 {
 [; ;PIC_I2C.c: 18: int8_t I2C_Receive(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size)
 [; ;PIC_I2C.c: 19: {
 [e :U _I2C_Receive ]
 "18
-[v _I2Cx `E2405 ~T0 @X0 1 r1 ]
+[v _I2Cx `E2417 ~T0 @X0 1 r1 ]
 [v _address `uc ~T0 @X0 1 r2 ]
 [v _pData `*uc ~T0 @X0 1 r3 ]
 [v _size `uc ~T0 @X0 1 r4 ]
@@ -2427,7 +2434,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 279  ]
 "22
 [e :U 280 ]
-[e [\ _I2Cx , $ . `E2405 0 281
+[e [\ _I2Cx , $ . `E2417 0 281
  279 ]
 "27
 [e :U 279 ]

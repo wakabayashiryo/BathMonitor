@@ -6,7 +6,7 @@
 #pragma config FOSC = INTOSC
 #pragma config WDTE = OFF
 #pragma config PWRTE = OFF
-#pragma config MCLRE = ON
+#pragma config MCLRE = OFF
 #pragma config CP = OFF
 #pragma config CPD = OFF
 #pragma config BOREN = OFF
@@ -3134,9 +3134,11 @@ int8_t I2C_Transmit(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size
 int8_t I2C_Receive(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
 void I2C_Interrupt(void);
 
-# 24 "MPU6050.h"
-typedef union {
-struct {
+# 140 "MPU6050.h"
+typedef union
+{
+struct
+{
 uint8_t x_accel_h;
 uint8_t x_accel_l;
 uint8_t y_accel_h;
@@ -3153,7 +3155,8 @@ uint8_t z_gyro_h;
 uint8_t z_gyro_l;
 }
 reg;
-struct {
+struct
+{
 int16_t x_accel;
 int16_t y_accel;
 int16_t z_accel;
@@ -3164,6 +3167,11 @@ int16_t z_gyro;
 }
 value;
 }accel_t_gyro_union;
+
+int8_t MPU6050_Write_Data(uint8_t reg,uint8_t pData);
+int8_t MPU6050_Read_Data(uint8_t reg,uint8_t *pData);
+int8_t MPU6050_Read_MultiData(uint8_t reg,uint8_t *pData,uint8_t size);
+int8_t MPU6050_Init(void);
 
 # 75 "main.h"
 void Basic_Init(void);
@@ -3197,7 +3205,7 @@ void UART_Flush(void);
 void UART_Interrupt(void);
 
 # 3 "PIC_UART.c"
-static uint8_t UART_Buffer[32];
+static uint8_t UART_Buffer[8];
 static uint8_t UART_Buffer_inptr;
 static uint8_t UART_Buffer_outptr;
 
@@ -3260,7 +3268,7 @@ UART_Transmit(c);
 
 int UART_Available(void)
 {
-return (UART_Buffer_outptr + 32 - UART_Buffer_inptr) % 32;
+return (UART_Buffer_outptr + 8 - UART_Buffer_inptr) % 8;
 }
 
 
@@ -3272,7 +3280,7 @@ if (UART_Buffer_inptr == UART_Buffer_outptr) return 0xFFFF;
 
 ans = UART_Buffer[UART_Buffer_inptr];
 
-UART_Buffer_inptr = (UART_Buffer_inptr + 1) % 32;
+UART_Buffer_inptr = (UART_Buffer_inptr + 1) % 8;
 
 return ans;
 }
@@ -3292,7 +3300,7 @@ uint8_t dt;
 if (RCIF == 1)
 {
 dt = RCREG;
-x = (UART_Buffer_outptr + 1) % 32;
+x = (UART_Buffer_outptr + 1) % 8;
 if (x != UART_Buffer_inptr)
 {
 UART_Buffer[UART_Buffer_outptr] = dt;
