@@ -1,5 +1,5 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"9 MPU6050.c
+"11 MPU6050.c
 [c E2344 0 1 .. ]
 [n E2344 . I2C1_MODULE I2C2_MODULE  ]
 "53 PIC_I2C.h
@@ -2333,28 +2333,34 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;MPU6050.h: 174: int8_t MPU6050_Read_Data(uint8_t reg,uint8_t *pData);
 [; ;MPU6050.h: 175: int8_t MPU6050_Read_MultiData(uint8_t reg,uint8_t *pData,uint8_t size);
 [; ;MPU6050.h: 176: int8_t MPU6050_Init(void);
-"5 MPU6050.c
+"3 MPU6050.c
 [v _MPU6050_Write_Data `(c ~T0 @X0 1 ef2`uc`uc ]
-"6
+"4
 {
-[; ;MPU6050.c: 5: int8_t MPU6050_Write_Data(uint8_t reg,uint8_t pData)
-[; ;MPU6050.c: 6: {
+[; ;MPU6050.c: 3: int8_t MPU6050_Write_Data(uint8_t reg,uint8_t pData)
+[; ;MPU6050.c: 4: {
 [e :U _MPU6050_Write_Data ]
-"5
+"3
 [v _reg `uc ~T0 @X0 1 r1 ]
 [v _pData `uc ~T0 @X0 1 r2 ]
-"6
+"4
 [f ]
-"7
+"5
 [v _result `c ~T0 @X0 1 a ]
-[; ;MPU6050.c: 7: int8_t result = 0;
+[; ;MPU6050.c: 5: int8_t result = 0;
 [e = _result -> -> 0 `i `c ]
-[; ;MPU6050.c: 9: result += I2C_Transmit(I2C1_MODULE,0x68,&reg,1);
+"6
+[v _senddata `uc ~T0 @X0 -> 2 `i a ]
+[; ;MPU6050.c: 6: uint8_t senddata[2];
+[; ;MPU6050.c: 8: senddata[0] = reg;
+"8
+[e = *U + &U _senddata * -> -> -> 0 `i `ui `ux -> -> # *U &U _senddata `ui `ux _reg ]
+[; ;MPU6050.c: 9: senddata[1] = pData;
 "9
-[e =+ _result ( _I2C_Transmit (4 , , , . `E2344 0 -> -> 104 `i `uc &U _reg -> -> 1 `i `uc ]
-[; ;MPU6050.c: 11: result += I2C_Transmit(I2C1_MODULE,0x68,&pData,1);
+[e = *U + &U _senddata * -> -> -> 1 `i `ui `ux -> -> # *U &U _senddata `ui `ux _pData ]
+[; ;MPU6050.c: 11: result += I2C_Transmit(I2C1_MODULE,0x68,senddata,2);
 "11
-[e =+ _result ( _I2C_Transmit (4 , , , . `E2344 0 -> -> 104 `i `uc &U _pData -> -> 1 `i `uc ]
+[e =+ _result ( _I2C_Transmit (4 , , , . `E2344 0 -> -> 104 `i `uc &U _senddata -> -> 2 `i `uc ]
 [; ;MPU6050.c: 13: return result;
 "13
 [e ) _result ]
@@ -2441,27 +2447,24 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;MPU6050.c: 42: result = MPU6050_Read_Data(0x75,&addr);
 "42
 [e = _result ( _MPU6050_Read_Data (2 , -> -> 117 `i `uc &U _addr ]
-[; ;MPU6050.c: 43: if((addr>>1)!=0x68) return -1;
+[; ;MPU6050.c: 43: if(addr!=0x68) return -1;
 "43
-[e $ ! != >> -> _addr `i -> 1 `i -> 104 `i 278  ]
+[e $ ! != -> _addr `i -> 104 `i 278  ]
 [e ) -> -U -> 1 `i `c ]
 [e $UE 277  ]
 [e :U 278 ]
-"46
+"45
 [v _data `uc ~T0 @X0 1 a ]
-[; ;MPU6050.c: 46: uint8_t data = 0x00;
+[; ;MPU6050.c: 45: uint8_t data = 0x00;
 [e = _data -> -> 0 `i `uc ]
-[; ;MPU6050.c: 47: result += MPU6050_Write_Data(0x6B,data);
-"47
+[; ;MPU6050.c: 46: result += MPU6050_Write_Data(0x6B,data);
+"46
 [e =+ _result ( _MPU6050_Write_Data (2 , -> -> 107 `i `uc _data ]
-[; ;MPU6050.c: 49: result += MPU6050_Read_Data(0x6B,&data);
-"49
-[e =+ _result ( _MPU6050_Read_Data (2 , -> -> 107 `i `uc &U _data ]
-[; ;MPU6050.c: 51: return result;
-"51
+[; ;MPU6050.c: 48: return result;
+"48
 [e ) _result ]
 [e $UE 277  ]
-[; ;MPU6050.c: 52: }
-"52
+[; ;MPU6050.c: 49: }
+"49
 [e :UE 277 ]
 }

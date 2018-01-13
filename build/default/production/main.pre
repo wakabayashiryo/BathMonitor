@@ -3204,7 +3204,7 @@ void Basic_Init(void);
 void UART_InitPort(void);
 void I2C_InitPort(void);
 
-# 11 "main.c"
+# 9 "main.c"
 void main(void)
 {
 accel_t_gyro_union accel_t_gyro;
@@ -3217,9 +3217,12 @@ I2C1_Init(I2C_InitPort,0x00,I2C_MODE_MASTER,I2C_SPEED_HIGH);
 MPU6050_Init();
 
 int8_t result;
+
 while(1)
 {
 result = MPU6050_Read_MultiData(0x3B,(uint8_t *)&accel_t_gyro,sizeof(accel_t_gyro));
+
+
 {uint8_t swap = accel_t_gyro.reg.x_accel_h; accel_t_gyro.reg.x_accel_h = accel_t_gyro.reg.x_accel_l; accel_t_gyro.reg.x_accel_l = swap;};
 {uint8_t swap = accel_t_gyro.reg.y_accel_h; accel_t_gyro.reg.y_accel_h = accel_t_gyro.reg.y_accel_l; accel_t_gyro.reg.y_accel_l = swap;};
 {uint8_t swap = accel_t_gyro.reg.z_accel_h; accel_t_gyro.reg.z_accel_h = accel_t_gyro.reg.z_accel_l; accel_t_gyro.reg.z_accel_l = swap;};
@@ -3227,7 +3230,29 @@ result = MPU6050_Read_MultiData(0x3B,(uint8_t *)&accel_t_gyro,sizeof(accel_t_gyr
 {uint8_t swap = accel_t_gyro.reg.x_gyro_h; accel_t_gyro.reg.x_gyro_h = accel_t_gyro.reg.x_gyro_l; accel_t_gyro.reg.x_gyro_l = swap;};
 {uint8_t swap = accel_t_gyro.reg.y_gyro_h; accel_t_gyro.reg.y_gyro_h = accel_t_gyro.reg.y_gyro_l; accel_t_gyro.reg.y_gyro_l = swap;};
 {uint8_t swap = accel_t_gyro.reg.z_gyro_h; accel_t_gyro.reg.z_gyro_h = accel_t_gyro.reg.z_gyro_l; accel_t_gyro.reg.z_gyro_l = swap;};
-printf("%x %x %x %x \n",0x56,accel_t_gyro.value.x_accel,accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
+
+UART_Transmit(0xFF);
+UART_Transmit(0xFF);
+UART_Transmit(0xFF);
+UART_Transmit(0xFF);
+UART_Transmit(0xFF);
+
+UART_Transmit(accel_t_gyro.reg.x_accel_h);
+UART_Transmit(accel_t_gyro.reg.x_accel_l);
+UART_Transmit(accel_t_gyro.reg.y_accel_h);
+UART_Transmit(accel_t_gyro.reg.y_accel_l);
+UART_Transmit(accel_t_gyro.reg.z_accel_h);
+UART_Transmit(accel_t_gyro.reg.z_accel_l);
+
+UART_Transmit(accel_t_gyro.reg.t_h);
+UART_Transmit(accel_t_gyro.reg.t_l);
+
+UART_Transmit(accel_t_gyro.reg.x_gyro_h);
+UART_Transmit(accel_t_gyro.reg.x_gyro_l);
+UART_Transmit(accel_t_gyro.reg.y_gyro_h);
+UART_Transmit(accel_t_gyro.reg.y_gyro_l);
+UART_Transmit(accel_t_gyro.reg.z_gyro_h);
+UART_Transmit(accel_t_gyro.reg.z_gyro_l);
 }
 }
 

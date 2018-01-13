@@ -3204,14 +3204,16 @@ int8_t MPU6050_Read_Data(uint8_t reg,uint8_t *pData);
 int8_t MPU6050_Read_MultiData(uint8_t reg,uint8_t *pData,uint8_t size);
 int8_t MPU6050_Init(void);
 
-# 5 "MPU6050.c"
+# 3 "MPU6050.c"
 int8_t MPU6050_Write_Data(uint8_t reg,uint8_t pData)
 {
 int8_t result = 0;
+uint8_t senddata[2];
 
-result += I2C_Transmit(I2C1_MODULE,0x68,&reg,1);
+senddata[0] = reg;
+senddata[1] = pData;
 
-result += I2C_Transmit(I2C1_MODULE,0x68,&pData,1);
+result += I2C_Transmit(I2C1_MODULE,0x68,senddata,2);
 
 return result;
 }
@@ -3243,13 +3245,10 @@ int8_t result;
 
 uint8_t addr;
 result = MPU6050_Read_Data(0x75,&addr);
-if((addr>>1)!=0x68) return -1;
-
+if(addr!=0x68) return -1;
 
 uint8_t data = 0x00;
 result += MPU6050_Write_Data(0x6B,data);
-
-result += MPU6050_Read_Data(0x6B,&data);
 
 return result;
 }
