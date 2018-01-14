@@ -4,4 +4,5 @@
 PIC_I2C.h  \
 MPU6050.h  \
 main.h  \
-PIC_UART.h 
+PIC_UART.h  \
+PIC_Timer0.h 

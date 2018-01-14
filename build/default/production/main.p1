@@ -1,5 +1,36 @@
 Version 3.2 HI-TECH Software Intermediate Code
 [p mainexit ]
+"76 main.h
+[v _Basic_Init `(v ~T0 @X0 0 ef ]
+[v F2356 `(v ~T0 @X0 0 tf ]
+"14 main.c
+[c E2336 0 1 .. ]
+[n E2336 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
+[c E2340 0 1 .. ]
+[n E2340 . I2C_SPEED_STANDARD I2C_SPEED_HIGH  ]
+"48 PIC_I2C.h
+[v _I2C1_Init `(v ~T0 @X0 0 ef4`*F2356`uc`E2336`E2340 ]
+"78 main.h
+[v _I2C_InitPort `(v ~T0 @X0 0 ef ]
+[v F2399 `(v ~T0 @X0 0 tf ]
+"16 main.c
+[c E2388 0 1 2 3 4 5 6 7 .. ]
+[n E2388 . BAUD_300 BAUD_1200 BAUD_2400 BAUD_9600 BAUD_10417 BAUD_19_2K BAUD_57_6K BAUD_115_2K  ]
+"28 PIC_UART.h
+[v _UART_Init `(v ~T0 @X0 0 ef2`*F2399`E2388 ]
+"77 main.h
+[v _UART_InitPort `(v ~T0 @X0 0 ef ]
+[v F2176 `(v ~T0 @X0 1 tf1`ul ]
+"152 /opt/microchip/xc8/v1.43/include/pic.h
+[v __delay `JF2176 ~T0 @X0 0 e ]
+[p i __delay ]
+"176 MPU6050.h
+[v _MPU6050_Init `(c ~T0 @X0 0 ef ]
+"24 main.c
+[c E2455 0 1 2 3 4 5 6 7 .. ]
+[n E2455 . TMR0_PRESCALER2 TMR0_PRESCALER4 TMR0_PRESCALER8 TMR0_PRESCALER16 TMR0_PRESCALER32 TMR0_PRESCALER64 TMR0_PRESCALER128 TMR0_PRESCALER256  ]
+"29 PIC_Timer0.h
+[v _Timer0_Init `(v ~T0 @X0 0 ef2`E2455`uc ]
 "143 MPU6050.h
 [s S272 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 ]
 [n S272 . x_accel_h x_accel_l y_accel_h y_accel_l z_accel_h z_accel_l t_h t_l x_gyro_h x_gyro_l y_gyro_h y_gyro_l z_gyro_h z_gyro_l ]
@@ -9,33 +40,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 "141
 [u S271 `S272 1 `S273 1 ]
 [n S271 . reg value ]
-"75 main.h
-[v _Basic_Init `(v ~T0 @X0 0 ef ]
-[v F2356 `(v ~T0 @X0 0 tf ]
-"17 main.c
-[c E2336 0 1 .. ]
-[n E2336 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
-[c E2340 0 1 .. ]
-[n E2340 . I2C_SPEED_STANDARD I2C_SPEED_HIGH  ]
-"48 PIC_I2C.h
-[v _I2C1_Init `(v ~T0 @X0 0 ef4`*F2356`uc`E2336`E2340 ]
-"77 main.h
-[v _I2C_InitPort `(v ~T0 @X0 0 ef ]
-[v F2399 `(v ~T0 @X0 0 tf ]
-"19 main.c
-[c E2388 0 1 2 3 4 5 6 7 .. ]
-[n E2388 . BAUD_300 BAUD_1200 BAUD_2400 BAUD_9600 BAUD_10417 BAUD_19_2K BAUD_57_6K BAUD_115_2K  ]
-"28 PIC_UART.h
-[v _UART_Init `(v ~T0 @X0 0 ef2`*F2399`E2388 ]
-"76 main.h
-[v _UART_InitPort `(v ~T0 @X0 0 ef ]
-[v F2176 `(v ~T0 @X0 1 tf1`ul ]
-"152 /opt/microchip/xc8/v1.43/include/pic.h
-[v __delay `JF2176 ~T0 @X0 0 e ]
-[p i __delay ]
-"176 MPU6050.h
-[v _MPU6050_Init `(c ~T0 @X0 0 ef ]
-"175
+"30 PIC_Timer0.h
+[v _Timer0_CheckFlag `(uc ~T0 @X0 0 ef ]
+"175 MPU6050.h
 [v _MPU6050_Read_MultiData `(c ~T0 @X0 0 ef3`uc`*uc`uc ]
 "31 PIC_UART.h
 [v _UART_Transmit `(v ~T0 @X0 0 ef1`uc ]
@@ -2379,270 +2386,306 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;MPU6050.h: 174: int8_t MPU6050_Read_Data(uint8_t reg,uint8_t *pData);
 [; ;MPU6050.h: 175: int8_t MPU6050_Read_MultiData(uint8_t reg,uint8_t *pData,uint8_t size);
 [; ;MPU6050.h: 176: int8_t MPU6050_Init(void);
-[; ;main.h: 75: void Basic_Init(void);
-[; ;main.h: 76: void UART_InitPort(void);
-[; ;main.h: 77: void I2C_InitPort(void);
+[; ;PIC_Timer0.h: 17: typedef enum
+[; ;PIC_Timer0.h: 18: {
+[; ;PIC_Timer0.h: 19: TMR0_PRESCALER2 = 0,
+[; ;PIC_Timer0.h: 20: TMR0_PRESCALER4 = 1,
+[; ;PIC_Timer0.h: 21: TMR0_PRESCALER8 = 2,
+[; ;PIC_Timer0.h: 22: TMR0_PRESCALER16 = 3,
+[; ;PIC_Timer0.h: 23: TMR0_PRESCALER32 = 4,
+[; ;PIC_Timer0.h: 24: TMR0_PRESCALER64 = 5,
+[; ;PIC_Timer0.h: 25: TMR0_PRESCALER128 = 6,
+[; ;PIC_Timer0.h: 26: TMR0_PRESCALER256 = 7,
+[; ;PIC_Timer0.h: 27: }TMR0_PRESCALER_VAL;
+[; ;PIC_Timer0.h: 29: void Timer0_Init(TMR0_PRESCALER_VAL pre_val,uint8_t reload_val);
+[; ;PIC_Timer0.h: 30: uint8_t Timer0_CheckFlag(void);
+[; ;main.h: 76: void Basic_Init(void);
+[; ;main.h: 77: void UART_InitPort(void);
+[; ;main.h: 78: void I2C_InitPort(void);
 [v $root$_main `(v ~T0 @X0 0 e ]
-"11 main.c
+"9 main.c
 [v _main `(v ~T0 @X0 1 ef ]
-"12
+"10
 {
-[; ;main.c: 11: void main(void)
-[; ;main.c: 12: {
+[; ;main.c: 9: void main(void)
+[; ;main.c: 10: {
 [e :U _main ]
 [f ]
-"13
-[v _accel_t_gyro `S271 ~T0 @X0 1 a ]
-[; ;main.c: 13: accel_t_gyro_union accel_t_gyro;
-[; ;main.c: 15: Basic_Init();
-"15
+[; ;main.c: 12: Basic_Init();
+"12
 [e ( _Basic_Init ..  ]
-[; ;main.c: 17: I2C1_Init(I2C_InitPort,0x00,I2C_MODE_MASTER,I2C_SPEED_HIGH);
-"17
+[; ;main.c: 14: I2C1_Init(I2C_InitPort,0x00,I2C_MODE_MASTER,I2C_SPEED_HIGH);
+"14
 [e ( _I2C1_Init (4 , , , &U _I2C_InitPort -> -> 0 `i `uc . `E2336 0 . `E2340 1 ]
-[; ;main.c: 19: UART_Init(UART_InitPort,BAUD_9600);
-"19
+[; ;main.c: 16: UART_Init(UART_InitPort,BAUD_9600);
+"16
 [e ( _UART_Init (2 , &U _UART_InitPort . `E2388 3 ]
-[; ;main.c: 21: _delay((unsigned long)((100)*(32000000/4000.0)));
-"21
+[; ;main.c: 18: _delay((unsigned long)((100)*(32000000/4000.0)));
+"18
 [e ( __delay (1 -> * -> -> 100 `i `d / -> -> 32000000 `l `d .4000.0 `ul ]
-[; ;main.c: 23: MPU6050_Init();
-"23
+[; ;main.c: 20: MPU6050_Init();
+"20
 [e ( _MPU6050_Init ..  ]
-[; ;main.c: 25: _delay((unsigned long)((100)*(32000000/4000.0)));
-"25
+[; ;main.c: 22: _delay((unsigned long)((100)*(32000000/4000.0)));
+"22
 [e ( __delay (1 -> * -> -> 100 `i `d / -> -> 32000000 `l `d .4000.0 `ul ]
-"27
-[v _result `c ~T0 @X0 1 a ]
-[; ;main.c: 27: int8_t result;
-[; ;main.c: 29: while(1)
-"29
+[; ;main.c: 24: Timer0_Init(TMR0_PRESCALER64,125);
+"24
+[e ( _Timer0_Init (2 , . `E2455 5 -> -> 125 `i `uc ]
+[; ;main.c: 26: while(1)
+"26
 [e :U 276 ]
-[; ;main.c: 30: {
-"30
+[; ;main.c: 27: {
+"27
 {
-[; ;main.c: 31: result = MPU6050_Read_MultiData(0x3B,(uint8_t *)&accel_t_gyro,sizeof(accel_t_gyro));
-"31
-[e = _result ( _MPU6050_Read_MultiData (3 , , -> -> 59 `i `uc -> &U _accel_t_gyro `*uc -> -> # _accel_t_gyro `ui `uc ]
-[; ;main.c: 33: {uint8_t swap = accel_t_gyro.reg.x_accel_h; accel_t_gyro.reg.x_accel_h = accel_t_gyro.reg.x_accel_l; accel_t_gyro.reg.x_accel_l = swap;};
-"33
-{
-[v _swap `uc ~T0 @X0 1 a ]
-[e = _swap . . _accel_t_gyro 0 0 ]
-[e = . . _accel_t_gyro 0 0 . . _accel_t_gyro 0 1 ]
-[e = . . _accel_t_gyro 0 1 _swap ]
-}
-[; ;main.c: 34: {uint8_t swap = accel_t_gyro.reg.y_accel_h; accel_t_gyro.reg.y_accel_h = accel_t_gyro.reg.y_accel_l; accel_t_gyro.reg.y_accel_l = swap;};
-"34
-{
-[v _swap `uc ~T0 @X0 1 a ]
-[e = _swap . . _accel_t_gyro 0 2 ]
-[e = . . _accel_t_gyro 0 2 . . _accel_t_gyro 0 3 ]
-[e = . . _accel_t_gyro 0 3 _swap ]
-}
-[; ;main.c: 35: {uint8_t swap = accel_t_gyro.reg.z_accel_h; accel_t_gyro.reg.z_accel_h = accel_t_gyro.reg.z_accel_l; accel_t_gyro.reg.z_accel_l = swap;};
-"35
-{
-[v _swap `uc ~T0 @X0 1 a ]
-[e = _swap . . _accel_t_gyro 0 4 ]
-[e = . . _accel_t_gyro 0 4 . . _accel_t_gyro 0 5 ]
-[e = . . _accel_t_gyro 0 5 _swap ]
-}
-[; ;main.c: 36: {uint8_t swap = accel_t_gyro.reg.t_h; accel_t_gyro.reg.t_h = accel_t_gyro.reg.t_l; accel_t_gyro.reg.t_l = swap;};
-"36
-{
-[v _swap `uc ~T0 @X0 1 a ]
-[e = _swap . . _accel_t_gyro 0 6 ]
-[e = . . _accel_t_gyro 0 6 . . _accel_t_gyro 0 7 ]
-[e = . . _accel_t_gyro 0 7 _swap ]
-}
-[; ;main.c: 37: {uint8_t swap = accel_t_gyro.reg.x_gyro_h; accel_t_gyro.reg.x_gyro_h = accel_t_gyro.reg.x_gyro_l; accel_t_gyro.reg.x_gyro_l = swap;};
-"37
-{
-[v _swap `uc ~T0 @X0 1 a ]
-[e = _swap . . _accel_t_gyro 0 8 ]
-[e = . . _accel_t_gyro 0 8 . . _accel_t_gyro 0 9 ]
-[e = . . _accel_t_gyro 0 9 _swap ]
-}
-[; ;main.c: 38: {uint8_t swap = accel_t_gyro.reg.y_gyro_h; accel_t_gyro.reg.y_gyro_h = accel_t_gyro.reg.y_gyro_l; accel_t_gyro.reg.y_gyro_l = swap;};
-"38
-{
-[v _swap `uc ~T0 @X0 1 a ]
-[e = _swap . . _accel_t_gyro 0 10 ]
-[e = . . _accel_t_gyro 0 10 . . _accel_t_gyro 0 11 ]
-[e = . . _accel_t_gyro 0 11 _swap ]
-}
-[; ;main.c: 39: {uint8_t swap = accel_t_gyro.reg.z_gyro_h; accel_t_gyro.reg.z_gyro_h = accel_t_gyro.reg.z_gyro_l; accel_t_gyro.reg.z_gyro_l = swap;};
-"39
-{
-[v _swap `uc ~T0 @X0 1 a ]
-[e = _swap . . _accel_t_gyro 0 12 ]
-[e = . . _accel_t_gyro 0 12 . . _accel_t_gyro 0 13 ]
-[e = . . _accel_t_gyro 0 13 _swap ]
-}
-[; ;main.c: 41: UART_Transmit(0xFF);
-"41
-[e ( _UART_Transmit (1 -> -> 255 `i `uc ]
-[; ;main.c: 42: UART_Transmit(0xFF);
-"42
-[e ( _UART_Transmit (1 -> -> 255 `i `uc ]
-[; ;main.c: 43: UART_Transmit(0xFF);
-"43
-[e ( _UART_Transmit (1 -> -> 255 `i `uc ]
-[; ;main.c: 44: UART_Transmit(0xFF);
-"44
-[e ( _UART_Transmit (1 -> -> 255 `i `uc ]
-[; ;main.c: 45: UART_Transmit(0xFF);
-"45
-[e ( _UART_Transmit (1 -> -> 255 `i `uc ]
-[; ;main.c: 47: UART_Transmit(accel_t_gyro.reg.x_accel_h);
-"47
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 0 ]
-[; ;main.c: 48: UART_Transmit(accel_t_gyro.reg.x_accel_l);
-"48
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 1 ]
-[; ;main.c: 49: UART_Transmit(accel_t_gyro.reg.y_accel_h);
-"49
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 2 ]
-[; ;main.c: 50: UART_Transmit(accel_t_gyro.reg.y_accel_l);
-"50
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 3 ]
-[; ;main.c: 51: UART_Transmit(accel_t_gyro.reg.z_accel_h);
-"51
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 4 ]
-[; ;main.c: 52: UART_Transmit(accel_t_gyro.reg.z_accel_l);
-"52
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 5 ]
-[; ;main.c: 54: UART_Transmit(accel_t_gyro.reg.t_h);
-"54
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 6 ]
-[; ;main.c: 55: UART_Transmit(accel_t_gyro.reg.t_l);
-"55
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 7 ]
-[; ;main.c: 57: UART_Transmit(accel_t_gyro.reg.x_gyro_h);
-"57
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 8 ]
-[; ;main.c: 58: UART_Transmit(accel_t_gyro.reg.x_gyro_l);
-"58
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 9 ]
-[; ;main.c: 59: UART_Transmit(accel_t_gyro.reg.y_gyro_h);
-"59
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 10 ]
-[; ;main.c: 60: UART_Transmit(accel_t_gyro.reg.y_gyro_l);
-"60
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 11 ]
-[; ;main.c: 61: UART_Transmit(accel_t_gyro.reg.z_gyro_h);
-"61
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 12 ]
-[; ;main.c: 62: UART_Transmit(accel_t_gyro.reg.z_gyro_l);
-"62
-[e ( _UART_Transmit (1 . . _accel_t_gyro 0 13 ]
-"65
+"29
 }
 [e :U 275 ]
-"29
+"26
 [e $U 276  ]
 [e :U 277 ]
-[; ;main.c: 65: }
-[; ;main.c: 66: }
-"66
+[; ;main.c: 29: }
+[; ;main.c: 30: }
+"30
 [e :UE 274 ]
 }
-[v $root$_Handle `(v ~T0 @X0 0 e ]
-[v F2479 `(v ~T0 @X0 1 tf ]
-"68
-[v _Handle `IF2479 ~T0 @X0 1 e ]
-"69
+"32
+[v _SWAP `(v ~T0 @X0 1 ef2`*uc`*uc ]
+"33
 {
-[; ;main.c: 68: void interrupt Handle(void)
-[; ;main.c: 69: {
-[e :U _Handle ]
+[; ;main.c: 32: void SWAP(uint8_t *x,uint8_t *y)
+[; ;main.c: 33: {
+[e :U _SWAP ]
+"32
+[v _x `*uc ~T0 @X0 1 r1 ]
+[v _y `*uc ~T0 @X0 1 r2 ]
+"33
 [f ]
-[; ;main.c: 70: UART_Interrupt();
-"70
-[e ( _UART_Interrupt ..  ]
-[; ;main.c: 71: I2C_Interrupt();
-"71
-[e ( _I2C_Interrupt ..  ]
-[; ;main.c: 72: }
-"72
+"34
+[v _swap `uc ~T0 @X0 1 a ]
+[; ;main.c: 34: uint8_t swap = *x;
+[e = _swap *U _x ]
+[; ;main.c: 35: *x = *y;
+"35
+[e = *U _x *U _y ]
+[; ;main.c: 36: *y = swap;
+"36
+[e = *U _y _swap ]
+[; ;main.c: 37: }
+"37
 [e :UE 278 ]
 }
-"74
-[v _Basic_Init `(v ~T0 @X0 1 ef ]
-"75
+[v $root$_Handle `(v ~T0 @X0 0 e ]
+[v F2488 `(v ~T0 @X0 1 tf ]
+"39
+[v _Handle `IF2488 ~T0 @X0 1 e ]
+"40
 {
-[; ;main.c: 74: void Basic_Init(void)
-[; ;main.c: 75: {
-[e :U _Basic_Init ]
+[; ;main.c: 39: void interrupt Handle(void)
+[; ;main.c: 40: {
+[e :U _Handle ]
 [f ]
-[; ;main.c: 76: OSCCON = 0xF0;
+"41
+[v F2489 `S271 ~T0 @X0 1 s accel_t_gyro ]
+"42
+[v F2490 `ui ~T0 @X0 1 s count ]
+[i F2490
+-> -> 0 `i `ui
+]
+[; ;main.c: 41: static accel_t_gyro_union accel_t_gyro;
+[; ;main.c: 42: static uint16_t count = 0;
+[; ;main.c: 44: if(Timer0_CheckFlag())
+"44
+[e $ ! != -> ( _Timer0_CheckFlag ..  `i -> -> -> 0 `i `uc `i 280  ]
+[; ;main.c: 45: {
+"45
+{
+[; ;main.c: 46: count++;
+"46
+[e ++ F2490 -> -> 1 `i `ui ]
+[; ;main.c: 47: if(count>500)
+"47
+[e $ ! > F2490 -> -> 500 `i `ui 281  ]
+[; ;main.c: 48: {
+"48
+{
+[; ;main.c: 49: count = 0;
+"49
+[e = F2490 -> -> 0 `i `ui ]
+[; ;main.c: 50: MPU6050_Read_MultiData(0x3B,(uint8_t *)&accel_t_gyro,sizeof(accel_t_gyro));
+"50
+[e ( _MPU6050_Read_MultiData (3 , , -> -> 59 `i `uc -> &U F2489 `*uc -> -> # F2489 `ui `uc ]
+[; ;main.c: 52: SWAP(&accel_t_gyro.reg.x_accel_h, &accel_t_gyro.reg.x_accel_l);
+"52
+[e ( _SWAP (2 , &U . . F2489 0 0 &U . . F2489 0 1 ]
+[; ;main.c: 53: SWAP(&accel_t_gyro.reg.y_accel_h, &accel_t_gyro.reg.y_accel_l);
+"53
+[e ( _SWAP (2 , &U . . F2489 0 2 &U . . F2489 0 3 ]
+[; ;main.c: 54: SWAP(&accel_t_gyro.reg.z_accel_h, &accel_t_gyro.reg.z_accel_l);
+"54
+[e ( _SWAP (2 , &U . . F2489 0 4 &U . . F2489 0 5 ]
+[; ;main.c: 55: SWAP(&accel_t_gyro.reg.t_h, &accel_t_gyro.reg.t_l);
+"55
+[e ( _SWAP (2 , &U . . F2489 0 6 &U . . F2489 0 7 ]
+[; ;main.c: 56: SWAP(&accel_t_gyro.reg.x_gyro_h, &accel_t_gyro.reg.x_gyro_l);
+"56
+[e ( _SWAP (2 , &U . . F2489 0 8 &U . . F2489 0 9 ]
+[; ;main.c: 57: SWAP(&accel_t_gyro.reg.y_gyro_h, &accel_t_gyro.reg.y_gyro_l);
+"57
+[e ( _SWAP (2 , &U . . F2489 0 10 &U . . F2489 0 11 ]
+[; ;main.c: 58: SWAP(&accel_t_gyro.reg.z_gyro_h, &accel_t_gyro.reg.z_gyro_l);
+"58
+[e ( _SWAP (2 , &U . . F2489 0 12 &U . . F2489 0 13 ]
+[; ;main.c: 60: UART_Transmit(0xFF);
+"60
+[e ( _UART_Transmit (1 -> -> 255 `i `uc ]
+[; ;main.c: 61: UART_Transmit(0xFF);
+"61
+[e ( _UART_Transmit (1 -> -> 255 `i `uc ]
+[; ;main.c: 62: UART_Transmit(0xFF);
+"62
+[e ( _UART_Transmit (1 -> -> 255 `i `uc ]
+[; ;main.c: 63: UART_Transmit(0xFF);
+"63
+[e ( _UART_Transmit (1 -> -> 255 `i `uc ]
+[; ;main.c: 64: UART_Transmit(0xFF);
+"64
+[e ( _UART_Transmit (1 -> -> 255 `i `uc ]
+[; ;main.c: 66: UART_Transmit(accel_t_gyro.reg.x_accel_h);
+"66
+[e ( _UART_Transmit (1 . . F2489 0 0 ]
+[; ;main.c: 67: UART_Transmit(accel_t_gyro.reg.x_accel_l);
+"67
+[e ( _UART_Transmit (1 . . F2489 0 1 ]
+[; ;main.c: 68: UART_Transmit(accel_t_gyro.reg.y_accel_h);
+"68
+[e ( _UART_Transmit (1 . . F2489 0 2 ]
+[; ;main.c: 69: UART_Transmit(accel_t_gyro.reg.y_accel_l);
+"69
+[e ( _UART_Transmit (1 . . F2489 0 3 ]
+[; ;main.c: 70: UART_Transmit(accel_t_gyro.reg.z_accel_h);
+"70
+[e ( _UART_Transmit (1 . . F2489 0 4 ]
+[; ;main.c: 71: UART_Transmit(accel_t_gyro.reg.z_accel_l);
+"71
+[e ( _UART_Transmit (1 . . F2489 0 5 ]
+[; ;main.c: 73: UART_Transmit(accel_t_gyro.reg.t_h);
+"73
+[e ( _UART_Transmit (1 . . F2489 0 6 ]
+[; ;main.c: 74: UART_Transmit(accel_t_gyro.reg.t_l);
+"74
+[e ( _UART_Transmit (1 . . F2489 0 7 ]
+[; ;main.c: 76: UART_Transmit(accel_t_gyro.reg.x_gyro_h);
 "76
-[e = _OSCCON -> -> 240 `i `uc ]
-[; ;main.c: 80: TRISA = 0x00;
+[e ( _UART_Transmit (1 . . F2489 0 8 ]
+[; ;main.c: 77: UART_Transmit(accel_t_gyro.reg.x_gyro_l);
+"77
+[e ( _UART_Transmit (1 . . F2489 0 9 ]
+[; ;main.c: 78: UART_Transmit(accel_t_gyro.reg.y_gyro_h);
+"78
+[e ( _UART_Transmit (1 . . F2489 0 10 ]
+[; ;main.c: 79: UART_Transmit(accel_t_gyro.reg.y_gyro_l);
+"79
+[e ( _UART_Transmit (1 . . F2489 0 11 ]
+[; ;main.c: 80: UART_Transmit(accel_t_gyro.reg.z_gyro_h);
 "80
-[e = _TRISA -> -> 0 `i `uc ]
-[; ;main.c: 81: ANSELA = 0x00;
+[e ( _UART_Transmit (1 . . F2489 0 12 ]
+[; ;main.c: 81: UART_Transmit(accel_t_gyro.reg.z_gyro_l);
 "81
-[e = _ANSELA -> -> 0 `i `uc ]
-[; ;main.c: 82: WPUA = 0x00;
-"82
-[e = _WPUA -> -> 0 `i `uc ]
-[; ;main.c: 85: APFCON = 0x00;
+[e ( _UART_Transmit (1 . . F2489 0 13 ]
 "85
-[e = _APFCON -> -> 0 `i `uc ]
-[; ;main.c: 87: PORTA = 0x00;
+}
+[e :U 281 ]
+"86
+}
+[e :U 280 ]
+[; ;main.c: 85: }
+[; ;main.c: 86: }
+[; ;main.c: 87: UART_Interrupt();
 "87
-[e = _PORTA -> -> 0 `i `uc ]
-[; ;main.c: 88: }
+[e ( _UART_Interrupt ..  ]
+[; ;main.c: 88: I2C_Interrupt();
 "88
+[e ( _I2C_Interrupt ..  ]
+[; ;main.c: 89: }
+"89
 [e :UE 279 ]
 }
-"90
-[v _UART_InitPort `(v ~T0 @X0 1 ef ]
 "91
+[v _Basic_Init `(v ~T0 @X0 1 ef ]
+"92
 {
-[; ;main.c: 90: void UART_InitPort(void)
-[; ;main.c: 91: {
+[; ;main.c: 91: void Basic_Init(void)
+[; ;main.c: 92: {
+[e :U _Basic_Init ]
+[f ]
+[; ;main.c: 93: OSCCON = 0xF0;
+"93
+[e = _OSCCON -> -> 240 `i `uc ]
+[; ;main.c: 97: TRISA = 0x00;
+"97
+[e = _TRISA -> -> 0 `i `uc ]
+[; ;main.c: 98: ANSELA = 0x00;
+"98
+[e = _ANSELA -> -> 0 `i `uc ]
+[; ;main.c: 99: WPUA = 0x00;
+"99
+[e = _WPUA -> -> 0 `i `uc ]
+[; ;main.c: 102: APFCON = 0x00;
+"102
+[e = _APFCON -> -> 0 `i `uc ]
+[; ;main.c: 104: PORTA = 0x00;
+"104
+[e = _PORTA -> -> 0 `i `uc ]
+[; ;main.c: 105: }
+"105
+[e :UE 282 ]
+}
+"107
+[v _UART_InitPort `(v ~T0 @X0 1 ef ]
+"108
+{
+[; ;main.c: 107: void UART_InitPort(void)
+[; ;main.c: 108: {
 [e :U _UART_InitPort ]
 [f ]
-[; ;main.c: 92: TRISA &= ~(1<<4);
-"92
+[; ;main.c: 109: TRISA &= ~(1<<4);
+"109
 [e =& _TRISA -> ~ << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 93: ANSELA &= ~(1<<4);
-"93
+[; ;main.c: 110: ANSELA &= ~(1<<4);
+"110
 [e =& _ANSELA -> ~ << -> 1 `i -> 4 `i `uc ]
-[; ;main.c: 94: APFCON |= (1<<2);
-"94
+[; ;main.c: 111: APFCON |= (1<<2);
+"111
 [e =| _APFCON -> << -> 1 `i -> 2 `i `uc ]
-[; ;main.c: 95: APFCON |= (1<<7);
-"95
+[; ;main.c: 112: APFCON |= (1<<7);
+"112
 [e =| _APFCON -> << -> 1 `i -> 7 `i `uc ]
-[; ;main.c: 96: }
-"96
-[e :UE 280 ]
+[; ;main.c: 113: }
+"113
+[e :UE 283 ]
 }
-"97
+"114
 [v _I2C_InitPort `(v ~T0 @X0 1 ef ]
-"98
+"115
 {
-[; ;main.c: 97: void I2C_InitPort(void)
-[; ;main.c: 98: {
+[; ;main.c: 114: void I2C_InitPort(void)
+[; ;main.c: 115: {
 [e :U _I2C_InitPort ]
 [f ]
-[; ;main.c: 99: TRISA |= (1<<1);
-"99
+[; ;main.c: 116: TRISA |= (1<<1);
+"116
 [e =| _TRISA -> << -> 1 `i -> 1 `i `uc ]
-[; ;main.c: 100: TRISA |= (1<<2);
-"100
+[; ;main.c: 117: TRISA |= (1<<2);
+"117
 [e =| _TRISA -> << -> 1 `i -> 2 `i `uc ]
-[; ;main.c: 102: ANSELA &= ~(1<<1);
-"102
+[; ;main.c: 119: ANSELA &= ~(1<<1);
+"119
 [e =& _ANSELA -> ~ << -> 1 `i -> 1 `i `uc ]
-[; ;main.c: 103: ANSELA &= ~(1<<2);
-"103
+[; ;main.c: 120: ANSELA &= ~(1<<2);
+"120
 [e =& _ANSELA -> ~ << -> 1 `i -> 2 `i `uc ]
-[; ;main.c: 104: }
-"104
-[e :UE 281 ]
+[; ;main.c: 121: }
+"121
+[e :UE 284 ]
 }

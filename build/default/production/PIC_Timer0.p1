@@ -1,19 +1,19 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"3 PIC_I2C.c
-[c E2424 0 1 .. ]
-[n E2424 . I2C_MODE_MASTER I2C_MODE_SLAVE  ]
-"36 PIC_I2C.h
-[s S273 `uc -> 8 `i `uc -> 8 `i `*uc 1 `*uc 1 `E2424 1 ]
-[n S273 . SlaveTransmitBuff SlaveReceiveBuff TransmitPoint ReceivePoint Mode ]
-"6 PIC_I2C.c
-[c E2432 0 1 .. ]
-[n E2432 . I2C1_MODULE I2C2_MODULE  ]
-"50 PIC_I2C.h
-[v _I2C1_Transmit `(c ~T0 @X0 0 ef3`uc`*uc`uc ]
-"51
-[v _I2C1_Receive `(c ~T0 @X0 0 ef3`uc`*uc`uc ]
-"49
-[v _I2C1_Interrupt `(v ~T0 @X0 0 ef ]
+"6 PIC_Timer0.c
+[c E2461 0 1 2 3 4 5 6 7 .. ]
+[n E2461 . TMR0_PRESCALER2 TMR0_PRESCALER4 TMR0_PRESCALER8 TMR0_PRESCALER16 TMR0_PRESCALER32 TMR0_PRESCALER64 TMR0_PRESCALER128 TMR0_PRESCALER256  ]
+"1392 /opt/microchip/xc8/v1.43/include/pic12f1822.h
+[v _OPTION_REG `Vuc ~T0 @X0 0 e@149 ]
+"819
+[v _TMR0 `Vuc ~T0 @X0 0 e@21 ]
+"5710
+[v _TMR0IF `Vb ~T0 @X0 0 e@90 ]
+"5708
+[v _TMR0IE `Vb ~T0 @X0 0 e@93 ]
+"5486
+[v _PEIE `Vb ~T0 @X0 0 e@94 ]
+"5312
+[v _GIE `Vb ~T0 @X0 0 e@95 ]
 "40 main.h
 [p x FOSC=INTOSC ]
 "41
@@ -2251,6 +2251,38 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;math.h: 53: extern double fmod(double, double);
 [; ;math.h: 54: extern double trunc(double);
 [; ;math.h: 55: extern double round(double);
+[; ;PIC_I2C.h: 17: typedef enum
+[; ;PIC_I2C.h: 18: {
+[; ;PIC_I2C.h: 19: I2C_MODE_MASTER,
+[; ;PIC_I2C.h: 20: I2C_MODE_SLAVE
+[; ;PIC_I2C.h: 21: }I2Cx_Mode;
+[; ;PIC_I2C.h: 23: typedef enum
+[; ;PIC_I2C.h: 24: {
+[; ;PIC_I2C.h: 25: I2C_SPEED_STANDARD,
+[; ;PIC_I2C.h: 26: I2C_SPEED_HIGH
+[; ;PIC_I2C.h: 27: }I2Cx_Speed;
+[; ;PIC_I2C.h: 29: typedef enum
+[; ;PIC_I2C.h: 30: {
+[; ;PIC_I2C.h: 31: I2C1_MODULE,
+[; ;PIC_I2C.h: 32: I2C2_MODULE
+[; ;PIC_I2C.h: 33: }I2Cx_Module;
+[; ;PIC_I2C.h: 35: typedef struct
+[; ;PIC_I2C.h: 36: {
+[; ;PIC_I2C.h: 37: uint8_t SlaveTransmitBuff[8];
+[; ;PIC_I2C.h: 38: uint8_t SlaveReceiveBuff[8];
+[; ;PIC_I2C.h: 39: uint8_t *TransmitPoint;
+[; ;PIC_I2C.h: 40: uint8_t *ReceivePoint;
+[; ;PIC_I2C.h: 41: I2Cx_Mode Mode;
+[; ;PIC_I2C.h: 42: }I2Cx_Configuration;
+[; ;PIC_I2C.h: 45: typedef void (*I2C1_Init_PORTTypedef)(void);
+[; ;PIC_I2C.h: 46: typedef void (*I2C2_Init_PORTTypedef)(void);
+[; ;PIC_I2C.h: 48: void I2C1_Init(I2C1_Init_PORTTypedef I2C1_Init_PORT,uint8_t address,I2Cx_Mode mode,I2Cx_Speed Speed);
+[; ;PIC_I2C.h: 49: void I2C1_Interrupt(void);
+[; ;PIC_I2C.h: 50: int8_t I2C1_Transmit(uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 51: int8_t I2C1_Receive(uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 53: int8_t I2C_Transmit(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 54: int8_t I2C_Receive(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
+[; ;PIC_I2C.h: 55: void I2C_Interrupt(void);
 [; ;PIC_UART.h: 14: typedef enum
 [; ;PIC_UART.h: 15: {
 [; ;PIC_UART.h: 16: BAUD_300 = 0,
@@ -2306,6 +2338,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;MPU6050.h: 174: int8_t MPU6050_Read_Data(uint8_t reg,uint8_t *pData);
 [; ;MPU6050.h: 175: int8_t MPU6050_Read_MultiData(uint8_t reg,uint8_t *pData,uint8_t size);
 [; ;MPU6050.h: 176: int8_t MPU6050_Init(void);
+[; ;main.h: 76: void Basic_Init(void);
+[; ;main.h: 77: void UART_InitPort(void);
+[; ;main.h: 78: void I2C_InitPort(void);
 [; ;PIC_Timer0.h: 17: typedef enum
 [; ;PIC_Timer0.h: 18: {
 [; ;PIC_Timer0.h: 19: TMR0_PRESCALER2 = 0,
@@ -2319,158 +2354,88 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC_Timer0.h: 27: }TMR0_PRESCALER_VAL;
 [; ;PIC_Timer0.h: 29: void Timer0_Init(TMR0_PRESCALER_VAL pre_val,uint8_t reload_val);
 [; ;PIC_Timer0.h: 30: uint8_t Timer0_CheckFlag(void);
-[; ;main.h: 76: void Basic_Init(void);
-[; ;main.h: 77: void UART_InitPort(void);
-[; ;main.h: 78: void I2C_InitPort(void);
-[; ;PIC_I2C.h: 17: typedef enum
-[; ;PIC_I2C.h: 18: {
-[; ;PIC_I2C.h: 19: I2C_MODE_MASTER,
-[; ;PIC_I2C.h: 20: I2C_MODE_SLAVE
-[; ;PIC_I2C.h: 21: }I2Cx_Mode;
-[; ;PIC_I2C.h: 23: typedef enum
-[; ;PIC_I2C.h: 24: {
-[; ;PIC_I2C.h: 25: I2C_SPEED_STANDARD,
-[; ;PIC_I2C.h: 26: I2C_SPEED_HIGH
-[; ;PIC_I2C.h: 27: }I2Cx_Speed;
-[; ;PIC_I2C.h: 29: typedef enum
-[; ;PIC_I2C.h: 30: {
-[; ;PIC_I2C.h: 31: I2C1_MODULE,
-[; ;PIC_I2C.h: 32: I2C2_MODULE
-[; ;PIC_I2C.h: 33: }I2Cx_Module;
-[; ;PIC_I2C.h: 35: typedef struct
-[; ;PIC_I2C.h: 36: {
-[; ;PIC_I2C.h: 37: uint8_t SlaveTransmitBuff[8];
-[; ;PIC_I2C.h: 38: uint8_t SlaveReceiveBuff[8];
-[; ;PIC_I2C.h: 39: uint8_t *TransmitPoint;
-[; ;PIC_I2C.h: 40: uint8_t *ReceivePoint;
-[; ;PIC_I2C.h: 41: I2Cx_Mode Mode;
-[; ;PIC_I2C.h: 42: }I2Cx_Configuration;
-[; ;PIC_I2C.h: 45: typedef void (*I2C1_Init_PORTTypedef)(void);
-[; ;PIC_I2C.h: 46: typedef void (*I2C2_Init_PORTTypedef)(void);
-[; ;PIC_I2C.h: 48: void I2C1_Init(I2C1_Init_PORTTypedef I2C1_Init_PORT,uint8_t address,I2Cx_Mode mode,I2Cx_Speed Speed);
-[; ;PIC_I2C.h: 49: void I2C1_Interrupt(void);
-[; ;PIC_I2C.h: 50: int8_t I2C1_Transmit(uint8_t address,uint8_t *pData,uint8_t size);
-[; ;PIC_I2C.h: 51: int8_t I2C1_Receive(uint8_t address,uint8_t *pData,uint8_t size);
-[; ;PIC_I2C.h: 53: int8_t I2C_Transmit(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
-[; ;PIC_I2C.h: 54: int8_t I2C_Receive(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size);
-[; ;PIC_I2C.h: 55: void I2C_Interrupt(void);
-"3 PIC_I2C.c
-[v _I2C1_Config `S273 ~T0 @X0 1 e ]
-[; ;PIC_I2C.c: 3: I2Cx_Configuration I2C1_Config;
+"3 PIC_Timer0.c
+[v _TMR0_ReloadTemp `uc ~T0 @X0 1 s ]
+[; ;PIC_Timer0.c: 3: static uint8_t TMR0_ReloadTemp;
 "5
-[v _I2C_Transmit `(c ~T0 @X0 1 ef4`E2432`uc`*uc`uc ]
+[v _Timer0_Init `(v ~T0 @X0 1 ef2`E2461`uc ]
 "6
 {
-[; ;PIC_I2C.c: 5: int8_t I2C_Transmit(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size)
-[; ;PIC_I2C.c: 6: {
-[e :U _I2C_Transmit ]
+[; ;PIC_Timer0.c: 5: void Timer0_Init(TMR0_PRESCALER_VAL pre_val,uint8_t reload_val)
+[; ;PIC_Timer0.c: 6: {
+[e :U _Timer0_Init ]
 "5
-[v _I2Cx `E2432 ~T0 @X0 1 r1 ]
-[v _address `uc ~T0 @X0 1 r2 ]
-[v _pData `*uc ~T0 @X0 1 r3 ]
-[v _size `uc ~T0 @X0 1 r4 ]
+[v _pre_val `E2461 ~T0 @X0 1 r1 ]
+[v _reload_val `uc ~T0 @X0 1 r2 ]
 "6
 [f ]
+[; ;PIC_Timer0.c: 7: OPTION_REG &= ~(1<<5);
 "7
-[v _result `c ~T0 @X0 1 a ]
-[; ;PIC_I2C.c: 7: int8_t result = -1;
-[e = _result -> -U -> 1 `i `c ]
-[; ;PIC_I2C.c: 9: switch(I2Cx)
+[e =& _OPTION_REG -> ~ << -> 1 `i -> 5 `i `uc ]
+[; ;PIC_Timer0.c: 8: OPTION_REG &= ~(1<<3);
+"8
+[e =& _OPTION_REG -> ~ << -> 1 `i -> 3 `i `uc ]
+[; ;PIC_Timer0.c: 9: OPTION_REG &= ~(7<<0);
 "9
-[e $U 276  ]
-[; ;PIC_I2C.c: 10: {
+[e =& _OPTION_REG -> ~ << -> 7 `i -> 0 `i `uc ]
+[; ;PIC_Timer0.c: 10: OPTION_REG |= ((uint8_t)pre_val<<0);
 "10
-{
-[; ;PIC_I2C.c: 11: case I2C1_MODULE:
-"11
-[e :U 277 ]
-[; ;PIC_I2C.c: 12: result = I2C1_Transmit(address,pData,size);
+[e =| _OPTION_REG -> << -> -> _pre_val `uc `i -> 0 `i `uc ]
+[; ;PIC_Timer0.c: 12: TMR0_ReloadTemp = 0xFF - reload_val;
 "12
-[e = _result ( _I2C1_Transmit (3 , , _address _pData _size ]
-[; ;PIC_I2C.c: 13: break;
+[e = _TMR0_ReloadTemp -> - -> 255 `i -> _reload_val `i `uc ]
+[; ;PIC_Timer0.c: 13: TMR0 = TMR0_ReloadTemp;
 "13
-[e $U 275  ]
-"14
-}
-[; ;PIC_I2C.c: 14: }
-[e $U 275  ]
-"9
-[e :U 276 ]
-[e [\ _I2Cx , $ . `E2432 0 277
- 275 ]
-"14
-[e :U 275 ]
-[; ;PIC_I2C.c: 15: return result;
+[e = _TMR0 _TMR0_ReloadTemp ]
+[; ;PIC_Timer0.c: 15: TMR0IF = 0;
 "15
-[e ) _result ]
-[e $UE 274  ]
-[; ;PIC_I2C.c: 16: }
+[e = _TMR0IF -> -> 0 `i `b ]
+[; ;PIC_Timer0.c: 16: TMR0IE = 1;
 "16
+[e = _TMR0IE -> -> 1 `i `b ]
+[; ;PIC_Timer0.c: 17: PEIE = 1;
+"17
+[e = _PEIE -> -> 1 `i `b ]
+[; ;PIC_Timer0.c: 18: GIE = 1;
+"18
+[e = _GIE -> -> 1 `i `b ]
+[; ;PIC_Timer0.c: 19: }
+"19
 [e :UE 274 ]
 }
-"18
-[v _I2C_Receive `(c ~T0 @X0 1 ef4`E2432`uc`*uc`uc ]
-"19
-{
-[; ;PIC_I2C.c: 18: int8_t I2C_Receive(I2Cx_Module I2Cx,uint8_t address,uint8_t *pData,uint8_t size)
-[; ;PIC_I2C.c: 19: {
-[e :U _I2C_Receive ]
-"18
-[v _I2Cx `E2432 ~T0 @X0 1 r1 ]
-[v _address `uc ~T0 @X0 1 r2 ]
-[v _pData `*uc ~T0 @X0 1 r3 ]
-[v _size `uc ~T0 @X0 1 r4 ]
-"19
-[f ]
-"20
-[v _result `c ~T0 @X0 1 a ]
-[; ;PIC_I2C.c: 20: int8_t result = -1;
-[e = _result -> -U -> 1 `i `c ]
-[; ;PIC_I2C.c: 22: switch(I2Cx)
+"21
+[v _Timer0_CheckFlag `(uc ~T0 @X0 1 ef ]
 "22
-[e $U 280  ]
-[; ;PIC_I2C.c: 23: {
+{
+[; ;PIC_Timer0.c: 21: uint8_t Timer0_CheckFlag(void)
+[; ;PIC_Timer0.c: 22: {
+[e :U _Timer0_CheckFlag ]
+[f ]
+[; ;PIC_Timer0.c: 23: if(TMR0IE&&TMR0IF)
 "23
-{
-[; ;PIC_I2C.c: 24: case I2C1_MODULE:
+[e $ ! && _TMR0IE _TMR0IF 276  ]
+[; ;PIC_Timer0.c: 24: {
 "24
-[e :U 281 ]
-[; ;PIC_I2C.c: 25: result = I2C1_Receive(address,pData,size);
-"25
-[e = _result ( _I2C1_Receive (3 , , _address _pData _size ]
-[; ;PIC_I2C.c: 26: break;
-"26
-[e $U 279  ]
-"27
-}
-[; ;PIC_I2C.c: 27: }
-[e $U 279  ]
-"22
-[e :U 280 ]
-[e [\ _I2Cx , $ . `E2432 0 281
- 279 ]
-"27
-[e :U 279 ]
-[; ;PIC_I2C.c: 28: return result;
-"28
-[e ) _result ]
-[e $UE 278  ]
-[; ;PIC_I2C.c: 29: }
-"29
-[e :UE 278 ]
-}
-"31
-[v _I2C_Interrupt `(v ~T0 @X0 1 ef ]
-"32
 {
-[; ;PIC_I2C.c: 31: void I2C_Interrupt(void)
-[; ;PIC_I2C.c: 32: {
-[e :U _I2C_Interrupt ]
-[f ]
-[; ;PIC_I2C.c: 33: I2C1_Interrupt();
-"33
-[e ( _I2C1_Interrupt ..  ]
-[; ;PIC_I2C.c: 34: }
-"34
-[e :UE 282 ]
+[; ;PIC_Timer0.c: 25: TMR0 = TMR0_ReloadTemp;
+"25
+[e = _TMR0 _TMR0_ReloadTemp ]
+[; ;PIC_Timer0.c: 26: TMR0IF = 0;
+"26
+[e = _TMR0IF -> -> 0 `i `b ]
+[; ;PIC_Timer0.c: 27: return 1;
+"27
+[e ) -> -> 1 `i `uc ]
+[e $UE 275  ]
+"28
+}
+[e :U 276 ]
+[; ;PIC_Timer0.c: 28: }
+[; ;PIC_Timer0.c: 29: return 0;
+"29
+[e ) -> -> 0 `i `uc ]
+[e $UE 275  ]
+[; ;PIC_Timer0.c: 30: }
+"30
+[e :UE 275 ]
 }

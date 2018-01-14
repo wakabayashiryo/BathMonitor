@@ -3199,15 +3199,30 @@ int8_t MPU6050_Read_Data(uint8_t reg,uint8_t *pData);
 int8_t MPU6050_Read_MultiData(uint8_t reg,uint8_t *pData,uint8_t size);
 int8_t MPU6050_Init(void);
 
-# 75 "main.h"
+# 17 "PIC_Timer0.h"
+typedef enum
+{
+TMR0_PRESCALER2 = 0,
+TMR0_PRESCALER4 = 1,
+TMR0_PRESCALER8 = 2,
+TMR0_PRESCALER16 = 3,
+TMR0_PRESCALER32 = 4,
+TMR0_PRESCALER64 = 5,
+TMR0_PRESCALER128 = 6,
+TMR0_PRESCALER256 = 7,
+}TMR0_PRESCALER_VAL;
+
+void Timer0_Init(TMR0_PRESCALER_VAL pre_val,uint8_t reload_val);
+uint8_t Timer0_CheckFlag(void);
+
+# 76 "main.h"
 void Basic_Init(void);
 void UART_InitPort(void);
 void I2C_InitPort(void);
 
-# 11 "main.c"
+# 9 "main.c"
 void main(void)
 {
-accel_t_gyro_union accel_t_gyro;
 
 Basic_Init();
 
@@ -3221,19 +3236,41 @@ MPU6050_Init();
 
 _delay((unsigned long)((100)*(32000000/4000.0)));
 
-int8_t result;
+Timer0_Init(TMR0_PRESCALER64,125);
 
 while(1)
 {
-result = MPU6050_Read_MultiData(0x3B,(uint8_t *)&accel_t_gyro,sizeof(accel_t_gyro));
 
-{uint8_t swap = accel_t_gyro.reg.x_accel_h; accel_t_gyro.reg.x_accel_h = accel_t_gyro.reg.x_accel_l; accel_t_gyro.reg.x_accel_l = swap;};
-{uint8_t swap = accel_t_gyro.reg.y_accel_h; accel_t_gyro.reg.y_accel_h = accel_t_gyro.reg.y_accel_l; accel_t_gyro.reg.y_accel_l = swap;};
-{uint8_t swap = accel_t_gyro.reg.z_accel_h; accel_t_gyro.reg.z_accel_h = accel_t_gyro.reg.z_accel_l; accel_t_gyro.reg.z_accel_l = swap;};
-{uint8_t swap = accel_t_gyro.reg.t_h; accel_t_gyro.reg.t_h = accel_t_gyro.reg.t_l; accel_t_gyro.reg.t_l = swap;};
-{uint8_t swap = accel_t_gyro.reg.x_gyro_h; accel_t_gyro.reg.x_gyro_h = accel_t_gyro.reg.x_gyro_l; accel_t_gyro.reg.x_gyro_l = swap;};
-{uint8_t swap = accel_t_gyro.reg.y_gyro_h; accel_t_gyro.reg.y_gyro_h = accel_t_gyro.reg.y_gyro_l; accel_t_gyro.reg.y_gyro_l = swap;};
-{uint8_t swap = accel_t_gyro.reg.z_gyro_h; accel_t_gyro.reg.z_gyro_h = accel_t_gyro.reg.z_gyro_l; accel_t_gyro.reg.z_gyro_l = swap;};
+}
+}
+
+void SWAP(uint8_t *x,uint8_t *y)
+{
+uint8_t swap = *x;
+*x = *y;
+*y = swap;
+}
+
+void interrupt Handle(void)
+{
+static accel_t_gyro_union accel_t_gyro;
+static uint16_t count = 0;
+
+if(Timer0_CheckFlag())
+{
+count++;
+if(count>500)
+{
+count = 0;
+MPU6050_Read_MultiData(0x3B,(uint8_t *)&accel_t_gyro,sizeof(accel_t_gyro));
+
+SWAP(&accel_t_gyro.reg.x_accel_h, &accel_t_gyro.reg.x_accel_l);
+SWAP(&accel_t_gyro.reg.y_accel_h, &accel_t_gyro.reg.y_accel_l);
+SWAP(&accel_t_gyro.reg.z_accel_h, &accel_t_gyro.reg.z_accel_l);
+SWAP(&accel_t_gyro.reg.t_h, &accel_t_gyro.reg.t_l);
+SWAP(&accel_t_gyro.reg.x_gyro_h, &accel_t_gyro.reg.x_gyro_l);
+SWAP(&accel_t_gyro.reg.y_gyro_h, &accel_t_gyro.reg.y_gyro_l);
+SWAP(&accel_t_gyro.reg.z_gyro_h, &accel_t_gyro.reg.z_gyro_l);
 
 UART_Transmit(0xFF);
 UART_Transmit(0xFF);
@@ -3259,11 +3296,9 @@ UART_Transmit(accel_t_gyro.reg.z_gyro_h);
 UART_Transmit(accel_t_gyro.reg.z_gyro_l);
 
 
-}
-}
 
-void interrupt Handle(void)
-{
+}
+}
 UART_Interrupt();
 I2C_Interrupt();
 }

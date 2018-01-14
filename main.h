@@ -65,6 +65,7 @@
 #include "PIC_I2C.h"
 #include "PIC_UART.h"
 #include "MPU6050.h"
+#include "PIC_Timer0.h"
 
 #ifdef	__cplusplus
 extern "C" {

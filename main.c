@@ -6,11 +6,8 @@
  */
 #include "main.h"
 
-#define SWAP(x,y) {uint8_t swap = x; x = y; y = swap;}
-
 void main(void) 
 {
-    accel_t_gyro_union accel_t_gyro;
 
     Basic_Init();
     
@@ -24,49 +21,69 @@ void main(void)
 
     __delay_ms(100);
 
-    int8_t result;
+    Timer0_Init(TMR0_PRESCALER64,125);//set interrupt time is 1ms
     
     while(1)
     {
-        result = MPU6050_Read_MultiData(MPU6050_ACCEL_XOUT_H,(uint8_t *)&accel_t_gyro,sizeof(accel_t_gyro));
         
-        SWAP(accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
-        SWAP(accel_t_gyro.reg.y_accel_h, accel_t_gyro.reg.y_accel_l);
-        SWAP(accel_t_gyro.reg.z_accel_h, accel_t_gyro.reg.z_accel_l);
-        SWAP(accel_t_gyro.reg.t_h, accel_t_gyro.reg.t_l);
-        SWAP(accel_t_gyro.reg.x_gyro_h, accel_t_gyro.reg.x_gyro_l);
-        SWAP(accel_t_gyro.reg.y_gyro_h, accel_t_gyro.reg.y_gyro_l);
-        SWAP(accel_t_gyro.reg.z_gyro_h, accel_t_gyro.reg.z_gyro_l);
-        
-        UART_Transmit(0xFF);
-        UART_Transmit(0xFF);
-        UART_Transmit(0xFF);
-        UART_Transmit(0xFF);
-        UART_Transmit(0xFF);
-
-        UART_Transmit(accel_t_gyro.reg.x_accel_h);
-        UART_Transmit(accel_t_gyro.reg.x_accel_l);
-        UART_Transmit(accel_t_gyro.reg.y_accel_h);
-        UART_Transmit(accel_t_gyro.reg.y_accel_l);
-        UART_Transmit(accel_t_gyro.reg.z_accel_h);
-        UART_Transmit(accel_t_gyro.reg.z_accel_l);
-        
-        UART_Transmit(accel_t_gyro.reg.t_h);
-        UART_Transmit(accel_t_gyro.reg.t_l);
-        
-        UART_Transmit(accel_t_gyro.reg.x_gyro_h);
-        UART_Transmit(accel_t_gyro.reg.x_gyro_l);
-        UART_Transmit(accel_t_gyro.reg.y_gyro_h);
-        UART_Transmit(accel_t_gyro.reg.y_gyro_l);
-        UART_Transmit(accel_t_gyro.reg.z_gyro_h);
-        UART_Transmit(accel_t_gyro.reg.z_gyro_l);
-        
-//        printf("%x %x %x %x \n",accel_t_gyro.value.x_accel,accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
     }
+}
+
+void SWAP(uint8_t *x,uint8_t *y) 
+{
+    uint8_t swap = *x; 
+    *x = *y; 
+    *y = swap;
 }
 
 void interrupt Handle(void)
 {
+    static accel_t_gyro_union accel_t_gyro;
+    static uint16_t count = 0;
+    
+    if(Timer0_CheckFlag())
+    {
+        count++;
+        if(count>500)
+        {
+            count = 0;
+            MPU6050_Read_MultiData(MPU6050_ACCEL_XOUT_H,(uint8_t *)&accel_t_gyro,sizeof(accel_t_gyro));
+
+            SWAP(&accel_t_gyro.reg.x_accel_h, &accel_t_gyro.reg.x_accel_l);
+            SWAP(&accel_t_gyro.reg.y_accel_h, &accel_t_gyro.reg.y_accel_l);
+            SWAP(&accel_t_gyro.reg.z_accel_h, &accel_t_gyro.reg.z_accel_l);
+            SWAP(&accel_t_gyro.reg.t_h, &accel_t_gyro.reg.t_l);
+            SWAP(&accel_t_gyro.reg.x_gyro_h, &accel_t_gyro.reg.x_gyro_l);
+            SWAP(&accel_t_gyro.reg.y_gyro_h, &accel_t_gyro.reg.y_gyro_l);
+            SWAP(&accel_t_gyro.reg.z_gyro_h, &accel_t_gyro.reg.z_gyro_l);
+
+            UART_Transmit(0xFF);
+            UART_Transmit(0xFF);
+            UART_Transmit(0xFF);
+            UART_Transmit(0xFF);
+            UART_Transmit(0xFF);
+
+            UART_Transmit(accel_t_gyro.reg.x_accel_h);
+            UART_Transmit(accel_t_gyro.reg.x_accel_l);
+            UART_Transmit(accel_t_gyro.reg.y_accel_h);
+            UART_Transmit(accel_t_gyro.reg.y_accel_l);
+            UART_Transmit(accel_t_gyro.reg.z_accel_h);
+            UART_Transmit(accel_t_gyro.reg.z_accel_l);
+
+            UART_Transmit(accel_t_gyro.reg.t_h);
+            UART_Transmit(accel_t_gyro.reg.t_l);
+
+            UART_Transmit(accel_t_gyro.reg.x_gyro_h);
+            UART_Transmit(accel_t_gyro.reg.x_gyro_l);
+            UART_Transmit(accel_t_gyro.reg.y_gyro_h);
+            UART_Transmit(accel_t_gyro.reg.y_gyro_l);
+            UART_Transmit(accel_t_gyro.reg.z_gyro_h);
+            UART_Transmit(accel_t_gyro.reg.z_gyro_l);
+
+//            printf("%x %x %x %x \n",accel_t_gyro.value.x_accel,accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
+    
+        }
+    }
     UART_Interrupt();
     I2C_Interrupt();
 }
