@@ -6,16 +6,23 @@
  */
 #include "main.h"
 
+#define SWAP(x,y) {uint8_t swap = x; x = y; y = swap;}
+
 void main(void) 
 {
     accel_t_gyro_union accel_t_gyro;
 
     Basic_Init();
-    UART_Init(UART_InitPort,BAUD_9600);
     
     I2C1_Init(I2C_InitPort,0x00,I2C_MODE_MASTER,I2C_SPEED_HIGH);
-        
+    
+    UART_Init(UART_InitPort,BAUD_9600);
+    
+    __delay_ms(100);
+    
     MPU6050_Init();
+
+    __delay_ms(100);
 
     int8_t result;
     
@@ -23,7 +30,6 @@ void main(void)
     {
         result = MPU6050_Read_MultiData(MPU6050_ACCEL_XOUT_H,(uint8_t *)&accel_t_gyro,sizeof(accel_t_gyro));
         
-#define SWAP(x,y) {uint8_t swap = x; x = y; y = swap;}
         SWAP(accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
         SWAP(accel_t_gyro.reg.y_accel_h, accel_t_gyro.reg.y_accel_l);
         SWAP(accel_t_gyro.reg.z_accel_h, accel_t_gyro.reg.z_accel_l);
@@ -54,6 +60,8 @@ void main(void)
         UART_Transmit(accel_t_gyro.reg.y_gyro_l);
         UART_Transmit(accel_t_gyro.reg.z_gyro_h);
         UART_Transmit(accel_t_gyro.reg.z_gyro_l);
+        
+//        printf("%x %x %x %x \n",accel_t_gyro.value.x_accel,accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
     }
 }
 
